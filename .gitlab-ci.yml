@@ -1,7 +1,7 @@
 image: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 
 variables:
-  TF_ROOT: ${CI_PROJECT_DIR}/environments/example/production
+  TF_ROOT: ${CI_PROJECT_DIR}
   TF_ADDRESS: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/terraform/state/bij1
 
 cache:
