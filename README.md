@@ -26,6 +26,13 @@ As we're using GitLab's Terraform image for our CI/CD pipeline, we'll stick to
 using the latest version of Terraform. Instruction on how to install Terraform
 can be found here: <https://www.terraform.io/downloads>
 
+### Managed state
+
+- go to https://gitlab.com/bij1/intranet/terraform/-/terraform
+- open the triple dot menu for `bij1` and select `Copy Terraform init command`
+- substitute in a personal access token in the shown command
+- run the command locally to access the shared state
+
 ## Code-styling
 
 We try to adhere to the
