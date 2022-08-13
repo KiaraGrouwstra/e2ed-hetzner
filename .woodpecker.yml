@@ -7,7 +7,13 @@ pipeline:
     commands:
       - apk add --no-cache terraform
       - terraform version
+      - |
+          cat << EOF > terraform.rc
+          credentials "app.terraform.io" {
+            token = "$TERRAFORM_CLOUD_TOKEN"
+          }
+          EOF
       - terraform init
       - terraform validate
       - terraform plan -var ""
-    secrets: []
+    secrets: [ terraform_cloud_token ]
