@@ -1,0 +1,13 @@
+pipeline:
+
+  validate:
+    image: alpine:3.16
+    # when:
+    #   event: pull_request
+    commands:
+      - apk add --no-cache terraform
+      - terraform version
+      - terraform init
+      - terraform validate
+      - terraform plan -var ""
+    secrets: []
