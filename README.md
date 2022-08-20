@@ -26,6 +26,14 @@ As we're using GitLab's Terraform image for our CI/CD pipeline, we'll stick to
 using the latest version of Terraform. Instruction on how to install Terraform
 can be found here: <https://www.terraform.io/downloads>
 
+### Authentication
+
+Create a file `terraform.tfvars` containing:
+```
+do_token = "<GREENHOST_API_KEY>"
+```
+... substituting in our actual key.
+
 ### Managed state
 
 - go to https://gitlab.com/bij1/intranet/terraform/-/terraform

@@ -13,8 +13,8 @@ crash.*.log
 .terraformrc
 terraform.rc
 
-# Ignore local backend.tfvars
-backend.tfvars
+# Ignore local .tfvars
+*.tfvars
 
 # Ignore Terraform lock file
 .terraform.lock.hcl
