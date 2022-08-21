@@ -15,6 +15,3 @@ terraform.rc
 
 # Ignore local .tfvars
 *.tfvars
-
-# Ignore Terraform lock file
-.terraform.lock.hcl
