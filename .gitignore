@@ -1,7 +1,7 @@
 # Local .terraform directories
 **/.terraform/*
 
-# .tfstate files
+# .tfstate files: https://stackoverflow.com/a/38748987/1502035
 *.tfstate
 *.tfstate.*
 
