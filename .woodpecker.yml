@@ -1,4 +1,4 @@
-pipeline:
+steps:
 
   validate:
     image: alpine:3.16
