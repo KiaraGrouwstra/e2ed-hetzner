@@ -1,9 +1,10 @@
 # terraform
 
-Contains Terraform code used to manage our infrastructure.
+Contains [Terraform](https://terraform.io/) code used to manage our infrastructure, Nix'ified for [Terranix](https://terranix.org/).
 
 ## Prerequisites
 
+- [Nix](https://nix.dev/) with [Flakes](https://nixos.wiki/wiki/Flakes) enabled
 ### Pre-commit hook
 
 We want all our Terraform code to be well formatted and adhering to standards,
@@ -25,13 +26,22 @@ a chance you push something that doesn't match our standards.
 As we're using GitLab's Terraform image for our CI/CD pipeline, we'll stick to
 using the latest version of Terraform. Instruction on how to install Terraform
 can be found here: <https://www.terraform.io/downloads>
+- [Terraform Cloud](https://app.terraform.io/) to use shared state
+
+### Usage
+
+- Run `nix develop -c $SHELL` to enter the development environment if not using [`direnv`](https://zero-to-flakes.com/direnv).
+- Run `tofu login app.terraform.io` to log in to the Terraform Cloud backend
+- Run `nix run` to apply changes.
+- Run `nix flake update` to update dependencies.
 
 ### Authentication
 
 Create a file `terraform.tfvars` containing:
+
+```tfvars
 ```
-do_token = "<GREENHOST_API_KEY>"
-```
+
 ... substituting in our actual key.
 
 ### Managed state
@@ -40,6 +50,8 @@ do_token = "<GREENHOST_API_KEY>"
 - open the triple dot menu for `bij1` and select `Copy Terraform init command`
 - substitute in a personal access token in the shown command
 - run the command locally to access the shared state
+
+## [HCL to Nix](https://gist.github.com/KiaraGrouwstra/249ede6a7dfc00ea44d85bc6bdbcd875)
 
 ## Code-styling
 
