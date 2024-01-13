@@ -5,27 +5,7 @@ Contains [Terraform](https://terraform.io/) code used to manage our infrastructu
 ## Prerequisites
 
 - [Nix](https://nix.dev/) with [Flakes](https://nixos.wiki/wiki/Flakes) enabled
-### Pre-commit hook
-
-We want all our Terraform code to be well formatted and adhering to standards,
-enforced by `terraform fmt`. Thus there is a pre-commit hook available to
-validate this. Unfortunately this cannot be enforced remotely, so there is a
-_one time_ manual step needed.
-
-Run the following command right after cloning the repository:
-
-```sh
-./install_precommit_hook.sh
-```
-
-This will make sure you have the pre-commit hook installed so there is less of
-a chance you push something that doesn't match our standards.
-
-### Terraform
-
-As we're using GitLab's Terraform image for our CI/CD pipeline, we'll stick to
-using the latest version of Terraform. Instruction on how to install Terraform
-can be found here: <https://www.terraform.io/downloads>
+- [Hetzner Cloud API token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)
 - [Terraform Cloud](https://app.terraform.io/) to use shared state
 
 ### Usage
@@ -40,6 +20,7 @@ can be found here: <https://www.terraform.io/downloads>
 Create a file `terraform.tfvars` containing:
 
 ```tfvars
+hcloud_api_token = "<HETZNER_API_KEY>"
 ```
 
 ... substituting in our actual key.
