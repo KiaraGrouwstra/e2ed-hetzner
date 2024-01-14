@@ -7,7 +7,7 @@ in rec {
   provider = {
 
     # Configure the Hetzner Cloud Provider
-    hcloud.token = lib.tfRef "var.hcloud_token";
+    hcloud.token = lib.mkForce (lib.tfRef "var.hcloud_api_token");
 
   };
 
@@ -16,14 +16,23 @@ in rec {
   };
 
   # Set the variable value in *.tfvars file
-  # or using -var="hetzner_token=..." CLI option
+  # or using -var="hcloud_api_token=..." CLI option
   variable = {
 
-    hcloud_token = {
+    hcloud_api_token = {
       type = "string";
       description = "Hetzner Cloud API Token";
       sensitive = true;
     };
+
+  };
+
+  # https://github.com/terranix/terranix-hcloud/blob/main/options.md
+  hcloud = {
+    enable = true;
+    # can also be specified with the TF_VAR_hcloud_api_token environment variable
+    provider.token = builtins.getEnv "TF_VAR_hcloud_api_token";
+    export.nix = "hetzner.nix";
 
   };
 
