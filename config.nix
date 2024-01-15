@@ -2,6 +2,11 @@
 
 let
   var = options.variable;
+
+  my-lib = import ./lib/default.nix { inherit lib; };
+
+  setNames = lib.mapAttrs (k: v: v // { name = k; });
+
 in rec {
 
   provider = {
@@ -12,6 +17,8 @@ in rec {
   };
 
   resource = {
+
+    hcloud_ssh_key = setNames (lib.mapAttrs (_: v: { public_key = v; }) my-lib.ssh-keys);
 
   };
 
