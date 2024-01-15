@@ -5,6 +5,9 @@ let
 
   my-lib = import ./lib/default.nix { inherit lib; };
 
+  mapKeys = f: lib.mapAttrs' (k: v: lib.nameValuePair (f k) v);
+  inNamespace = prefix: mapKeys (k: "${prefix}_${k}");
+
   setNames = lib.mapAttrs (k: v: v // { name = k; });
 
 in rec {
@@ -16,11 +19,12 @@ in rec {
 
   };
 
-  resource = {
+  resource = (inNamespace "hcloud" {
 
-    hcloud_ssh_key = setNames (lib.mapAttrs (_: v: { public_key = v; }) my-lib.ssh-keys);
 
-  };
+    ssh_key = setNames (lib.mapAttrs (_: v: { public_key = v; }) my-lib.ssh-keys);
+
+  });
 
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
