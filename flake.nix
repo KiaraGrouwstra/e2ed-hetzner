@@ -54,47 +54,31 @@
           ];
         };
 
-        # nix run ".#compile"
-        apps.compile = {
-          type = "app";
-          program = toString (pkgs.writers.writeBash "compile" ''
-            cp ${terraformConfiguration} config.tf.json
-          '');
-        };
-
-        # nix run ".#check"
-        apps.check = {
-          type = "app";
-          program = toString (pkgs.writers.writeBash "check" ''
-            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
+        apps = let
+          tfCommand = cmd: ''
+            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
             cp ${terraformConfiguration} config.tf.json \
               && ${tf} init \
-              && ${tf} validate
-          '');
-        };
-
-        # nix run ".#apply"
-        apps.apply = {
-          type = "app";
-          program = toString (pkgs.writers.writeBash "apply" ''
-            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
-            cp ${terraformConfiguration} config.tf.json \
-              && ${tf} init \
-              && ${tf} apply
-          '');
-        };
-
-        # nix run ".#destroy"
-        apps.destroy = {
-          type = "app";
-          program = toString (pkgs.writers.writeBash "destroy" ''
-            if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi
-            cp ${terraformConfiguration} config.tf.json \
-              && ${tf} init \
-              && ${tf} destroy
+              && ${tf} ${cmd}
+          '';
+        in builtins.mapAttrs (name: script: {
+            type = "app";
+            program = toString (pkgs.writers.writeBash name script);
+        }) {
+          # nix run .#check
+          check = tfCommand "validate";
+          # nix run .#apply
+          apply = tfCommand "apply";
+          # nix run .#plan
+          plan = tfCommand "plan";
+          # nix run .#cd
+          cd = tfCommand "apply -auto-approve";
+          # nix run .#destroy
+          destroy = ''
+            ${tfCommand "destroy"}
             rm ${toString ./.}/config.tf.json
             rm ${toString ./.}/terraform.tfstate*
-          '');
+          '';
         };
 
         # nix run
