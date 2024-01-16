@@ -43,21 +43,3 @@ hcloud_api_token = "<HETZNER_API_KEY>"
 
 ## [HCL to Nix](https://gist.github.com/KiaraGrouwstra/249ede6a7dfc00ea44d85bc6bdbcd875)
 
-## Code-styling
-
-We try to adhere to the
-[naming conventions](https://www.terraform-best-practices.com/naming) and
-[code-styling](https://www.terraform-best-practices.com/code-styling) best
-practices defined at [Terraform best practices](https://www.terraform-best-practices.com/).
-
-## Secrets
-
-Two steps:
-
-1. Create a variable in `variables.tf` with `sensitive = true`, to prevent it
-from appearing in the build output.
-2. Add the desired variable to the
-[Environment Variables](https://www.terraform.io/language/values/variables#environment-variables).
-
-We may want to look at something like
-[git-crypt](https://github.com/AGWA/git-crypt) or a central password store.
