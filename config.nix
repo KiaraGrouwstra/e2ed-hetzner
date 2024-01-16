@@ -32,9 +32,21 @@ let
 
 in rec {
 
-  terraform.required_providers = {
+  terraform = {
+    
+    required_providers = {
 
-    sops.source = "carlpett/sops";
+      sops.source = "carlpett/sops";
+
+    };
+
+    cloud = {
+      hostname = "app.terraform.io";
+      organization = "bij1";
+      workspaces = {
+        name = "hcloud";
+      };
+    };
 
   };
 
@@ -48,7 +60,6 @@ in rec {
   };
 
   resource = (inNamespace "hcloud" {
-
 
     ssh_key = setNames (lib.mapAttrs (_: v: { public_key = v; }) my-lib.ssh-keys);
 
