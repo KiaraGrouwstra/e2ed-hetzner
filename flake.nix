@@ -44,8 +44,11 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             treefmt
+            sops
+            rage
             inputs.terranix.defaultPackage.${system}
             (opentofu.withPlugins (p: with p; [
+              sops    # https://registry.terraform.io/providers/carlpett/sops/latest/docs
               hcloud  # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
             ]))
           ];

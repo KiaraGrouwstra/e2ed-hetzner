@@ -15,6 +15,15 @@ Contains [Terraform](https://terraform.io/) code used to manage our infrastructu
 - Run `nix run` to apply changes.
 - Run `nix flake update` to update dependencies.
 
+### Secrets
+
+- if you want to reset secrets:
+  - generate an [`age`](https://age-encryption.org/) key pair, using [`rage`](https://github.com/str4d/rage) installed as part of the nix shell: `rage-keygen -o keys.txt`
+  - list it in [`sops`](https://getsops.io/) config file `.sops.yaml`
+- key setup: set environment variable `SOPS_AGE_KEY_FILE` or `SOPS_AGE_KEY` so `sops` can locate the secret key to an `age` key pair that has its public key listed in `.sops.yaml`
+- encoding secrets: `sops -e secrets.yaml > secrets.enc.yaml`
+- decoding secrets: `sops -d secrets.enc.yaml > secrets.yaml`
+
 ### Authentication
 
 Create a file `terraform.tfvars` containing:

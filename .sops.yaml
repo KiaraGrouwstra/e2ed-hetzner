@@ -1,0 +1,10 @@
+# let's make anchors so we can use names to refer to the keys
+keys:
+  - &automation age1d53yeje0ggysc93uptlpufyhpchyyfs006368j8mw9r20uyeeydse3n7aw
+
+# actual sops config
+creation_rules:
+  - path_regex: secrets(\.enc)?\.yaml$
+    key_groups:
+    - age:
+      - *automation

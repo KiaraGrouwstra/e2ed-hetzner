@@ -1,3 +1,9 @@
+# sops
+/secrets.yaml
+
+# age
+/keys.txt
+
 # Direnv directory
 .direnv/
 
