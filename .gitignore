@@ -4,6 +4,9 @@
 # age
 /keys.txt
 
+# hetzner dump
+hetzner.nix
+
 # Direnv directory
 .direnv/
 
