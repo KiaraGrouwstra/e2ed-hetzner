@@ -24,15 +24,13 @@ Contains [Terraform](https://terraform.io/) code used to manage our infrastructu
 - encoding secrets: `sops -e secrets.yaml > secrets.enc.yaml`
 - decoding secrets: `sops -d secrets.enc.yaml > secrets.yaml`
 
-### Authentication
+### Configuring
 
-Create a file `terraform.tfvars` containing:
+Create a file `terraform.tfvars` containing override for any Terraform variables, e.g.:
 
 ```tfvars
-hcloud_api_token = "<HETZNER_API_KEY>"
+hcloud_location = "nbg1"
 ```
-
-... substituting in our actual key.
 
 ### Managed state
 
