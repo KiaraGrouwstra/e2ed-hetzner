@@ -103,12 +103,5 @@ Create a file `.auto.tfvars` containing override for any OpenTofu variables, e.g
 hcloud_location = "nbg1"
 ```
 
-### Managed state
-
-- go to https://gitlab.com/bij1/intranet/terraform/-/terraform
-- open the triple dot menu for `bij1` and select `Copy Terraform init command`
-- substitute in a personal access token in the shown command
-- run the command locally to access the shared state
-
 ## [HCL to Nix](https://gist.github.com/KiaraGrouwstra/249ede6a7dfc00ea44d85bc6bdbcd875)
 
