@@ -1,3 +1,5 @@
+*.bck
+
 # sops
 /secrets.yaml
 
@@ -21,12 +23,13 @@ hetzner.nix
 crash.log
 crash.*.log
 
-# Ignore CLI configuration files
-.terraformrc
-terraform.rc
-
 # Ignore local .tfvars
 *.tfvars
 
 # generated terraform files
 *.json
+
+# Ignore CLI configuration files
+*.tfrc
+.terraformrc
+terraform.rc

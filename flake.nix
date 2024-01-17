@@ -46,6 +46,8 @@
             treefmt
             sops
             rage
+            woodpecker-cli
+            jq
             inputs.terranix.defaultPackage.${system}
             (opentofu.withPlugins (p: with p; [
               sops    # https://registry.terraform.io/providers/carlpett/sops/latest/docs
@@ -57,6 +59,13 @@
         apps = let
           tfCommand = cmd: ''
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
+            export TERRAFORM_CLOUD_TOKEN=$(${pkgs.sops}/bin/sops -d --extract '["tf_cloud_token"]' secrets.enc.yaml)
+            export TF_CLI_CONFIG_FILE="ci.tfrc"
+            cat << EOF > "$TF_CLI_CONFIG_FILE"
+            credentials "app.terraform.io" {
+                token = "$TERRAFORM_CLOUD_TOKEN"
+            }
+            EOF
             cp ${terraformConfiguration} config.tf.json \
               && ${tf} init \
               && ${tf} ${cmd}
@@ -78,6 +87,8 @@
             ${tfCommand "destroy"}
             rm ${toString ./.}/config.tf.json
             rm ${toString ./.}/terraform.tfstate*
+            rm ${toString ./.}/secrets.yaml
+            rm ${toString ./.}/ci.tfrc
           '';
         };
 
