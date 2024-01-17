@@ -26,10 +26,8 @@ crash.*.log
 # Ignore local .tfvars
 *.tfvars
 
-# generated terraform files
+# generated opentofu files
 *.json
 
 # Ignore CLI configuration files
 *.tfrc
-.terraformrc
-terraform.rc

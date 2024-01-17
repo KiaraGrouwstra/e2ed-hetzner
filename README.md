@@ -1,6 +1,6 @@
-# terraform
+# tofu
 
-Contains [Terraform](https://terraform.io/) code used to manage our infrastructure, Nix'ified for [Terranix](https://terranix.org/).
+Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructure, Nix'ified for [Terranix](https://terranix.org/).
 
 ## Prerequisites
 
@@ -97,7 +97,7 @@ Contains [Terraform](https://terraform.io/) code used to manage our infrastructu
 
 ### Configuring
 
-Create a file `terraform.tfvars` containing override for any Terraform variables, e.g.:
+Create a file `.auto.tfvars` containing override for any OpenTofu variables, e.g.:
 
 ```tfvars
 hcloud_location = "nbg1"

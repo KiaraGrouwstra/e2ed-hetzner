@@ -19,7 +19,7 @@
     inputs.flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        terraformConfiguration = inputs.terranix.lib.terranixConfiguration {
+        tfConfig = inputs.terranix.lib.terranixConfiguration {
           inherit system;
           modules = [
             inputs.terranix-hcloud.terranixModules.hcloud
@@ -29,7 +29,7 @@
         tf = "${pkgs.opentofu}/bin/tofu";
       in
       {
-        defaultPackage = terraformConfiguration;
+        defaultPackage = tfConfig;
 
         # Auto formatters. This also adds a flake check to ensure that the
         # source tree was auto formatted.
@@ -59,14 +59,14 @@
         apps = let
           tfCommand = cmd: ''
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
-            export TERRAFORM_CLOUD_TOKEN=$(${pkgs.sops}/bin/sops -d --extract '["tf_cloud_token"]' secrets.enc.yaml)
+            export TF_CLOUD_TOKEN=$(${pkgs.sops}/bin/sops -d --extract '["tf_cloud_token"]' secrets.enc.yaml)
             export TF_CLI_CONFIG_FILE="ci.tfrc"
             cat << EOF > "$TF_CLI_CONFIG_FILE"
             credentials "app.terraform.io" {
-                token = "$TERRAFORM_CLOUD_TOKEN"
+                token = "$TF_CLOUD_TOKEN"
             }
             EOF
-            cp ${terraformConfiguration} config.tf.json \
+            cp ${tfConfig} config.tf.json \
               && ${tf} init \
               && ${tf} ${cmd}
           '';
@@ -86,7 +86,7 @@
           destroy = ''
             ${tfCommand "destroy"}
             rm ${toString ./.}/config.tf.json
-            rm ${toString ./.}/terraform.tfstate*
+            rm ${toString ./.}/*.tfstate*
             rm ${toString ./.}/secrets.yaml
             rm ${toString ./.}/ci.tfrc
           '';
