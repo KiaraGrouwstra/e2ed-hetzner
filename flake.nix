@@ -27,6 +27,7 @@
           ];
         };
         tf = "${pkgs.opentofu}/bin/tofu";
+        sops = "${pkgs.sops}/bin/sops";
       in
       {
         defaultPackage = tfConfig;
@@ -47,10 +48,8 @@
             sops
             rage
             woodpecker-cli
-            jq
             inputs.terranix.defaultPackage.${system}
             (opentofu.withPlugins (p: with p; [
-              sops    # https://registry.terraform.io/providers/carlpett/sops/latest/docs
               hcloud  # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
             ]))
           ];
@@ -59,11 +58,10 @@
         apps = let
           tfCommand = cmd: ''
             if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
-            export TF_CLOUD_TOKEN=$(${pkgs.sops}/bin/sops -d --extract '["tf_cloud_token"]' secrets.enc.yaml)
             export TF_CLI_CONFIG_FILE="ci.tfrc"
             cat << EOF > "$TF_CLI_CONFIG_FILE"
             credentials "app.terraform.io" {
-                token = "$TF_CLOUD_TOKEN"
+                token = "$(${sops} -d --extract '["tf_cloud_token"]' .auto.tfvars.enc.yaml)"
             }
             EOF
             cp ${tfConfig} config.tf.json \
@@ -74,6 +72,10 @@
             type = "app";
             program = toString (pkgs.writers.writeBash name script);
         }) {
+          # nix run .#encode
+          encode = "${sops} --output-type yaml -e .auto.tfvars.json > .auto.tfvars.enc.yaml";
+          # nix run .#decode
+          decode = "${sops} --output-type json -d .auto.tfvars.enc.yaml > .auto.tfvars.json";
           # nix run .#check
           check = tfCommand "validate";
           # nix run .#apply
@@ -87,7 +89,7 @@
             ${tfCommand "destroy"}
             rm ${toString ./.}/config.tf.json
             rm ${toString ./.}/*.tfstate*
-            rm ${toString ./.}/secrets.yaml
+            rm ${toString ./.}/.auto.tfvars.json
             rm ${toString ./.}/ci.tfrc
           '';
         };

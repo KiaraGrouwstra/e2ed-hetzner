@@ -17,6 +17,8 @@ Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructur
     nix develop -c $SHELL
     ```
 
+- Handle [credentials](#secrets)
+
 - Applying changes:
 
     ```sh
@@ -69,25 +71,26 @@ Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructur
     ```
 
   - list it in [`sops`](https://getsops.io/) config file `.sops.yaml`
-- key setup: set environment variable `SOPS_AGE_KEY_FILE` or `SOPS_AGE_KEY` so `sops` can locate the secret key to an `age` key pair that has its public key listed in `.sops.yaml`
+- key setup: set environment variable `SOPS_AGE_KEY_FILE` or `SOPS_AGE_KEY` so `sops` can locate the secret key to an `age` key pair that has its public key listed in `.sops.yaml`, e.g.:
+
+    ```sh
+    export SOPS_AGE_KEY_FILE=./keys.txt
+    ```
+
 - encoding secrets:
 
     ```sh
-    sops -e secrets.yaml > secrets.enc.yaml
+    nix run .#encode
     ```
 
 - decoding secrets:
 
     ```sh
-    sops -d secrets.enc.yaml > secrets.yaml
+    nix run .#decode
     ```
 
 - setting Terraform Cloud credentials, either by:
-  - reusing the shared session:
-
-    ```sh
-    source login.sh
-    ```
+  - decode (as per above) to reuse the shared session
 
   - log in to the Terraform Cloud backend:
 
@@ -97,11 +100,10 @@ Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructur
 
 ### Configuring
 
-Create a file `.auto.tfvars` containing override for any OpenTofu variables, e.g.:
+In `.auto.tfvars.json` override any OpenTofu variables, e.g.:
 
 ```tfvars
 hcloud_location = "nbg1"
 ```
 
 ## [HCL to Nix](https://gist.github.com/KiaraGrouwstra/249ede6a7dfc00ea44d85bc6bdbcd875)
-

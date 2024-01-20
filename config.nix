@@ -20,13 +20,10 @@ let
   # { a = 1; } -> { name = "a"; a = 1; }
   setNames = lib.mapAttrs (k: v: { name = k; } // v);
 
-  # "foo" -> "\${data.sops_file.secrets.data[\"foo\"]}"
-  secret = str: lib.tfRef "data.sops_file.secrets.data[\"${str}\"]";
-
   hetzner = let
 
     # https://docs.hetzner.com/cloud/api/getting-started/generating-api-token
-    token = secret "hcloud_api_token";
+    token = lib.tfRef "var.hcloud_api_token";
 
   in { inherit token; };
 
@@ -34,12 +31,6 @@ in rec {
 
   terraform = {
     
-    required_providers = {
-
-      sops.source = "carlpett/sops";
-
-    };
-
     cloud = {
       hostname = "app.terraform.io";
       organization = "bij1";
@@ -51,8 +42,6 @@ in rec {
   };
 
   provider = {
-
-    sops = {};
 
     # Configure the Hetzner Cloud Provider
     hcloud.token = lib.mkForce hetzner.token;
@@ -69,6 +58,18 @@ in rec {
   # or using -var="hcloud_api_token=..." CLI option
   variable = {
 
+    # suppress warning, otherwise unused here
+    tf_cloud_token = {
+      type = "string";
+      sensitive = true;
+    };
+
+    hcloud_api_token = {
+      type = "string";
+      description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
+      sensitive = true;
+    };
+
   };
 
   # https://github.com/terranix/terranix-hcloud/blob/main/options.md
@@ -81,10 +82,6 @@ in rec {
   };
 
   data = {
-
-    sops_file.secrets = {
-      source_file = "secrets.enc.yaml";
-    };
 
     hcloud_ssh_keys."all_keys" = {};
 

@@ -4,7 +4,7 @@ keys:
 
 # actual sops config
 creation_rules:
-  - path_regex: secrets(\.enc)?\.yaml$
+  - path_regex: \.auto\.tfvars(\.enc)?\.(yaml|json)$
     key_groups:
     - age:
       - *automation
