@@ -1,6 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs-unfree = {
+      url = "github:numtide/nixpkgs-unfree";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils.url = "github:numtide/flake-utils";
     terranix = {
       url = "github:terranix/terranix";
@@ -19,6 +23,7 @@
     inputs.flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        unfree = inputs.nixpkgs-unfree.legacyPackages.${system}.pkgs;
         tfConfig = inputs.terranix.lib.terranixConfiguration {
           inherit system;
           modules = [
@@ -52,6 +57,8 @@
             (opentofu.withPlugins (p: with p; [
               hcloud  # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
             ]))
+            unfree.nomad
+            damon
           ];
         };
 
