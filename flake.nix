@@ -45,7 +45,7 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             treefmt
-            sops
+            pkgs.sops
             rage
             woodpecker-cli
             inputs.terranix.defaultPackage.${system}
