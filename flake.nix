@@ -81,6 +81,7 @@
             ]))
             unfree.nomad
             damon
+            levant
           ];
         };
 
