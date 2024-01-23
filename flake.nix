@@ -71,6 +71,7 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             treefmt
+            just
             pkgs.sops
             rage
             woodpecker-cli
@@ -108,20 +109,10 @@
             type = "app";
             program = toString (pkgs.writers.writeBash name script);
         }) {
-          # nix run .#encode
-          encode = "${sops} --output-type yaml -e .auto.tfvars.json > .auto.tfvars.enc.yaml";
-          # nix run .#decode
-          decode = "${sops} --output-type json -d .auto.tfvars.enc.yaml > .auto.tfvars.json";
-          # nix run .#check
-          check = tfCommand "validate";
-          # nix run .#apply
+          validate = tfCommand "validate";
           apply = tfCommand "apply";
-          # nix run .#plan
           plan = tfCommand "plan";
-          # nix run .#cd
           cd = tfCommand "apply -auto-approve";
-          # nix run .#destroy
-          # nix run .#local
           local = locally + compile tfCfg.nomad + ''
             ${tf} workspace select -or-create nomad;
             ${tf} init && ${tf} apply -auto-approve;
