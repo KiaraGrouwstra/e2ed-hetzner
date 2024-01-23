@@ -124,7 +124,7 @@
           # nix run .#local
           local = locally + compile tfCfg.nomad + ''
             ${tf} workspace select -or-create nomad;
-            ${tf} init && ${tf} apply;
+            ${tf} init && ${tf} apply -auto-approve;
           '';
           destroy = ''
             ${tfCommand "destroy"}
