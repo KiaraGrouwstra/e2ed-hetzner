@@ -40,10 +40,10 @@ in
   # https://registry.terraform.io/providers/hashicorp/nomad/latest/docs/
   resource = {
 
-    nomad_job.foo = {
-      jobspec = lib.strings.toJSON config.nomad.build.apiJob.bar;
+    nomad_job = lib.mapAttrs (k: v: {
       json = true;
-    };
+      jobspec = lib.strings.toJSON v;
+    }) config.nomad.build.apiJob;
 
   };
 
