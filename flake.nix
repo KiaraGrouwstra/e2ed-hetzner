@@ -77,7 +77,7 @@
             inputs.terranix.defaultPackage.${system}
             (opentofu.withPlugins (p: with p; [
               hcloud  # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
-              nomad  # https://registry.terraform.io/providers/hashicorp/nomad/latest/docs 
+              nomad  # https://registry.terraform.io/providers/hashicorp/nomad/latest/docs
             ]))
             unfree.nomad
             damon
