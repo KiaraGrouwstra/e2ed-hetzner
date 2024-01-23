@@ -21,8 +21,8 @@ in
 
   provider.nomad.address = "${lib.tfRef "var.nomad_host"}:4646";
 
-  # https://github.com/tristanpemble/nix-nomad
-  # https://tristanpemble.github.io/nix-nomad/
+  # keys: https://tristanpemble.github.io/nix-nomad/
+  # vals: https://developer.hashicorp.com/nomad/api-docs/json-jobs
   # https://github.com/hetznercloud/csi-driver/blob/main/docs/nomad/README.md#getting-started
   job = {
     bar = {
@@ -37,6 +37,7 @@ in
     };
   };
 
+  # https://registry.terraform.io/providers/hashicorp/nomad/latest/docs/
   resource = {
 
     nomad_job.foo = {
