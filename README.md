@@ -11,57 +11,67 @@ Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructur
 
 ## Usage
 
-- Before issuing any other commands, enter the development environment (if not using [`direnv`](https://zero-to-flakes.com/direnv)):
+### Development shell
 
-    ```sh
-    nix develop -c $SHELL
-    ```
+Before issuing any other commands, enter the development environment (if not using [`direnv`](https://zero-to-flakes.com/direnv)):
 
-- Handle [credentials](#secrets)
+```sh
+nix develop -c $SHELL
+```
 
-- Applying changes:
+### Handling [credentials](#secrets)
 
-    ```sh
-    nix run
-    ```
+### Applying changes
 
-- Validating logic:
+```sh
+nix run
+```
 
-    ```sh
-    nix run .#check
-    ```
+### Validating logic
 
-- Showing the generated plan:
+```sh
+nix run .#check
+```
 
-    ```sh
-    nix run .#plan
-    ```
+### Showing the generated plan
 
-- Applying changes, approving automatically:
+```sh
+nix run .#plan
+```
 
-    ```sh
-    nix run .#cd
-    ```
+### Applying changes, approving automatically
 
-- Removing local state and derived credentials:
+```sh
+nix run .#cd
+```
 
-    ```sh
-    nix run .#destroy
-    ```
+### Removing local state and derived credentials
 
-- Updating dependencies:
+```sh
+nix run .#destroy
+```
 
-    ```sh
-    nix flake update
-    ```
+### Running Nomad jobs locally
 
-- Simulating a CI test ([substituting](#secrets) `<SOPS_AGE_KEY>`):
+```sh
+nix run .#local
+```
 
-    ```sh
-    woodpecker-cli exec --env "SOPS_AGE_KEY=<SOPS_AGE_KEY>"
-    ```
+### Updating dependencies
 
-### Secrets
+```sh
+nix flake update
+```
+
+### Simulating a CI test
+
+[substituting](#secrets) `<SOPS_AGE_KEY>`, run:
+
+```sh
+woodpecker-cli exec --env "SOPS_AGE_KEY=<SOPS_AGE_KEY>"
+```
+
+## Secrets
 
 - if you want to reset secrets:
   - generate an [`age`](https://age-encryption.org/) key pair, using [`rage`](https://github.com/str4d/rage) installed as part of the nix shell:

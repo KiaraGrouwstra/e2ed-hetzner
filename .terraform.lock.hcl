@@ -1,20 +1,6 @@
 # This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
-provider "registry.opentofu.org/carlpett/sops" {
-  version = "1.0.0"
-  hashes = [
-    "h1:tnN2Mgl0NUF3cg7a0HtGmtOhHcG+tkaT6ncOPRuA9l8=",
-    "zh:064e63ea800cd1a8e575064097bc7de6fd5faa8ad50dbb3f2f9d8a3ebc9d7b97",
-    "zh:0663900085949d2faf24c170c7cdfbf76e545797915cc331da8304144c02bf27",
-    "zh:2ff26c7e5ee356c30791a12dd8e114c6237bd873d09e52805cb30dd5d758ed23",
-    "zh:44211fa474112ad0c9fcdae03f13ec7c75cdefd3ab29979b99cb834208055593",
-    "zh:6c3ab441c12b9679ad1dcac580d1ee7782f0d94efe6da6e983435ed39335cd3f",
-    "zh:8924cc939b52382ef042dc38bde93cdf438ff0aeab5e1801fbd198f05b80cd47",
-    "zh:ebc189ce22c23b903399f71e33d465001a79d7de7f7bf115c7763fcf794f4b58",
-  ]
-}
-
 provider "registry.opentofu.org/hashicorp/local" {
   version = "2.4.1"
   hashes = [
@@ -50,5 +36,24 @@ provider "registry.opentofu.org/hetznercloud/hcloud" {
     "zh:da79b8a1a982a1d365ea206a2654e8b5003aeba9ccdc9c8751bb6ee3f40d8c49",
     "zh:fabbad25bab09dd74f2b819992ab99b939c642374d6ca080b18d6e2a91d8d487",
     "zh:fb0e083d2925f289999dc561ef1c2f84a9e0ab11388c40162ca8b470f50f71f5",
+  ]
+}
+
+provider "registry.terraform.io/hashicorp/nomad" {
+  version = "2.1.0"
+  hashes = [
+    "h1:ek0L7fA+4R1/BXhbutSRqlQPzSZ5aY/I2YfVehuYeEU=",
+    "zh:39ba4d4fc9557d4d2c1e4bf866cf63973359b73e908cce237c54384512bdb454",
+    "zh:40d2b66e3f3675e6b88000c145977c1d5288510c76b702c6c131d9168546c605",
+    "zh:40fbe575d85a083f96d4703c6b7334e9fc3e08e4f1d441de2b9513215184ebcc",
+    "zh:42ce6db79e2f94557fae516ee3f22e5271f0b556638eb45d5fbad02c99fc7af3",
+    "zh:4acf63dfb92f879b3767529e75764fef68886521b7effa13dd0323c38133ce88",
+    "zh:72cf35a13c2fb542cd3c8528826e2390db9b8f6f79ccb41532e009ad140a3269",
+    "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
+    "zh:8b8bcc136c05916234cb0c3bcc3d48fda7ca551a091ad8461ea4ab16fb6960a3",
+    "zh:8e1c2f924eae88afe7ac83775f000ae8fd71a04e06228edf7eddce4df2421169",
+    "zh:abc6e725531fc06a8e02e84946aaabc3453ecafbc1b7a442ea175db14fd9c86a",
+    "zh:b735fcd1fb20971df3e92f81bb6d73eef845dcc9d3d98e908faa3f40013f0f69",
+    "zh:ce59797282505d872903789db8f092861036da6ec3e73f6507dac725458a5ec9",
   ]
 }
