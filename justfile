@@ -1,3 +1,6 @@
+# try locally
+default: local
+
 # encode secrets
 encode:
     sops --output-type yaml -e .auto.tfvars.json > .auto.tfvars.enc.yaml
@@ -15,7 +18,7 @@ validate:
     nix run .#validate
 
 # apply changes
-default:
+apply:
     nix run .#apply
 
 # show generated plan
