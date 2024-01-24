@@ -4,11 +4,15 @@ let
 
   var = options.variable;
 
+  my-lib = import ./lib/default.nix { inherit lib; };
+
 in
 {
 
   terraform.required_providers.nomad.source = "registry.terraform.io/hashicorp/nomad";
 
+  # https://developer.hashicorp.com/nomad/docs/job-specification/hcl2/variables
+  # https://developer.hashicorp.com/nomad/docs/runtime/interpolation
   variable = {
 
     nomad_host = {
@@ -40,10 +44,16 @@ in
   # https://registry.terraform.io/providers/hashicorp/nomad/latest/docs/
   resource = {
 
-    nomad_job = lib.mapAttrs (k: v: {
-      json = true;
-      jobspec = lib.strings.toJSON v;
-    }) config.nomad.build.apiJob;
+    nomad_job =
+      # nix jobs
+      lib.mapAttrs (_: v: {
+        json = true;
+        jobspec = lib.strings.toJSON v;
+      }) config.nomad.build.apiJob
+      # hcl jobs
+      // lib.mapAttrs (_: v: {
+        jobspec = v;
+      }) (my-lib.dirContents ".nomad.hcl" ./jobs);
 
   };
 

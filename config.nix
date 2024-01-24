@@ -50,7 +50,9 @@ in rec {
 
   resource = (inNamespace "hcloud" {
 
-    ssh_key = setNames (lib.mapAttrs (_: v: { public_key = v; }) my-lib.ssh-keys);
+    ssh_key = setNames
+      (lib.mapAttrs (_: v: { public_key = v; })
+      (my-lib.dirContents ".pub" ./ssh-keys));
 
   });
 
