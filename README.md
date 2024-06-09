@@ -25,9 +25,29 @@ nix develop -c $SHELL
 just -l
 ```
 
-### Handling [credentials](#secrets)
+### testing configurations in a container
 
-## Secrets
+```sh
+# https://github.com/hercules-ci/arion/issues/230
+nix run nixpkgs/23.11#arion -- up
+# http://localhost:8000/
+```
+
+#### [nixos host](https://github.com/hercules-ci/arion/issues/122)
+
+```nix
+  systemd.enableUnifiedCgroupHierarchy = false;
+  virtualisation.podman.enable = true;
+  virtualisation.podman.defaultNetwork.dnsname.enable = true;
+  # Use your username instead of `myuser`
+  users.extraUsers.myuser.extraGroups = ["podman"];
+  virtualisation.podman.dockerSocket.enable = true;
+  environment.systemPackages = [
+     pkgs.docker-client
+  ];
+```
+
+### Secrets
 
 - if you want to reset secrets:
   - generate keypair: `just keygen`

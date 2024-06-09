@@ -1,3 +1,6 @@
+# arion temp files
+.tmp-*
+
 *.bck
 
 # age
