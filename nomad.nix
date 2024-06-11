@@ -35,7 +35,7 @@ in
         driver = "raw_exec";
         config = {
           command = "echo";
-          args    = ["hello"];
+          args = [ "hello" ];
         };
       };
     };
@@ -46,14 +46,18 @@ in
 
     nomad_job =
       # nix jobs
-      lib.mapAttrs (_: v: {
-        json = true;
-        jobspec = lib.strings.toJSON v;
-      }) config.nomad.build.apiJob
+      lib.mapAttrs
+        (_: v: {
+          json = true;
+          jobspec = lib.strings.toJSON v;
+        })
+        config.nomad.build.apiJob
       # hcl jobs
-      // lib.mapAttrs (_: v: {
-        jobspec = v;
-      }) (my-lib.dirContents ".nomad.hcl" ./jobs);
+      // lib.mapAttrs
+        (_: v: {
+          jobspec = v;
+        })
+        (my-lib.dirContents ".nomad.hcl" ./jobs);
 
   };
 

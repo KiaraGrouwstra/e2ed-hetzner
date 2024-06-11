@@ -2,7 +2,7 @@ let
   flake =
     if builtins ? getFlake
     then (builtins.getFlake (toString ./.)).pkgs
-    else (import flake-compat {src = ./.;}).defaultNix;
+    else (import flake-compat { src = ./.; }).defaultNix;
   lock = builtins.fromJSON (builtins.readFile ./flake.lock);
   inherit (lock.nodes.flake-compat.locked) owner repo rev narHash;
   flake-compat = builtins.fetchTarball {
@@ -10,4 +10,4 @@ let
     sha256 = narHash;
   };
 in
-  flake.pkgs
+flake.pkgs

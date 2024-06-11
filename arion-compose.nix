@@ -1,13 +1,12 @@
-{
-  lib,
-  pkgs,
-  ...
+{ lib
+, pkgs
+, ...
 }: {
   project.name = "nixos container";
   services.webserver = {
     nixos = {
       useSystemd = true;
-      configuration = import ./webserver/configuration.nix {inherit lib pkgs;};
+      configuration = import ./webserver/configuration.nix { inherit lib pkgs; };
     };
     service = {
       useHostStore = true;

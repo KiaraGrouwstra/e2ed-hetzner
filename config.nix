@@ -1,15 +1,15 @@
-{
-  config,
-  lib,
-  inputs,
-  pkgs,
-  options,
-  specialArgs,
-  ...
-}: let
+{ config
+, lib
+, inputs
+, pkgs
+, options
+, specialArgs
+, ...
+}:
+let
   var = options.variable;
 
-  my-lib = import ./lib/default.nix {inherit lib;};
+  my-lib = import ./lib/default.nix { inherit lib; };
 
   # (k: k + k) -> { a = 1; } -> { aa = 1; }
   mapKeys = f: lib.mapAttrs' (k: v: lib.nameValuePair (f k) v);
@@ -24,13 +24,16 @@
   inNamespace = prefix: mapKeys (k: "${prefix}_${k}");
 
   # { a = 1; } -> { name = "a"; a = 1; }
-  setNames = lib.mapAttrs (k: v: {name = k;} // v);
+  setNames = lib.mapAttrs (k: v: { name = k; } // v);
 
-  hetzner = let
-    # https://docs.hetzner.com/cloud/api/getting-started/generating-api-token
-    token = lib.tfRef "var.hcloud_api_token";
-  in {inherit token;};
-in rec {
+  hetzner =
+    let
+      # https://docs.hetzner.com/cloud/api/getting-started/generating-api-token
+      token = lib.tfRef "var.hcloud_api_token";
+    in
+    { inherit token; };
+in
+rec {
   terraform = {
     cloud = {
       hostname = "app.terraform.io";
@@ -49,8 +52,8 @@ in rec {
   resource = inNamespace "hcloud" {
     ssh_key =
       setNames
-      (lib.mapAttrs (_: v: {public_key = v;})
-        (my-lib.dirContents ".pub" ./ssh-keys));
+        (lib.mapAttrs (_: v: { public_key = v; })
+          (my-lib.dirContents ".pub" ./ssh-keys));
   };
 
   # Set the variable value in *.tfvars file
@@ -73,12 +76,12 @@ in rec {
   hcloud = {
     enable = true;
     # can also be specified with the TF_VAR_hcloud_api_token environment variable
-    provider = {inherit (hetzner) token;};
+    provider = { inherit (hetzner) token; };
     export.nix = "hetzner.nix";
   };
 
   data = {
-    hcloud_ssh_keys."all_keys" = {};
+    hcloud_ssh_keys."all_keys" = { };
   };
 
   output = {

@@ -1,7 +1,6 @@
-{
-  pkgs,
-  lib,
-  # inputs,
+{ pkgs
+, lib
+, # inputs,
   ...
 }: {
   # imports = lib.attrValues (inputs.srvos.nixosModules) {
@@ -21,6 +20,6 @@
     };
     nscd.enable = false;
   };
-  system.nssModules = lib.mkForce [];
-  systemd.services.nginx.serviceConfig.AmbientCapabilities = lib.mkForce ["CAP_NET_BIND_SERVICE"];
+  system.nssModules = lib.mkForce [ ];
+  systemd.services.nginx.serviceConfig.AmbientCapabilities = lib.mkForce [ "CAP_NET_BIND_SERVICE" ];
 }
