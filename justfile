@@ -33,7 +33,7 @@ ci:
 cd:
     nix run .#cd
 
-# run Nomad jobs locally
+# try machines in containers locally
 local:
     nix run .#local
 

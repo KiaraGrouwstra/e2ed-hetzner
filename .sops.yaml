@@ -1,6 +1,6 @@
 # let's make anchors so we can use names to refer to the keys
 keys:
-  - &automation age1d53yeje0ggysc93uptlpufyhpchyyfs006368j8mw9r20uyeeydse3n7aw
+  - &automation age1le8tylvxq3haq7xz6k8l2re7pl52dfm0cyqad2usfh2el5w4qeesk4w7nh
 
 # actual sops config
 creation_rules:

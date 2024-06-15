@@ -1,6 +1,6 @@
 # tofu
 
-Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructure, Nix'ified for [Terranix](https://terranix.org/).
+Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructure, Nix'ified for [Teraflops](https://github.com/aanderse/teraflops).
 
 ## Prerequisites
 
@@ -23,14 +23,6 @@ nix develop -c $SHELL
 
 ```sh
 just -l
-```
-
-### testing configurations in a container
-
-```sh
-# https://github.com/hercules-ci/arion/issues/230
-nix run nixpkgs/23.11#arion -- up
-# http://localhost:8000/
 ```
 
 #### [nixos host](https://github.com/hercules-ci/arion/issues/122)
@@ -71,3 +63,12 @@ hcloud_location = "nbg1"
 ```
 
 ## [HCL to Nix](https://gist.github.com/KiaraGrouwstra/249ede6a7dfc00ea44d85bc6bdbcd875)
+
+## Deploying to a different architecture
+
+### Nixos host
+
+```nix
+    # cross-compilation
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+```
