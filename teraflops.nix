@@ -68,9 +68,6 @@ in {
         name = "hcloud";
       };
     };
-    # backend.local = {
-    #   path = ".terraform/terraform.tfstate";
-    # };
   };
 
   # Set the variable value in *.tfvars file

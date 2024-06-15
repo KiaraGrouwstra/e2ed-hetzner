@@ -62,11 +62,9 @@
           pkgs.colmena
           (pkgs.opentofu.withPlugins (p:
             pkgs.lib.lists.map tofuProvider [
-              p.local
               p.hcloud
               p.ssh
               p.tls
-              p.nomad
             ]))
           (pkgs.writeShellScriptBin "terraform" "tofu $@")
           teraflops.packages.${system}.default
@@ -98,8 +96,8 @@
             export TF_TOKEN_app_terraform_io="$(${sops} -d --extract '["tf_cloud_token"]' .auto.tfvars.enc.yaml)";
             # # using local state, stash cloud state to prevent error `workspaces not supported`
             # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(tofu workspace show)/terraform.tfstate; fi;
-            # # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
-            # mv terraform.tfstate.d/hcloud/terraform.tfstate .terraform/terraform.tfstate;
+            # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
+            mv terraform.tfstate.d/hcloud/terraform.tfstate .terraform/terraform.tfstate;
             tofu workspace select -or-create hcloud;
             teraflops init && tofu providers lock -platform=linux_aarch64 && teraflops -f $PWD ${cmd};
           '';

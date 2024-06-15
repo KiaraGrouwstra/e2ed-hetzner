@@ -1,20 +1,6 @@
 # This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
-provider "registry.opentofu.org/hashicorp/local" {
-  version = "2.5.1"
-  hashes = [
-    "h1:jYZhksYY1ffyGYVkmSaxlW8qIa//f1klJObO1m6s3uc=",
-  ]
-}
-
-provider "registry.opentofu.org/hashicorp/nomad" {
-  version = "2.2.0"
-  hashes = [
-    "h1:7K/pAgj2dtdeonbL8OWUKpmXT703igME5gnYZTAY3ew=",
-  ]
-}
-
 provider "registry.opentofu.org/hashicorp/tls" {
   version     = "4.0.5"
   constraints = ">= 4.0.4"
