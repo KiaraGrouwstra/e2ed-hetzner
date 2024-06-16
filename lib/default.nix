@@ -40,7 +40,8 @@
 
   inNamespace = prefix: mapKeys (k: "${prefix}_${k}");
 
-  setNames = lib.mapAttrs (k: v: {name = k;} // v);
+  setFromKey = prop: lib.mapAttrs (k: v: {"${prop}" = k;} // v);
+  setNames = setFromKey "name";
 
   tfRef = ref: "\${${ref}}";
 
@@ -51,6 +52,7 @@
     firewall_id = id "firewall";
     firewall_ids = lib.lists.map firewall_id;
     server_id = id "server";
+    volume_id = id "volume";
     assignee_id = server_id;
     server = server_id;
     server_ids = lib.lists.map server_id;
@@ -91,6 +93,7 @@ in
       mapVals
       default
       inNamespace
+      setFromKey
       setNames
       transforms
     ;

@@ -15,6 +15,7 @@
       default
       inNamespace
       setNames
+      setFromKey
       transforms
     ;
 
@@ -62,6 +63,10 @@
     # billed +20%
     backups = false;
 
+    # `xfs` is generally considered to be faster and more scalable,
+    # `ext4` is better for reading small files and single-threaded I/O operations.
+    format = "ext4";
+
     # placement_group_id = "production";
 
     # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall_attachment#ensure-a-server-is-attached-to-a-firewall-on-first-boot
@@ -98,6 +103,9 @@
       # https://github.com/hetznercloud/terraform-provider-hcloud/issues/650#issuecomment-1497160625
       alias_ips = [];
     };
+
+    # Automount the volume upon attaching it (server_id must be provided).
+    automount = true;
 
     # In this block you can either enable / disable ipv4 and ipv6
     # or link existing primary IPs (checkout the examples).
@@ -315,7 +323,7 @@ in {
       # not attached before boot without more workarounds
       firewall_attachment = pipes [
         # attach to firewall of the same name
-        (lib.mapAttrs (k: v: {firewall_id = k;} // v))
+        (setFromKey "firewall_id")
         (mapVals (evolve transforms))
       ] {
         "deny_all" = {
@@ -327,6 +335,26 @@ in {
           # server_ids = ["tryton"];
         };
       };
+
+      # https://docs.hetzner.com/cloud/volumes/overview/#pricing
+      volume = setNames (mapVals (compose [
+        (evolve transforms)
+        (default { inherit (hcloud) delete_protection automount format location; })
+      ])
+      {
+        # "tryton_data" = {
+        #   server_id = "tryton";
+        #   size = 50;
+        # };
+      });
+
+      # volume_attachment = mapVals (compose [
+      #   (evolve transforms)
+      #   (default { inherit (hcloud) automount; })
+      # ])
+      # (setFromKey "volume_id" {
+      #   "tryton_data".server_id = "tryton";
+      # });
 
       # ssh root@$( tofu output nixserver-server1_ipv4_address ) -i ./sshkey
       server = setNames (mapVals (default server) {
