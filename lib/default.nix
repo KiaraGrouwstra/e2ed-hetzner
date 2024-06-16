@@ -1,4 +1,13 @@
 {lib, ...}: let
+  # combine a list of functions to apply (left first)
+  pipes = lib.flip lib.pipe;
+
+  # combine a list of functions to apply (right first)
+  compose = pipes [lib.reverseList pipes];
+
+  # apply transforms from an attrset
+  evolve = funs: vals: lib.mapAttrs (k: v: if lib.hasAttr k funs then funs."${k}" v else v) vals;
+
   # ".ext" -> ./subdir -> { "foo" = "<CONTENTS OF a/b/foo.ext>"; "bar" = "<CONTENTS OF a/b/bar.ext>"; }
   dirContents = let
     # ".ext" -> "a/b.ext" -> "b"
@@ -27,20 +36,40 @@
 
   mapVals = f: lib.mapAttrs (_: f);
 
-  default = defaults: mapVals (v: defaults // v);
+  default = defaults: (v: defaults // v);
 
   inNamespace = prefix: mapKeys (k: "${prefix}_${k}");
 
   setNames = lib.mapAttrs (k: v: {name = k;} // v);
+
+  tfRef = ref: "\${${ref}}";
+
+  transforms = rec {
+    id = resource: name: tfRef "hcloud_${resource}.${name}.id";
+    placement_group_id = id "placement_group";
+    network_id = id "network";
+    firewall_id = id "firewall";
+    firewall_ids = lib.lists.map firewall_id;
+    server_id = id "server";
+    assignee_id = server_id;
+    server = server_id;
+    server_ids = lib.lists.map server_id;
+    label_selector = attr: lib.concatStringsSep "," (lib.attrsets.mapAttrsToList (name: value: "${name}=${value}") attr);
+    label_selectors = lib.lists.map label_selector;
+    apply_to = evolve { inherit server label_selector; };
+    network = evolve { inherit network_id; };
+  };
+
 in
+  assert pipes [(s: "(${s})") (s: s + s)] "foo" == "(foo)(foo)";
+  assert compose [(s: s + s) (s: "(${s})")] "foo" == "(foo)(foo)";
+  assert evolve {a=v: v+1;b=v: v+v;} { a=1; b="c"; d=true; } == { a=2; b="cc"; d=true; };
   assert mapKeys (k: k + k) {a = 1;} == {aa = 1;};
   assert mapVals (v: 2 * v) {a = 1;} == {a = 2;};
-  assert default {b = 0;} {c = {a = 1;};}
+  assert default {b = 0;} {a = 1;}
   == {
-    c = {
-      b = 0;
-      a = 1;
-    };
+    b = 0;
+    a = 1;
   };
   assert inNamespace "b" {a = 1;} == {b_a = 1;};
   assert setNames {a = {v = 1;};}
@@ -49,13 +78,20 @@ in
       name = "a";
       v = 1;
     };
-  }; {
+  };
+  assert transforms.server_id "foo" == "\${hcloud_server.foo.id}";
+  assert transforms.label_selector {a="1";b="2";} == "a=1,b=2";
+  {
     inherit
+      pipes
+      compose
+      evolve
       dirContents
       mapKeys
       mapVals
       default
       inNamespace
       setNames
+      transforms
     ;
   }
