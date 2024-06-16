@@ -32,35 +32,6 @@ in {
   # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
 
   terraform = {
-    required_providers = {
-      local = {
-        source = "hashicorp/local";
-      };
-      # tls = {
-      #   source = "registry.opentofu.org/hashicorp/tls";
-      #   version = ">= 4.0.4";
-      # };
-      # ssh = {
-      #   source = "registry.opentofu.org/loafoe/ssh";
-      #   version = ">= 2.7.0";
-      # };
-      # hcloud = {
-      #   source = "registry.opentofu.org/hetznercloud/hcloud";
-      #   version = ">= 1.44.0";
-      # };
-      # tls = {
-      #   source = "hashicorp/tls";
-      #   version = ">= 4.0.4";
-      # };
-      # ssh = {
-      #   source = "loafoe/ssh";
-      #   version = ">= 2.7.0";
-      # };
-      # hcloud = {
-      #   source = "hetznercloud/hcloud";
-      #   version = ">= 1.44.0";
-      # };
-    };
     cloud = {
       hostname = "app.terraform.io";
       organization = "bij1";
