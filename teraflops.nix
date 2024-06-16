@@ -339,7 +339,11 @@ in {
       # https://docs.hetzner.com/cloud/volumes/overview/#pricing
       volume = setNames (mapVals (compose [
         (evolve transforms)
-        (default { inherit (hcloud) delete_protection automount format location; })
+        (default {
+          inherit (hcloud) delete_protection automount format location;
+          # https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#prevent_destroy
+          lifecycle.prevent_destroy = true;
+        })
       ])
       {
         # "tryton_data" = {
