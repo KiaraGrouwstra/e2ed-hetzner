@@ -268,17 +268,21 @@ in {
         };
       };
 
-      primary_ip = setNames (mapVals (default {
-        inherit (hcloud) delete_protection auto_delete datacenter labels;
-        inherit (hcloud.ip) type;
-        assignee_type = "server";
-      }) {
-        # "tryton".assignee_id = "tryton";
+      primary_ip = setNames (mapVals (compose [
+        (lib.nameValuePair "assignee_id")
+        (default {
+          inherit (hcloud) delete_protection auto_delete datacenter labels;
+          inherit (hcloud.ip) type;
+          assignee_type = "server";
+        })
+      ]) {
+        # "tryton" = "tryton";
       });
 
       # https://docs.hetzner.com/cloud/floating-ips/faq
       floating_ip = setNames (mapVals (compose [
         (evolve transforms)
+        (lib.nameValuePair "server_id")
         (default {
           inherit (hcloud) delete_protection labels;
           inherit (hcloud.ip) type;
@@ -286,7 +290,7 @@ in {
         })
       ])
       {
-        # "tryton".server_id = "tryton";
+        # "tryton" = "tryton";
       });
 
       # https://docs.hetzner.com/cloud/firewalls/overview
