@@ -352,14 +352,6 @@ in {
         # };
       });
 
-      # volume_attachment = mapVals (compose [
-      #   (evolve transforms)
-      #   (default { inherit (hcloud) automount; })
-      # ])
-      # (setFromKey "volume_id" {
-      #   "tryton_data".server_id = "tryton";
-      # });
-
       # ssh root@$( tofu output nixserver-server1_ipv4_address ) -i ./sshkey
       server = setNames (mapVals (default server) {
         # tryton = {
