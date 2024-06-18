@@ -13,9 +13,8 @@
     ++ lib.attrValues {
       inherit
         (inputs.srvos.nixosModules)
-        server
+        # server  # arion: https://github.com/hercules-ci/arion/issues/249
         hardware-hetzner-cloud-arm
-        mixins-terminfo
         ;
     };
   # TODO: fill
