@@ -147,6 +147,7 @@
       shutdown_before_deletion
     ;
   };
+  common = import ./servers/common.nix {inherit lib inputs;};
 in {
   meta = {
     nixpkgs = pkgs;
@@ -161,7 +162,7 @@ in {
     system.stateVersion = "23.11";
   };
   # servers
-  # manual = {pkgs, ...}: import ./servers/manual/configuration.nix {inherit lib pkgs inputs;};
+  manual = {pkgs, ...}: common // import ./servers/manual/configuration.nix {inherit lib pkgs;};
   # tryton = {pkgs, ...}: {
   #   # backups = true;
   # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs;};
