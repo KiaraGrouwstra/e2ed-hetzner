@@ -36,7 +36,7 @@
 
   mapVals = f: lib.mapAttrs (_: f);
 
-  default = defaults: (v: defaults // v);
+  default = lib.attrsets.recursiveUpdate;
 
   inNamespace = prefix: mapKeys (k: "${prefix}_${k}");
 

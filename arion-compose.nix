@@ -4,24 +4,43 @@
   ...
 }: let
   inherit (pkgs) lib inputs;
+  inherit
+    (import ./lib/default.nix {inherit lib pkgs;})
+      mapVals
+      default
+    ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
   common = import ./servers/common.nix {inherit lib inputs;};
+  arion-common = {
+    nixos.useSystemd = true;
+    service.useHostStore = true;
+  };
   container-common = {
     systemd.network.enable = lib.mkForce false;
   };
 in {
   project.name = "nixos container";
-  services.webserver = {
-    nixos = {
-      useSystemd = true;
-      configuration = common // import ./servers/manual/configuration.nix {inherit lib pkgs;} // container-common;
+  # ports: host:container
+  services = mapVals (default arion-common) {
+    manual = {
+      nixos = {
+        configuration = common // import ./servers/manual/configuration.nix {inherit lib pkgs;} // container-common;
+      };
+      service = {
+        ports = [
+          "8000:80"
+        ];
+      };
     };
-    service = {
-      useHostStore = true;
-      # host:container
-      ports = [
-        "8000:80"
-      ];
-    };
+    # tryton = {
+    #   nixos = {
+    #     configuration = common // import ./servers/tryton/configuration.nix {inherit lib pkgs;} // container-common;
+    #   };
+    #   service = {
+    #     ports = [
+    #       "8000:8000"
+    #     ];
+    #   };
+    # };
   };
 }
