@@ -38,6 +38,8 @@
 
   default = lib.attrsets.recursiveUpdate;
 
+  defaults = lib.foldl' default {};
+
   inNamespace = prefix: mapKeys (k: "${prefix}_${k}");
 
   setFromKey = prop: lib.mapAttrs (k: v: {"${prop}" = k;} // v);
@@ -92,6 +94,7 @@ in
       mapKeys
       mapVals
       default
+      defaults
       inNamespace
       setFromKey
       setNames

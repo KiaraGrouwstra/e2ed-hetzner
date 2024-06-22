@@ -8,9 +8,10 @@
     (import ./lib/default.nix {inherit lib pkgs;})
       mapVals
       default
+      defaults
     ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
-  common = import ./servers/common.nix {inherit lib inputs;};
+  server-common = import ./servers/common.nix {inherit lib inputs;};
   arion-common = {
     nixos.useSystemd = true;
     service.useHostStore = true;
@@ -22,13 +23,18 @@ in {
   project.name = "nixos container";
   # ports: host:container
   services = mapVals (default arion-common) {
+
     manual = {
       nixos = {
-        configuration = common // import ./servers/manual/configuration.nix {inherit lib pkgs;} // container-common;
+        configuration = defaults [
+          server-common
+          (import ./servers/manual/configuration.nix {inherit lib pkgs;})
+          container-common
+        ];
       };
       service = {
         ports = [
-          "8000:80"
+          "8888:80"
         ];
       };
     };
@@ -42,5 +48,6 @@ in {
     #     ];
     #   };
     # };
+
   };
 }
