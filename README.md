@@ -1,4 +1,4 @@
-# tofu
+# TF config
 
 Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructure, Nix'ified for [Teraflops](https://github.com/aanderse/teraflops).
 
