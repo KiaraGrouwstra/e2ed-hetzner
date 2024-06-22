@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
     teraflops = {
-      url = "github:aanderse/teraflops";
+      url = "github:aanderse/teraflops/opentofu";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     srvos = {
@@ -66,7 +66,6 @@
               p.ssh
               p.tls
             ]))
-          (pkgs.writeShellScriptBin "terraform" "tofu $@")
           teraflops.packages.${system}.default
         ];
       };
