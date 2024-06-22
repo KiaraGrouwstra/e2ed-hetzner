@@ -40,7 +40,11 @@ in {
     };
     # tryton = {
     #   nixos = {
-    #     configuration = common // import ./servers/tryton/configuration.nix {inherit lib pkgs;} // container-common;
+    #     configuration = defaults [
+    #       server-common
+    #       (import ./servers/tryton/configuration.nix {inherit lib pkgs inputs;})
+    #       container-common
+    #     ];
     #   };
     #   service = {
     #     ports = [
