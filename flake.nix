@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
     teraflops = {
-      url = "github:aanderse/teraflops/opentofu";
+      url = "github:aanderse/teraflops";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     srvos = {

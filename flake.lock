@@ -158,16 +158,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1718934534,
+        "lastModified": 1719056593,
         "narHash": "sha256-lFxkq4O//XjWYHoUvnhL3xOKMxx8dDCbC8XLJGoVQK8=",
         "owner": "aanderse",
         "repo": "teraflops",
-        "rev": "e34c6533fa3da2bc7c7f7bb27565d1a8caa5553c",
+        "rev": "a6d409538cc521a38926cf1cbef843cfb8329415",
         "type": "github"
       },
       "original": {
         "owner": "aanderse",
-        "ref": "opentofu",
         "repo": "teraflops",
         "type": "github"
       }
