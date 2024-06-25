@@ -27,7 +27,7 @@ crash.*.log
 *.tfvars
 
 # generated opentofu files
-*.json
+.auto.tfvars.json
 
 # Ignore CLI configuration files
 *.tfrc
