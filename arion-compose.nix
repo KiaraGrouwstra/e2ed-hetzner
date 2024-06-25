@@ -11,7 +11,7 @@
       defaults
     ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
-  server-common = import ./servers/common.nix {inherit lib inputs;};
+  server-common = import ./servers/common {inherit lib inputs;};
   arion-common = {
     nixos.useSystemd = true;
     service.useHostStore = true;
@@ -20,38 +20,25 @@
     systemd.network.enable = lib.mkForce false;
   };
 in {
-  project.name = "nixos container";
-  # ports: host:container
+  project.name = "nixos-container";
+  # ports: host:container, host must be >=1024
+  # arion exec NAME bash
   services = mapVals (default arion-common) {
 
-    manual = {
+    combined = {
       nixos = {
         configuration = defaults [
           server-common
-          (import ./servers/manual/configuration.nix {inherit lib pkgs;})
+          (import ./servers/tryton {inherit lib pkgs inputs;})
           container-common
         ];
       };
       service = {
-        ports = [
-          "8888:80"
+        ports = lib.lists.map (ports: "127.0.0.1:${ports}") [
+          "8000:8000" # tryton
         ];
       };
     };
-    # tryton = {
-    #   nixos = {
-    #     configuration = defaults [
-    #       server-common
-    #       (import ./servers/tryton/configuration.nix {inherit lib pkgs inputs;})
-    #       container-common
-    #     ];
-    #   };
-    #   service = {
-    #     ports = [
-    #       "8000:8000"
-    #     ];
-    #   };
-    # };
 
   };
 }
