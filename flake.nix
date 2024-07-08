@@ -50,7 +50,7 @@
     # arion containers use the package set for the guest on the host system
     pkgs = nixpkgs-guest.legacyPackages."${host.system}";
   in {
-    inherit inputs;
+    inherit inputs pkgs;
 
     # for `nix fmt`
     formatter = {"${host.system}" = (inputs.treefmt-nix.lib.evalModule host.pkgs ./treefmt.nix).config.build.wrapper;};
