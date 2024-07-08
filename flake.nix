@@ -37,8 +37,7 @@
       pkgs = nixpkgs.legacyPackages."${system}";
       # inherit (nixpkgs) lib;
     };
-    inherit (host) pkgs;
-    inherit (pkgs) lib;
+    inherit (host.pkgs) lib;
     # https://github.com/NixOS/nixpkgs/issues/283015
     tofuProvider = provider:
       provider.override (oldArgs: {
@@ -48,10 +47,10 @@
           ["registry.opentofu.org"]
           oldArgs.homepage;
       });
-  in {
-    inherit inputs;
     # arion containers use the package set for the guest on the host system
     pkgs = nixpkgs-guest.legacyPackages."${host.system}";
+  in {
+    inherit inputs;
 
     # for `nix fmt`
     formatter = {"${host.system}" = (inputs.treefmt-nix.lib.evalModule host.pkgs ./treefmt.nix).config.build.wrapper;};
@@ -85,11 +84,10 @@
     };
 
     nixosConfigurations = let
-      inherit (guest) system pkgs;
-      inherit (nixpkgs-guest) lib;
+      inherit (host) system;
       # specialArgs = {inherit inputs;};
     in {
-      manual = lib.nixosSystem {
+      manual = nixpkgs-guest.lib.nixosSystem {
         inherit system pkgs lib;
         modules = [
           {
