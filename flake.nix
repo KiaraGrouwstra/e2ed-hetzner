@@ -26,20 +26,24 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {self, teraflops, ...} @ inputs: let
+  outputs = {self, teraflops, nixpkgs, nixpkgs-guest, ...} @ inputs: let
     guest = rec {
       system = "aarch64-linux";
-      pkgs = inputs.nixpkgs-guest.legacyPackages."${system}";
+      pkgs = nixpkgs-guest.legacyPackages."${system}";
+      # inherit (nixpkgs-guest) lib;
     };
     host = rec {
       system = "x86_64-linux";
-      pkgs = inputs.nixpkgs.legacyPackages."${system}";
+      pkgs = nixpkgs.legacyPackages."${system}";
+      # inherit (nixpkgs) lib;
     };
+    inherit (host) pkgs;
+    inherit (pkgs) lib;
     # https://github.com/NixOS/nixpkgs/issues/283015
     tofuProvider = provider:
       provider.override (oldArgs: {
         provider-source-address =
-          host.pkgs.lib.replaceStrings
+          lib.replaceStrings
           ["https://registry.terraform.io/providers"]
           ["registry.opentofu.org"]
           oldArgs.homepage;
@@ -47,7 +51,7 @@
   in {
     inherit inputs;
     # arion containers use the package set for the guest on the host system
-    pkgs = inputs.nixpkgs-guest.legacyPackages."${host.system}";
+    pkgs = nixpkgs-guest.legacyPackages."${host.system}";
 
     # for `nix fmt`
     formatter = {"${host.system}" = (inputs.treefmt-nix.lib.evalModule host.pkgs ./treefmt.nix).config.build.wrapper;};
@@ -73,13 +77,32 @@
 
     teraflops = let
       inherit (guest) pkgs;
-      inherit (pkgs) lib;
     in { tf, outputs, resources, ... }: {
       imports = [
         teraflops.modules.hcloud
         (import ./teraflops.nix { inherit lib pkgs inputs tf outputs resources; })
       ];
     };
+
+    nixosConfigurations = let
+      inherit (guest) system pkgs;
+      inherit (nixpkgs-guest) lib;
+      # specialArgs = {inherit inputs;};
+    in {
+      manual = lib.nixosSystem {
+        inherit system pkgs lib;
+        modules = [
+          {
+            imports = [
+              inputs.disko.nixosModules.disko
+              ./servers/common
+              ./servers/manual
+            ];
+          }
+        ];
+      };
+    };
+    
   }
   // inputs.flake-utils.lib.eachDefaultSystem (system:
     let

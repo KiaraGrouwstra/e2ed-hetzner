@@ -39,6 +39,28 @@ just -l
   ];
 ```
 
+### Running the VMs
+
+you can build a VM using
+
+```sh
+nixos-rebuild build-vm --flake .#<vm_name>
+```
+
+where `<vm_name>` is one of:
+- `manual`
+
+then run it with:
+
+```sh
+./result/bin/run-nixos-vm
+```
+
+State will be persisted in the `nixos.cqow2` file.
+The VM will expose web services you can access from the host:
+
+- `manual`: <http://localhost:80>
+
 ### Secrets
 
 - if you want to reset secrets:
@@ -72,3 +94,32 @@ hcloud_location = "nbg1"
     # cross-compilation
     binfmt.emulatedSystems = [ "aarch64-linux" ];
 ```
+
+## roadmap
+
+- [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
+- [ ] [make db connection work](https://code.bij1.org/bij1/bij1.erp/src/branch/main/Makefile#L18)
+- [ ] [add paul's api layer](https://code.bij1.org/bij1/bij1.erp/src/branch/main/src/bij1/api/main.py)
+- [ ] [reproduce sao setup for use elsewhere](https://discuss.tryton.org/t/state-of-the-dependencies-of-the-web-client/3441/8)
+  - bower
+    - [x] manual
+    - [ ] nix
+  - grunt
+    - [x] release downloads
+    - [ ] manual
+    - [ ] nix
+- [ ] deploy to hetzner
+- [ ] [network access](https://codeberg.org/kiara/teraflops-poc/issues/9)
+- [ ] [network securing](https://codeberg.org/kiara/teraflops-poc/issues/10)
+- [ ] [volumes](https://codeberg.org/kiara/teraflops-poc/issues/5)
+- [ ] [impermanence](https://codeberg.org/kiara/teraflops-poc/issues/2)
+- [ ] [secrets](https://codeberg.org/kiara/teraflops-poc/issues/6)
+- [ ] [CI pipeline](https://codeberg.org/kiara/teraflops-poc/issues/12)
+- [ ] [packer](https://codeberg.org/kiara/teraflops-poc/issues/4)
+- [ ] [share nix store](https://codeberg.org/kiara/teraflops-poc/issues/8)
+- [ ] [scale out applications](./servers/)
+- [ ] SSO
+- [ ] LDAP
+- [ ] typhon CI
+- [ ] hybrid deployment with colmena targets
+- [ ] nested containers for CI

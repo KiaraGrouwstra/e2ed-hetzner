@@ -31,3 +31,10 @@ crash.*.log
 
 # Ignore CLI configuration files
 *.tfrc
+
+# VM state
+*.qcow2
+
+# nix build
+result
+
