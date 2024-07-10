@@ -107,6 +107,7 @@ hcloud_location = "nbg1"
     - [ ] build
     - [x] connect to HTTP services
     - [ ] use imports
+- [ ] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
 - [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
 - [ ] [make db connection work](https://code.bij1.org/bij1/bij1.erp/src/branch/main/Makefile#L18)
 - [ ] [add paul's api layer](https://code.bij1.org/bij1/bij1.erp/src/branch/main/src/bij1/api/main.py)
