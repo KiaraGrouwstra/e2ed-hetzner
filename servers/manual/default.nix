@@ -10,7 +10,8 @@
         root = "${pkgs.nix.doc}/share/doc/nix/manual";
         listen = [
           {
-            addr = "127.0.0.1";
+            # addr = "127.0.0.1";
+            addr = "0.0.0.0";
             port = 8888;
             ssl = false;
           }
