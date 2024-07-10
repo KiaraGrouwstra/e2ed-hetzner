@@ -90,17 +90,10 @@
       manual = nixpkgs-guest.lib.nixosSystem {
         inherit system pkgs lib;
         modules = [
-          {
-            imports = [
-              inputs.disko.nixosModules.disko
-              ./servers/common
-              ./servers/manual
-            ];
-            users = {
-              mutableUsers = false;
-              users.root.password = "";
-            };
-          }
+          inputs.disko.nixosModules.disko
+          ./servers/common/vm.nix
+          ./servers/common
+          ./servers/manual
         ];
       };
     };
