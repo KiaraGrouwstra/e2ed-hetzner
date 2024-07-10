@@ -96,8 +96,10 @@
               ./servers/common
               ./servers/manual
             ];
-            # seems not to work - is this overridden by a similar option?
-            users.users.root.password = "root";
+            users = {
+              mutableUsers = false;
+              users.root.password = "";
+            };
           }
         ];
       };
