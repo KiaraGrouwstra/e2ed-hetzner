@@ -13,6 +13,7 @@
       dirContents
       mapVals
       default
+      defaults
       inNamespace
       setNames
       setFromKey
@@ -147,7 +148,12 @@
       shutdown_before_deletion
     ;
   };
-  common = import ./servers/common.nix {inherit lib inputs;};
+  common =
+    import ./servers/common {inherit lib;}
+    // defaults (
+      import ./servers/common/imports.nix {inherit inputs;}
+    )
+  ;
 in {
   meta = {
     nixpkgs = pkgs;
