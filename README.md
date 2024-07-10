@@ -97,6 +97,16 @@ hcloud_location = "nbg1"
 
 ## roadmap
 
+- [ ] ensure i can use:
+  - [ ] VM: `nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-v`
+    - [x] build
+    - [ ] log in
+    - [x] connect to HTTP services
+    - [ ] use imports
+  - [ ] arion: `arion up`
+    - [ ] build
+    - [x] connect to HTTP services
+    - [ ] use imports
 - [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
 - [ ] [make db connection work](https://code.bij1.org/bij1/bij1.erp/src/branch/main/Makefile#L18)
 - [ ] [add paul's api layer](https://code.bij1.org/bij1/bij1.erp/src/branch/main/src/bij1/api/main.py)
