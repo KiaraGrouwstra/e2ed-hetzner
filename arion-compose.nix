@@ -35,7 +35,7 @@ in {
       };
       service = {
         ports = lib.lists.map (ports: "127.0.0.1:${ports}") [
-          "80:8888" # manual
+          "8888:80" # manual
         ];
       };
     };
