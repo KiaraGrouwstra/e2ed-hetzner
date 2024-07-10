@@ -29,6 +29,7 @@ in {
       nixos = {
         configuration = defaults [
           server-common
+          # (import inputs.disko.nixosModules.disko {inherit lib pkgs inputs;})
           (import ./servers/manual {inherit lib pkgs inputs;})
           container-common
         ];
