@@ -100,15 +100,17 @@ hcloud_location = "nbg1"
 - [ ] ensure i can use:
   - [ ] VM: `nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-v`
     - [x] build
-    - [ ] log in
-    - [x] connect to HTTP services
+    - [x] log in
+    - [ ] connect to HTTP services
     - [ ] use imports
     - [ ] services can inter-connect
+    - [ ] containers on server
   - [ ] arion: `arion up`
     - [ ] build
     - [x] connect to HTTP services
     - [ ] use imports
     - [ ] services can inter-connect
+    - [ ] containers on server
 - [ ] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
 - [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
 - [ ] [make db connection work](https://code.bij1.org/bij1/bij1.erp/src/branch/main/Makefile#L18)
