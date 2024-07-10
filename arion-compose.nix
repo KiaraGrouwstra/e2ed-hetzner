@@ -29,13 +29,13 @@ in {
       nixos = {
         configuration = defaults [
           server-common
-          (import ./servers/tryton {inherit lib pkgs inputs;})
+          (import ./servers/manual {inherit lib pkgs inputs;})
           container-common
         ];
       };
       service = {
         ports = lib.lists.map (ports: "127.0.0.1:${ports}") [
-          "8000:8000" # tryton
+          "80:8888" # manual
         ];
       };
     };
