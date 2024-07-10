@@ -9,8 +9,8 @@
       # ./net.nix
       # ./paranoid.nix
       # inputs.disko.nixosModules.disko  # nixosConfigurations: infinite recursion encountered
-      ../../hcloud/disk-config.nix
-      ../../hcloud/network.nix
+      # ../../hcloud/disk-config.nix  # arion: cannot have this without disko
+      # ../../hcloud/network.nix  # arion: cannot have this without disko
     ]
     # ++ lib.attrValues {
     #   inherit
