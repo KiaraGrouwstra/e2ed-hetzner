@@ -21,7 +21,7 @@
   };
 in {
   project.name = "nixos-container";
-  # ports: host:container, host must be >=1024
+  # ports: host:container, host must be >=1024, same for container to test by vm
   # arion exec NAME bash
   services = mapVals (default arion-common) {
 
