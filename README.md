@@ -106,7 +106,7 @@ hcloud_location = "nbg1"
     - [ ] services can inter-connect
     - [ ] containers on server
   - [ ] arion: `arion up`
-    - [ ] build
+    - [x] build
     - [x] connect to HTTP services
     - [ ] use imports
     - [ ] services can inter-connect
