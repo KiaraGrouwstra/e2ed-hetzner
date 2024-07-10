@@ -103,10 +103,12 @@ hcloud_location = "nbg1"
     - [ ] log in
     - [x] connect to HTTP services
     - [ ] use imports
+    - [ ] services can inter-connect
   - [ ] arion: `arion up`
     - [ ] build
     - [x] connect to HTTP services
     - [ ] use imports
+    - [ ] services can inter-connect
 - [ ] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
 - [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
 - [ ] [make db connection work](https://code.bij1.org/bij1/bij1.erp/src/branch/main/Makefile#L18)
