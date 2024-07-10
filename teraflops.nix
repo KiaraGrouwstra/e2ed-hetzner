@@ -162,7 +162,7 @@ in {
     system.stateVersion = "23.11";
   };
   # servers
-  manual = {pkgs, ...}: common // import ./servers/manual/configuration.nix {inherit lib pkgs;};
+  combined = {pkgs, ...}: common // import ./servers/manual {inherit lib pkgs;};
   # tryton = {pkgs, ...}: {
   #   # backups = true;
   # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs;};
