@@ -102,13 +102,13 @@ hcloud_location = "nbg1"
     - [x] build
     - [x] log in
     - [x] connect to HTTP services
-    - [ ] use imports
+    - [x] use imports
     - [ ] services can inter-connect
     - [ ] containers on server
   - [ ] arion: `arion up`
     - [x] build
     - [x] connect to HTTP services
-    - [ ] use imports
+    - [x] use imports
     - [ ] services can inter-connect
     - [ ] containers on server
 - [ ] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060

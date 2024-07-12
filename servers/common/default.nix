@@ -5,7 +5,7 @@
 }: {
   imports =
     [
-      # ./fresh.nix
+      ./fresh.nix
       # ./net.nix
       # ./paranoid.nix
       # inputs.disko.nixosModules.disko  # nixosConfigurations: infinite recursion encountered
