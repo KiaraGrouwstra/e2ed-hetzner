@@ -39,7 +39,7 @@ local:
 
 # test thru a VM locally
 vm:
-    nix run .#local
+    nix run .#vm
 
 # generate an [`age`](https://age-encryption.org/) key pair
 keygen:
