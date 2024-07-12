@@ -37,6 +37,10 @@ cd:
 local:
     nix run .#local
 
+# test thru a VM locally
+vm:
+    nix run .#local
+
 # generate an [`age`](https://age-encryption.org/) key pair
 keygen:
     rage-keygen -o keys.txt

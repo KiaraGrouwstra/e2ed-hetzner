@@ -143,6 +143,9 @@
           local = ''
             nix run nixpkgs/23.11#arion -- up
           '';
+          vm = ''
+            nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
+          '';
           validate = tfCommand "validate";
           apply = tfCommand "apply";
           plan = tfCommand "plan";
