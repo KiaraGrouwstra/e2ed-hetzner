@@ -94,6 +94,22 @@
           ./servers/common/vm.nix
           ./servers/common
           ./servers/manual
+          (let ips = [
+            8888
+          ]; in {
+            virtualisation.vmVariant = {
+              virtualisation.diskSize = 2048;
+              virtualisation.forwardPorts = lib.lists.map (ip: {
+                from = "host";
+                host.port = ip;
+                guest.port = ip;
+              }) ips;
+            };
+            networking.firewall = {
+              # enable = false;
+              allowedTCPPorts = ips;
+            };
+          })
         ];
       };
     };
