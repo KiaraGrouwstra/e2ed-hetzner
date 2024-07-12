@@ -24,7 +24,7 @@
   users.users.root.openssh.authorizedKeys.keys = ["ssh-dss AAAAB3Nza... alice@foobar"];
   system.stateVersion = "23.11";
   boot.tmp.useTmpfs = true;
-  networking.useDHCP = false;
+  # networking.useDHCP = false;  # breaks port forwarding on VM
 
   # lacking srvos server:
   services.openssh.enable = true;

@@ -101,7 +101,7 @@ hcloud_location = "nbg1"
   - [ ] VM: `nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-v`
     - [x] build
     - [x] log in
-    - [ ] connect to HTTP services
+    - [x] connect to HTTP services
     - [ ] use imports
     - [ ] services can inter-connect
     - [ ] containers on server
