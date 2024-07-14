@@ -8,7 +8,7 @@
       ./fresh.nix
       # ./net.nix
       # ./paranoid.nix
-      # inputs.disko.nixosModules.disko  # nixosConfigurations: infinite recursion encountered
+      # inputs.disko.nixosModules.disko  # infinite recursion encountered
       # ../../hcloud/disk-config.nix  # arion: cannot have this without disko
       # ../../hcloud/network.nix  # arion: cannot have this without disko
     ]
