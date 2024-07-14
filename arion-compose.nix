@@ -11,7 +11,10 @@
       defaults
     ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
-  arion-common = {
+  arion-common =
+  # (defaults (import ./servers/common/imports.nix {inherit inputs;}))
+  # //
+  {
     nixos.useSystemd = true;
     service.useHostStore = true;
   };
