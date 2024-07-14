@@ -19,10 +19,6 @@
       url = "github:nix-community/srvos";
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
-    unfree = {
-      url = "github:numtide/nixpkgs-unfree";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-utils.url = "github:numtide/flake-utils";
   };
 
