@@ -11,7 +11,6 @@
       defaults
     ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
-  server-common = import ./servers/common {inherit lib inputs;};
   arion-common = {
     nixos.useSystemd = true;
     service.useHostStore = true;
@@ -27,12 +26,15 @@ in {
 
     combined = {
       nixos = {
-        configuration = defaults [
-          server-common
-          # (import inputs.disko.nixosModules.disko {inherit lib pkgs inputs;})
-          (import ./servers/manual {inherit lib pkgs inputs;})
-          container-common
-        ];
+        configuration = {
+          imports = [
+            # inputs.disko.nixosModules.disko
+            ./servers/common
+            ./servers/manual
+          ];
+        }
+        // container-common
+        ;
       };
       service = {
         capabilities.SYS_ADMIN = true;  # needed by: lldap opensearch woodpecker-server
