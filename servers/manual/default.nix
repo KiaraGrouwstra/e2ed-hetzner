@@ -6,7 +6,7 @@
   services = {
     nginx = {
       enable = true;
-      virtualHosts.localhost = {
+      virtualHosts."manual.localhost" = {
         root = "${pkgs.nix.doc}/share/doc/nix/manual";
         listen = [
           {

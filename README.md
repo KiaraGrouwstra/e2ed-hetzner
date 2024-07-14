@@ -59,7 +59,7 @@ then run it with:
 State will be persisted in the `nixos.cqow2` file.
 The VM will expose web services you can access from the host:
 
-- `manual`: <http://localhost:80>
+- `manual`: <http://manual.localhost:8888>
 
 ### Secrets
 
