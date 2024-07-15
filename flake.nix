@@ -135,10 +135,7 @@
           type = "app";
           program = toString (pkgs.writers.writeBash name script);
         }) {
-          # https://github.com/hercules-ci/arion/issues/230
-          local = ''
-            nix run nixpkgs/23.11#arion -- up
-          '';
+          local = "${lib.getExe pkgs.arion} up";
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
