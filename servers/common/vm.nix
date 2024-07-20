@@ -9,7 +9,7 @@
       settings = {
         PermitRootLogin = "yes";
         PermitEmptyPasswords = "yes";
-        UsePAM = "no";
+        UsePAM = false;
       };
     };
 

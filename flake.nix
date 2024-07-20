@@ -2,7 +2,7 @@
   inputs = {
     # arion's nixpkgs input must be named nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-guest.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs-guest.url = "github:NixOS/nixpkgs/nixos-24.05";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";

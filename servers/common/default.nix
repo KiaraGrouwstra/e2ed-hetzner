@@ -22,7 +22,7 @@
     ;
   # TODO: fill
   users.users.root.openssh.authorizedKeys.keys = ["ssh-dss AAAAB3Nza... alice@foobar"];
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
   boot.tmp.useTmpfs = true;
   # networking.useDHCP = false;  # breaks port forwarding on VM
 

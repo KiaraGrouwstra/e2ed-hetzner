@@ -164,8 +164,7 @@ in {
       # https://docs.hetzner.com/cloud/servers/overview
       hcloud = server // { inherit (nixos) public_net; };
     };
-    # cannot update yet: https://github.com/elitak/nixos-infect/issues/207
-    system.stateVersion = "23.11";
+    system.stateVersion = "24.05";
   };
   # servers
   combined = {pkgs, ...}: common // import ./servers/manual {inherit lib pkgs;};
