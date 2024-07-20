@@ -40,6 +40,7 @@ in {
         ;
       };
       service = {
+        network_mode = "host";
         capabilities.SYS_ADMIN = true;  # needed by: lldap opensearch woodpecker-server
         ports = lib.lists.map (ports: "127.0.0.1:${ports}") [
           "8888:8888" # manual
