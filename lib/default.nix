@@ -6,7 +6,7 @@
   compose = pipes [lib.reverseList pipes];
 
   # apply transforms from an attrset
-  evolve = funs: vals: lib.mapAttrs (k: v: if lib.hasAttr k funs then funs."${k}" v else v) vals;
+  evolve = funs: vals: lib.mapAttrs (k: v: if lib.hasAttr k funs then let mapper = funs."${k}"; in (if lib.isAttrs mapper then evolve mapper v else mapper v) else v) vals;
 
   # ".ext" -> ./subdir -> { "foo" = "<CONTENTS OF a/b/foo.ext>"; "bar" = "<CONTENTS OF a/b/bar.ext>"; }
   dirContents = let
@@ -67,7 +67,7 @@
 in
   assert pipes [(s: "(${s})") (s: s + s)] "foo" == "(foo)(foo)";
   assert compose [(s: s + s) (s: "(${s})")] "foo" == "(foo)(foo)";
-  assert evolve {a=v: v+1;b=v: v+v;} { a=1; b="c"; d=true; } == { a=2; b="cc"; d=true; };
+  assert evolve {a=v: v+1;b.c=v: v+v;} { a=1; b.c="c"; d=true; } == { a=2; b.c="cc"; d=true; };
   assert mapKeys (k: k + k) {a = 1;} == {aa = 1;};
   assert mapVals (v: 2 * v) {a = 1;} == {a = 2;};
   assert default {b = 0;} {a = 1;}
