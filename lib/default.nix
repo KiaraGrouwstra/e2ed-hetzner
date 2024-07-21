@@ -64,6 +64,14 @@
     network = evolve { inherit network_id; };
   };
 
+  # for arion solves podman Error: crun: creating cgroup directory
+  # `/sys/fs/cgroup/hugetlb/libpod_parent/libpod-...`: No such file or directory:
+  # OCI runtime attempted to invoke a command that was not found.
+  # to be used to wrap `configuration.virtualisation.oci-containers.containers`.
+  patchContainers = mapVals (o: o // {
+    extraOptions = ["--cgroups=disabled"];  
+  });
+
 in
   assert pipes [(s: "(${s})") (s: s + s)] "foo" == "(foo)(foo)";
   assert compose [(s: s + s) (s: "(${s})")] "foo" == "(foo)(foo)";
@@ -85,6 +93,16 @@ in
   };
   assert transforms.server_id "foo" == "\${hcloud_server.foo.id}";
   assert transforms.label_selector {a="1";b="2";} == "a=1,b=2";
+  assert patchContainers {
+    hello = {
+      image = "nginx";
+    };
+  } == {
+    hello = {
+      image = "nginx";
+      extraOptions = ["--cgroups=disabled"];  
+    };
+  };
   {
     inherit
       pipes
@@ -99,5 +117,6 @@ in
       setFromKey
       setNames
       transforms
+      patchContainers
     ;
   }
