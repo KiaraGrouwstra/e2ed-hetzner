@@ -23,4 +23,5 @@
   system.nssModules = lib.mkForce [];
   # allow unprivileged programs to bind to privileged ports
   systemd.services.nginx.serviceConfig.AmbientCapabilities = lib.mkForce ["CAP_NET_BIND_SERVICE"];
+  networking.useDHCP = false;
 }
