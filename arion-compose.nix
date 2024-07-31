@@ -19,6 +19,7 @@
     service.useHostStore = true;
   };
   container-common = {
+    networking.useDHCP = false;
     systemd.network.enable = lib.mkForce false;
   };
 in {
