@@ -79,6 +79,7 @@
       ];
     };
 
+    # local VMs
     nixosConfigurations = let
       inherit (host) system;
       # specialArgs = {inherit inputs;};
