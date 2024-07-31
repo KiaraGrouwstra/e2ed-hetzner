@@ -110,7 +110,7 @@ hcloud_location = "nbg1"
     - [x] build
     - [x] connect to HTTP services
     - [x] use imports
-    - [ ] containers on server
+    - [x] containers on server
     - [ ] services can inter-connect
     - [ ] exposing http ports from containers on the server
 - [ ] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
