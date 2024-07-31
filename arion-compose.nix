@@ -20,6 +20,7 @@
   };
   container-common = {
     networking.useDHCP = false;
+    networking.firewall.enable = false;
     systemd.network.enable = lib.mkForce false;
   };
 in {
