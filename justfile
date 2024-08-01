@@ -3,10 +3,12 @@ default: local
 
 # encode secrets
 encode:
+    sops -e secrets.yaml > secrets.enc.yaml
     sops --output-type yaml -e .auto.tfvars.json > .auto.tfvars.enc.yaml
 
 # decode secrets
 decode:
+    sops -d secrets.enc.yaml > secrets.yaml
     sops --output-type json -d .auto.tfvars.enc.yaml > .auto.tfvars.json
 
 # log in to the Terraform Cloud backend
