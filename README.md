@@ -104,15 +104,16 @@ hcloud_location = "nbg1"
     - [x] connect to HTTP services
     - [x] use imports
     - [x] containers on server
-    - [ ] services can inter-connect
     - [x] exposing http ports from containers on the server
+    - [ ] services can inter-connect
   - [ ] arion: `arion up`
     - [x] build
     - [x] connect to HTTP services
     - [x] use imports
     - [x] containers on server
-    - [ ] services can inter-connect
     - [x] exposing http ports from containers on the server
+    - [ ] services can inter-connect
+- [ ] [secrets](https://codeberg.org/kiara/teraflops-poc/issues/6)
 - [ ] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
 - [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
 - [ ] [make db connection work](https://code.bij1.org/bij1/bij1.erp/src/branch/main/Makefile#L18)
@@ -123,7 +124,6 @@ hcloud_location = "nbg1"
 - [ ] [network securing](https://codeberg.org/kiara/teraflops-poc/issues/10)
 - [ ] [volumes](https://codeberg.org/kiara/teraflops-poc/issues/5)
 - [ ] [impermanence](https://codeberg.org/kiara/teraflops-poc/issues/2)
-- [ ] [secrets](https://codeberg.org/kiara/teraflops-poc/issues/6)
 - [ ] [CI pipeline](https://codeberg.org/kiara/teraflops-poc/issues/12)
 - [ ] [packer](https://codeberg.org/kiara/teraflops-poc/issues/4)
 - [ ] [share nix store](https://codeberg.org/kiara/teraflops-poc/issues/8)
