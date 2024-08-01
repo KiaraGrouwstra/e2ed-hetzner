@@ -34,6 +34,7 @@ in {
         configuration = {
           imports = [
             # inputs.disko.nixosModules.disko
+            inputs.sops-nix.nixosModules.default
             ./servers/common
             ./servers/manual
           ];
@@ -45,7 +46,7 @@ in {
         # solves fuse error when running containers,
         # but also enables firewall and causes some warnings/errors
         privileged = true;
-        # needed by: lldap opensearch woodpecker-server (unless privileged=true)
+        # needed by (unless privileged=true): sops-nix (unless sops.useTmpfs), lldap opensearch woodpecker-server
         # capabilities.CAP_SYS_ADMIN = true;
         ports = lib.lists.map (ports: "127.0.0.1:${ports}") [
           "8888:8888" # manual
