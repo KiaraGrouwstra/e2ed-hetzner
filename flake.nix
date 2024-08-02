@@ -25,9 +25,13 @@
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
     flake-utils.url = "github:numtide/flake-utils";
+    arion = {
+      url = "github:KiaraGrouwstra/arion/secrets-short";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = {self, teraflops, nixpkgs, nixpkgs-guest, ...} @ inputs: let
+  outputs = {self, teraflops, nixpkgs, nixpkgs-guest, arion, ...} @ inputs: let
     guest = rec {
       system = "aarch64-linux";
       pkgs = nixpkgs-guest.legacyPackages."${system}";
@@ -62,6 +66,7 @@
       "${system}".default = pkgs.mkShell {
         pname = "teraflops-hcloud";
         packages = [
+          arion.packages.${system}.default
           pkgs.rage
           pkgs.colmena
           (pkgs.opentofu.withPlugins (p:
@@ -141,7 +146,7 @@
           type = "app";
           program = toString (pkgs.writers.writeBash name script);
         }) {
-          local = "${lib.getExe pkgs.arion} up";
+          local = "${lib.getExe arion.packages.${system}.default} up";
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
