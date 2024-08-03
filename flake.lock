@@ -10,16 +10,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1722639243,
-        "narHash": "sha256-c3cNFIgf5ylK0mrGkB5G7ub1sF/IgHdanBSFYXjQ7/c=",
+        "lastModified": 1722712535,
+        "narHash": "sha256-Z6Wjh9R7Iub5PVX4hN6Ega5CrCkkt1x6KsG/wnV24iM=",
         "owner": "KiaraGrouwstra",
         "repo": "arion",
-        "rev": "a8b21575ff6206500d6142f407cb3065c81763d2",
+        "rev": "964246497f472a77246abdd83bb70a6df2048cdc",
         "type": "github"
       },
       "original": {
         "owner": "KiaraGrouwstra",
-        "ref": "secrets-short",
+        "ref": "kiara",
         "repo": "arion",
         "type": "github"
       }

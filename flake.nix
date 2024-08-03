@@ -26,7 +26,7 @@
     };
     flake-utils.url = "github:numtide/flake-utils";
     arion = {
-      url = "github:KiaraGrouwstra/arion/secrets-short";
+      url = "github:KiaraGrouwstra/arion/kiara";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
