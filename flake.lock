@@ -10,11 +10,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1722721589,
-        "narHash": "sha256-NQbyP8nQB8AqmibVppjTwb6IomrOWfPVFPYn+LR+e+o=",
+        "lastModified": 1722785319,
+        "narHash": "sha256-Q8nP7l1xm9xLJKwaWxaivv3uXuCf3k9GBjWa5pZt2jw=",
         "owner": "KiaraGrouwstra",
         "repo": "arion",
-        "rev": "ac0c781e1669b2e4c21ea3765fe8af2c1e9cbbb5",
+        "rev": "1fc42d4dc16ca0c31c705a0402b40f58401b5fdb",
         "type": "github"
       },
       "original": {
