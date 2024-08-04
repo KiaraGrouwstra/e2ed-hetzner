@@ -9,6 +9,7 @@
       mapVals
       default
       defaults
+      moveSecrets
     ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
   arion-common =
@@ -16,7 +17,12 @@
   # //
   {
     nixos.useSystemd = true;
-    service.useHostStore = true;
+    service = {
+      useHostStore = true;
+      secrets = moveSecrets "/run/container-secrets" {
+        sops_key = {};
+      };
+    };
   };
   container-common = {
     networking.useDHCP = false;
@@ -25,6 +31,9 @@
   };
 in {
   project.name = "nixos-container";
+  secrets = {
+    "sops_key".file = ../tf-config/keys.txt;
+  };
   # ports: host:container, host must be >=1024, same for container to test by vm
   # arion exec NAME bash
   services = mapVals (default arion-common) {
