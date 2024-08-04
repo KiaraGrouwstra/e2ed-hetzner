@@ -64,6 +64,11 @@
     network = evolve { inherit network_id; };
   };
 
+  # move container secrets to prevent clash with sops-nix ones,
+  # as both by default mount to /run/secrets.
+  # prevents having to resolve these by sops-nix's `neededForUsers = true;`.
+  moveSecrets = dir: lib.mapAttrs (k: v: {target = "${dir}/${k}";} // v);
+
   # for arion solves podman Error: crun: creating cgroup directory
   # `/sys/fs/cgroup/hugetlb/libpod_parent/libpod-...`: No such file or directory:
   # OCI runtime attempted to invoke a command that was not found.
@@ -93,6 +98,7 @@ in
   };
   assert transforms.server_id "foo" == "\${hcloud_server.foo.id}";
   assert transforms.label_selector {a="1";b="2";} == "a=1,b=2";
+  assert moveSecrets "/run/container-secrets" { foo = {}; } == { foo.target = "/run/container-secrets/foo"; };
   assert patchContainers {
     hello = {
       image = "nginx";
@@ -118,5 +124,6 @@ in
       setNames
       transforms
       patchContainers
+      moveSecrets
     ;
   }
