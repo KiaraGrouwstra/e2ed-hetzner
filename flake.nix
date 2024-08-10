@@ -99,11 +99,15 @@
         inherit system pkgs lib;
         modules = [
           inputs.disko.nixosModules.disko
+          inputs.sops-nix.nixosModules.default
           ./servers/common/vm.nix
           ./servers/common
-          ./servers/manual
+          # ./servers/manual
+          ./servers/nextcloud
           (let ips = [
-            8888
+            8000
+            9980
+            1465
           ]; in {
             virtualisation.vmVariant = {
               virtualisation.diskSize = 2048;

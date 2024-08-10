@@ -7,9 +7,8 @@
 }: let
   inherit (import ../../lib/default.nix {inherit lib pkgs;}) patchContainers;
   DB_USER = "nextcloud";
-  DB_GROUP = "dbaccess";
+  DB_PORT = 5432;
   host_address = "192.168.100.10";
-  guest_address = "192.168.100.11";
 in {
 
   environment.systemPackages = [
@@ -22,8 +21,7 @@ in {
     # /run/secrets
     secrets = {
       postgres-password-nextcloud = {
-        group = DB_GROUP;
-        mode = "0440";
+        owner = DB_USER;
         restartUnits = [ "postgresql.service" ];
       };
     };
@@ -31,21 +29,7 @@ in {
 
   users = {
     mutableUsers = false;
-    groups = {
-      ${DB_GROUP}.members = [
-        "postgres"
-        DB_USER
-      ];
-    };
-    # generate password hash by `mkpasswd -m sha-512 mySuperSecretPassword`
-    users = {
-      ${DB_USER} = {
-        isSystemUser = true;
-      };
-      postgres = {
-        isSystemUser = true;
-      };
-    };
+    users.postgres.isSystemUser = true;
   };
 
   services.nextcloud = {
@@ -83,8 +67,42 @@ in {
     appstoreEnable = true;
     autoUpdateApps.enable = true;
     extraAppsEnable = true;
+    # https://apps.nextcloud.com/
+    # https://github.com/NixOS/nixpkgs/blob/master/pkgs/servers/nextcloud/packages/29.json
     extraApps = { inherit (config.services.nextcloud.package.packages.apps)
-      mail calendar contacts end_to_end_encryption forms notes notify_push richdocuments;
+      bookmarks
+      calendar
+      contacts
+      # cookbook
+      # cospend
+      # deck # duplicate key value violates unique constraint
+      end_to_end_encryption
+      forms
+      gpoddersync
+      groupfolders
+      impersonate
+      integration_openai
+      mail
+      maps
+      # memories
+      # music # duplicate key value violates unique constraint
+      notes
+      notify_push
+      # onlyoffice
+      # phonetrack
+      # polls # duplicate key value violates unique constraint
+      # previewgenerator
+      # qownnotesapi
+      # registration
+      richdocuments
+      spreed
+      tasks
+      # twofactor_nextcloud_notification
+      # twofactor_webauthn
+      # unroundedcorners
+      user_oidc
+      # user_saml
+      ;
     };
     # # Could not resolve host: nextcloud
     # notify_push = {
@@ -93,6 +111,8 @@ in {
     #   bendDomainToLocalhost = true;
     # };
   };
+
+  services.nginx.virtualHosts."localhost".listen = [ { addr = "127.0.0.1"; port = 8000; } ];
 
   services.postgresql = {
     enable = true;
@@ -103,24 +123,31 @@ in {
         ensureDBOwnership = true;
       }
     ];
+    authentication = pkgs.lib.mkOverride 10 ''
+      #type database  DBuser  auth-method
+      local sameuser  all     peer
+    '';
+    settings = {
+      port = DB_PORT;
+    };
   };
 
   # environment.variables = {
   #   PODMAN_IGNORE_CGROUPSV1_WARNING = 1;
   # };
 
-  # Collabora CODE server in a container
-  virtualisation.oci-containers.containers = patchContainers {
-    "collabora" = {
-      image = "collabora/code";
-      ports = ["9980:9980"];
-      environment = {
-        # domain = "${pconf.domain.nextcloud}";
-        extra_params = "--o:ssl.enable=false --o:ssl.termination=true";
-      };
-      extraOptions = ["--cap-add" "MKNOD"];
-    };
-  };
+  # # Collabora CODE server in a container
+  # virtualisation.oci-containers.containers = patchContainers {
+  #   "collabora" = {
+  #     image = "collabora/code";
+  #     ports = ["9980:9980"];
+  #     environment = {
+  #       # domain = "${pconf.domain.nextcloud}";
+  #       extra_params = "--o:ssl.enable=false --o:ssl.termination=true";
+  #     };
+  #     extraOptions = ["--cap-add" "MKNOD"];
+  #   };
+  # };
 
   systemd.tmpfiles.rules = [
     "d /var/lib/nextcloud 700 nextcloud nextcloud -"
