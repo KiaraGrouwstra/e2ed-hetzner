@@ -6,6 +6,7 @@
   ...
 }: let
   inherit (import ../../lib/default.nix {inherit lib pkgs;}) patchContainers;
+  DB_NAME = "nextcloud";
   DB_USER = "nextcloud";
   DB_PORT = 5432;
   host_address = "192.168.100.10";
@@ -42,10 +43,13 @@ in {
     configureRedis = true;
     database.createLocally = true;
     config = {
-      # adminuser = cfg.admin;
+      adminuser = "root";
       adminpassFile = config.sops.secrets.postgres-password-nextcloud.path;
       dbtype = "pgsql";
-      # dbhost = "/run/postgresql";
+      dbhost = "/run/postgresql";
+      # dbhost = "localhost:${DB_PORT}";
+      dbuser = DB_USER;
+      dbname = DB_NAME;
     };
     settings = {
       trusted_proxies = [ host_address ];
@@ -65,7 +69,10 @@ in {
       "opcache.interned_strings_buffer" = "10";
     };
     appstoreEnable = true;
-    autoUpdateApps.enable = true;
+    autoUpdateApps = {
+      enable = true;
+      startAt = "05:00:00";
+    };
     extraAppsEnable = true;
     # https://apps.nextcloud.com/
     # https://github.com/NixOS/nixpkgs/blob/master/pkgs/servers/nextcloud/packages/29.json
@@ -116,7 +123,7 @@ in {
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "nextcloud" ];
+    ensureDatabases = [ DB_NAME ];
     ensureUsers = [
       {
         name = "nextcloud";
