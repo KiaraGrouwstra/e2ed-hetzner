@@ -60,6 +60,7 @@ in {
         # capabilities.CAP_SYS_ADMIN = true;
         ports = lib.lists.map (ports: "127.0.0.1:${ports}") [
           "8888:8888" # manual
+          "8000:80" # nextcloud collabora
           "9980:9980" # nextcloud collabora
           "1465:465" # nextcloud smtp
         ];
