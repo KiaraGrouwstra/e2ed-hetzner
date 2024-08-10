@@ -88,7 +88,7 @@ in {
       # music # duplicate key value violates unique constraint
       notes
       notify_push
-      # onlyoffice
+      # onlyoffice # duplicate key value violates unique constraint
       # phonetrack
       # polls # duplicate key value violates unique constraint
       # previewgenerator
@@ -99,7 +99,7 @@ in {
       tasks
       # twofactor_nextcloud_notification
       # twofactor_webauthn
-      # unroundedcorners
+      unroundedcorners
       # user_oidc # duplicate key value violates unique constraint
       # user_saml
       ;
