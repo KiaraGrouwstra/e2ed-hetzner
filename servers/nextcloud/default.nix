@@ -136,18 +136,18 @@ in {
   #   PODMAN_IGNORE_CGROUPSV1_WARNING = 1;
   # };
 
-  # # Collabora CODE server in a container
-  # virtualisation.oci-containers.containers = patchContainers {
-  #   "collabora" = {
-  #     image = "collabora/code";
-  #     ports = ["9980:9980"];
-  #     environment = {
-  #       # domain = "${pconf.domain.nextcloud}";
-  #       extra_params = "--o:ssl.enable=false --o:ssl.termination=true";
-  #     };
-  #     extraOptions = ["--cap-add" "MKNOD"];
-  #   };
-  # };
+  # Collabora CODE server in a container
+  virtualisation.oci-containers.containers = patchContainers {
+    "collabora" = {
+      image = "collabora/code";
+      ports = ["9980:9980"];
+      environment = {
+        # domain = "${pconf.domain.nextcloud}";
+        extra_params = "--o:ssl.enable=false --o:ssl.termination=true";
+      };
+      extraOptions = ["--cap-add" "MKNOD"];
+    };
+  };
 
   systemd.tmpfiles.rules = [
     "d /var/lib/nextcloud 700 nextcloud nextcloud -"
