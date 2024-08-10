@@ -100,7 +100,7 @@ in {
       # twofactor_nextcloud_notification
       # twofactor_webauthn
       # unroundedcorners
-      user_oidc
+      # user_oidc # duplicate key value violates unique constraint
       # user_saml
       ;
     };
