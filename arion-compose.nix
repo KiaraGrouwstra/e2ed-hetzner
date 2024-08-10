@@ -45,7 +45,8 @@ in {
             # inputs.disko.nixosModules.disko
             inputs.sops-nix.nixosModules.default
             ./servers/common
-            ./servers/manual
+            # ./servers/manual
+            ./servers/nextcloud
           ];
         }
         // container-common
@@ -59,6 +60,8 @@ in {
         # capabilities.CAP_SYS_ADMIN = true;
         ports = lib.lists.map (ports: "127.0.0.1:${ports}") [
           "8888:8888" # manual
+          "9980:9980" # nextcloud collabora
+          "1465:465" # nextcloud smtp
         ];
       };
     };
