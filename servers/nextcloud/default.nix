@@ -5,6 +5,7 @@
   config,
   ...
 }: let
+  inherit (import ../../lib/default.nix {inherit lib pkgs;}) patchContainers;
   DB_USER = "nextcloud";
   DB_GROUP = "dbaccess";
   host_address = "192.168.100.10";
@@ -108,19 +109,18 @@ in {
   #   PODMAN_IGNORE_CGROUPSV1_WARNING = 1;
   # };
 
-  # # Collabora CODE server in a container
-  # # Error: crun: creating cgroup directory `/sys/fs/cgroup/freezer/libpod_parent/libpod-*`: No such file or directory: OCI runtime attempted to invoke a command that was not found
-  # virtualisation.oci-containers.containers = {
-  #   "collabora" = {
-  #     image = "collabora/code";
-  #     ports = ["9980:9980"];
-  #     environment = {
-  #       # domain = "${pconf.domain.nextcloud}";
-  #       extra_params = "--o:ssl.enable=false --o:ssl.termination=true";
-  #     };
-  #     extraOptions = ["--cap-add" "MKNOD"];
-  #   };
-  # };
+  # Collabora CODE server in a container
+  virtualisation.oci-containers.containers = patchContainers {
+    "collabora" = {
+      image = "collabora/code";
+      ports = ["9980:9980"];
+      environment = {
+        # domain = "${pconf.domain.nextcloud}";
+        extra_params = "--o:ssl.enable=false --o:ssl.termination=true";
+      };
+      extraOptions = ["--cap-add" "MKNOD"];
+    };
+  };
 
   systemd.tmpfiles.rules = [
     "d /var/lib/nextcloud 700 nextcloud nextcloud -"
