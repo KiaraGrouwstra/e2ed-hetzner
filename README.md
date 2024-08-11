@@ -113,6 +113,7 @@ hcloud_location = "nbg1"
     - [x] containers on server
     - [x] exposing http ports from containers on the server
     - [ ] services can inter-connect
+    - [ ] flake-based container LCM
 - [ ] [secrets](https://codeberg.org/kiara/teraflops-poc/issues/6)
   - [x] local
   - [ ] deployment
