@@ -149,7 +149,7 @@
     ;
   };
   common =
-    import ./servers/common {inherit lib;}
+    import ./servers/common {inherit lib inputs;}
     // defaults (
       import ./servers/common/imports.nix {inherit inputs;}
     )
