@@ -5,15 +5,15 @@ provider "registry.opentofu.org/hashicorp/tls" {
   version     = "4.0.5"
   constraints = ">= 4.0.4"
   hashes = [
-    "h1:ADHu2xU44f0kgvjzueSlIs5NlMG4w/hPWzKz9Dm9sqI=",
+    "h1:3/Qx5Jlhwg2UkI055lMxTMnfMVHL45uDrcaiMKdYD1g=",
   ]
 }
 
 provider "registry.opentofu.org/hetznercloud/hcloud" {
-  version     = "1.45.0"
+  version     = "1.47.0"
   constraints = ">= 1.44.0"
   hashes = [
-    "h1:XkIeM1F8cRXrnleYbgina8G+2T190IMibv/08Y0KfTE=",
+    "h1:FzGUXUe9n5wHAxjgOBjx7L6U1VUuojfufdMANDmuX2o=",
   ]
 }
 
@@ -21,6 +21,6 @@ provider "registry.opentofu.org/loafoe/ssh" {
   version     = "2.7.0"
   constraints = ">= 2.7.0"
   hashes = [
-    "h1:Xej9Vg8tKw44pbTBxMHwxoLk6/mImcci9Y0L56MlpVA=",
+    "h1:TyBivUZLwC/yG/fHT5LBgmLHp9U6rK/eouKdIjORHFc=",
   ]
 }

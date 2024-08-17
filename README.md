@@ -95,6 +95,18 @@ hcloud_location = "nbg1"
     binfmt.emulatedSystems = [ "aarch64-linux" ];
 ```
 
+## Troubleshooting
+
+### outdated TF providers
+
+> Error: Failed to resolve provider packages
+>
+> Could not resolve provider hetznercloud/hcloud: the previously-selected version 1.45.0 is no longer available
+
+```sh
+rm .terraform.lock.hcl && just plan
+```
+
 ## roadmap
 
 - [ ] ensure i can use:
