@@ -128,12 +128,12 @@
     in
     {
       apps = let
-        sops = "${pkgs.sops}/bin/sops";
+        jaq = "${pkgs.jaq}/bin/jaq";
         tfCommand = cmd:
           ''
             # # need cloud token as env var for CLI commands like `workspace`
             # if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
-            export TF_TOKEN_app_terraform_io="$(${sops} -d --extract '["tf_cloud_token"]' .auto.tfvars.enc.yaml)";
+            export TF_TOKEN_app_terraform_io="$(cat ~/.config/opentofu/credentials.tfrc.json | ${jaq} -r '.credentials."app.terraform.io".token')";
             # # using local state, stash cloud state to prevent error `workspaces not supported`
             # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(tofu workspace show)/terraform.tfstate; fi;
             # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
