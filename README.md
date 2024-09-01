@@ -137,7 +137,7 @@ just clean
 - [ ] tls/ssl
 - [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
 - [ ] [add paul's api layer](https://code.bij1.org/bij1/bij1.erp/src/branch/main/src/bij1/api/main.py)
-- [ ] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
+- [x] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
 - [ ] deploy to hetzner
 - [ ] [network access](https://codeberg.org/kiara/teraflops-poc/issues/9)
 - [ ] [network securing](https://codeberg.org/kiara/teraflops-poc/issues/10)
