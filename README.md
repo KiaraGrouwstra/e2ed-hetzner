@@ -23,6 +23,9 @@ nix develop -c $SHELL
 
 ```sh
 just -l
+just clean
+just login
+just plan
 ```
 
 #### [nixos host](https://github.com/hercules-ci/arion/issues/122)
@@ -104,7 +107,7 @@ hcloud_location = "nbg1"
 > Could not resolve provider hetznercloud/hcloud: the previously-selected version 1.45.0 is no longer available
 
 ```sh
-rm .terraform.lock.hcl && just plan
+just clean
 ```
 
 ## roadmap
