@@ -138,8 +138,16 @@
             # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(tofu workspace show)/terraform.tfstate; fi;
             # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
             mv terraform.tfstate.d/hcloud/terraform.tfstate .terraform/terraform.tfstate;
-            # tofu workspace select -or-create hcloud;
-            teraflops init && tofu providers lock -platform=linux_aarch64 && teraflops -f $PWD ${cmd};
+
+            # creates ./.terraform/environment, ./terraform.tfstate.d/hcloud
+            tofu workspace select -or-create hcloud;
+
+            # updates ./.terraform/plugin_path, ./.direnv/
+            teraflops init && \
+            # updates ./.terraform.lock.hcl
+            tofu providers lock -platform=linux_amd64 && \
+            # execute command
+            teraflops -f $PWD ${cmd};
           '';
       in
         builtins.mapAttrs (name: script: {
