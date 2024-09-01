@@ -53,4 +53,4 @@ destroy:
 
 # update dependencies
 update:
-    nix flake update && rm .terraform.lock.hcl && teraflops init
+    nix flake update && rm -f .terraform.lock.hcl && teraflops init
