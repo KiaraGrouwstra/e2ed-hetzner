@@ -15,6 +15,11 @@ decode:
 login:
     tofu login app.terraform.io
 
+# clean the local working state,
+# fixes error: backend initialization required: please run "tofu init"
+clean:
+    nix run .#clean
+
 # validate logic
 validate:
     nix run .#validate

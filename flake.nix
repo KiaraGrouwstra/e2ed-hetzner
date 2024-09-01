@@ -160,6 +160,7 @@
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
+          clean = "rm -rf .terraform/ && rm -rf terraform.tfstate.d/";
           validate = tfCommand "validate";
           apply = tfCommand "apply";
           plan = tfCommand "plan";
