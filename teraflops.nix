@@ -175,9 +175,9 @@ in {
   terraform = {
     cloud = {
       hostname = "app.terraform.io";
-      organization = "bij1";
+      organization = "cinerealkiara";
       workspaces = {
-        name = "hcloud";
+        name = "tf-api";
       };
     };
   };

@@ -135,7 +135,7 @@
       apps = let
         tfCommand = cmd:
           ''
-            export WORKSPACE="hcloud"
+            export WORKSPACE="tf-api"
 
             # # need cloud token as env var for CLI commands like `workspace`
             # if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
