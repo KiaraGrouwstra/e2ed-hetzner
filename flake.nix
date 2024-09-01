@@ -139,7 +139,7 @@
             # # using local state, stash cloud state to prevent error `workspaces not supported`
             # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(teraflops tf workspace show)/terraform.tfstate; fi;
             # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
-            mv terraform.tfstate.d/$WORKSPACE/terraform.tfstate .terraform/terraform.tfstate;
+            if [[ -e terraform.tfstate.d/$WORKSPACE/terraform.tfstate ]]; then mv terraform.tfstate.d/$WORKSPACE/terraform.tfstate .terraform/terraform.tfstate; fi;
 
             # creates ./.terraform/environment, ./terraform.tfstate.d/$WORKSPACE
             teraflops tf workspace select -or-create $WORKSPACE;
