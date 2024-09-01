@@ -143,7 +143,7 @@
             tofu workspace select -or-create hcloud;
 
             # updates ./.terraform/plugin_path, ./.direnv/
-            teraflops init && \
+            teraflops init --upgrade && \
             # updates ./.terraform.lock.hcl
             tofu providers lock -platform=linux_amd64 && \
             # execute command
