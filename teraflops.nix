@@ -172,24 +172,24 @@ in {
   #   # backups = true;
   # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs;};
 
-  terraform = {
-    cloud = {
-      hostname = "app.terraform.io";
-      organization = "cinerealkiara";
-      workspaces = {
-        name = "tf-api";
-      };
-    };
-  };
+  # terraform = {
+  #   cloud = {
+  #     hostname = "app.terraform.io";
+  #     organization = "cinerealkiara";
+  #     workspaces = {
+  #       name = "tf-api";
+  #     };
+  #   };
+  # };
 
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
   variable = {
-    tf_cloud_token = {
-      type = "string";
-      description = "[Terraform Cloud](https://app.terraform.io/) token";
-      sensitive = true;
-    };
+    # tf_cloud_token = {
+    #   type = "string";
+    #   description = "[Terraform Cloud](https://app.terraform.io/) token";
+    #   sensitive = true;
+    # };
     hcloud_api_token = {
       type = "string";
       description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
