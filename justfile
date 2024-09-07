@@ -1,60 +1,62 @@
+set positional-arguments
+
 # try locally
 default: local
 
 # encode secrets
-encode:
-    sops -e secrets.yaml > secrets.enc.yaml
-    sops --output-type yaml -e .auto.tfvars.json > .auto.tfvars.enc.yaml
+@encode *args='':
+    sops -e secrets.yaml $@ > secrets.enc.yaml
+    sops --output-type yaml -e .auto.tfvars.json $@ > .auto.tfvars.enc.yaml
 
 # decode secrets
-decode:
-    sops -d secrets.enc.yaml > secrets.yaml
-    sops --output-type json -d .auto.tfvars.enc.yaml > .auto.tfvars.json
+@decode *args='':
+    sops -d secrets.enc.yaml $@ > secrets.yaml
+    sops --output-type json -d .auto.tfvars.enc.yaml $@ > .auto.tfvars.json
 
 # log in to the Terraform Cloud backend
-login:
-    tofu login app.terraform.io
+@login *args='':
+    tofu login app.terraform.io -- $@
 
 # clean the local working state,
 # fixes error: backend initialization required: please run "tofu init"
-clean:
-    nix run .#clean
+@clean *args='':
+    nix run .#clean -- $@
 
 # validate logic
-validate:
-    nix run .#validate
+@validate *args='':
+    nix run .#validate -- $@
 
 # apply changes
-apply:
-    nix run .#apply
+@apply *args='':
+    nix run .#apply -- $@
 
 # show generated plan
-plan:
-    nix run .#plan
+@plan *args='':
+    nix run .#plan -- $@
 
 # run CI test locally
 ci:
     woodpecker-cli exec --env "SOPS_AGE_KEY=$SOPS_AGE_KEY"
 
 # apply changes, approving automatically
-cd:
-    nix run .#cd
+@cd *args='':
+    nix run .#cd -- $@
 
 # try machines in containers locally
-local:
-    nix run .#local
+@local *args='':
+    nix run .#local -- $@
 
 # test thru a VM locally
-vm:
-    nix run .#vm
+@vm *args='':
+    nix run .#vm -- $@
 
 # generate an [`age`](https://age-encryption.org/) key pair
 keygen:
     rage-keygen -o keys.txt
 
 # remove local state and derived credentials
-destroy:
-    nix run .#destroy
+@destroy *args='':
+    nix run .#destroy -- $@
 
 # update dependencies
 update:

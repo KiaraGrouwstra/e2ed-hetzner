@@ -154,7 +154,7 @@
             # updates ./.terraform.lock.hcl
             tofu providers lock -platform=linux_amd64 && \
             # execute command
-            teraflops -f $PWD ${cmd};
+            teraflops -f $PWD ${cmd} $@;
           '';
       in
         builtins.mapAttrs (name: script: {
