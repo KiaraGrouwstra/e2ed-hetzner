@@ -145,11 +145,12 @@
             # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
             if [[ -e terraform.tfstate.d/$WORKSPACE/terraform.tfstate ]]; then mv terraform.tfstate.d/$WORKSPACE/terraform.tfstate .terraform/terraform.tfstate; fi;
 
+            # updates ./.terraform/plugin_path, ./.direnv/
+            teraflops init --upgrade
+
             # creates ./.terraform/environment, ./terraform.tfstate.d/$WORKSPACE
             teraflops tf workspace select -or-create $WORKSPACE;
 
-            # updates ./.terraform/plugin_path, ./.direnv/
-            teraflops init --upgrade && \
             # updates ./.terraform.lock.hcl
             tofu providers lock -platform=linux_amd64 && \
             # execute command
