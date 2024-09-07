@@ -112,6 +112,7 @@ just clean
 
 ## roadmap
 
+- [ ] state backend
 - [ ] ensure i can use:
   - [ ] VM: `nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-v`
     - [x] build
