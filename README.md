@@ -112,7 +112,7 @@ just clean
 
 ## roadmap
 
-- [ ] state backend
+- [ ] [state backend](https://codeberg.org/kiara/teraflops-poc/issues/13)
 - [ ] ensure i can use:
   - [ ] VM: `nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-v`
     - [x] build
