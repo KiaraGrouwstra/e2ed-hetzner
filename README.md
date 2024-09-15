@@ -5,8 +5,9 @@ Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructur
 ## Prerequisites
 
 - [Nix](https://nix.dev/) with [Flakes](https://wiki.nixos.org/wiki/Flakes) enabled
-- [Direnv](https://github.com/nix-community/direnv)
-- [Lorri](https://github.com/nix-community/lorri)
+- Optionally, to automate Nix shells (`nix develop`) get both:
+  - [`direnv`](https://github.com/nix-community/direnv)
+  - [`lorri`](https://github.com/nix-community/lorri)
 - Credentials (see [configuring](#configuring)), if not using the [shared secrets](#secrets):
   - `tf_cloud_token`: [Terraform Cloud](https://app.terraform.io/) token to use shared state
   - `hcloud_api_token`: [Hetzner Cloud API token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)
