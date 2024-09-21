@@ -167,6 +167,7 @@
           '';
           clean = "rm -rf .terraform/ && rm -rf terraform.tfstate.d/";
           validate = tfCommand "tf validate";
+          tf = tfCommand "tf";
           apply = tfCommand "apply";
           plan = tfCommand "plan";
           cd = tfCommand "apply -auto-approve";

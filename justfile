@@ -34,6 +34,10 @@ default: local
 @plan *args='':
     nix run .#plan -- $@
 
+# wrap arbitrary TF commands using `teraflops tf`
+@tf *args='':
+    nix run .#tf -- $@
+
 # run CI test locally
 ci:
     woodpecker-cli exec --env "SOPS_AGE_KEY=$SOPS_AGE_KEY"
