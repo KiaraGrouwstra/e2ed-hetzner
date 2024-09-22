@@ -3,6 +3,10 @@
     # arion's nixpkgs input must be named nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-guest.url = "github:NixOS/nixpkgs/nixos-24.05";
+    unfree = {
+      url = "github:numtide/nixpkgs-unfree";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,13 +36,14 @@
   };
 
   outputs = {self, teraflops, nixpkgs, nixpkgs-guest, arion, ...} @ inputs: let
+    host_arch = "x86_64-linux";
     guest = rec {
       system = "aarch64-linux";
       pkgs = nixpkgs-guest.legacyPackages."${system}";
       # inherit (nixpkgs-guest) lib;
     };
     host = rec {
-      system = "x86_64-linux";
+      system = host_arch;
       pkgs = nixpkgs.legacyPackages."${system}";
       # inherit (nixpkgs) lib;
     };
@@ -54,6 +59,20 @@
       });
     # arion containers use the package set for the guest on the host system
     pkgs = nixpkgs-guest.legacyPackages."${host.system}";
+    terraform = inputs.unfree.legacyPackages.${host_arch}.terraform.withPlugins (p: [
+        p.hcloud
+        p.ssh
+        p.tls
+      ]);
+    # error: does not support state version 4
+    # https://github.com/aanderse/teraflops/issues/16
+    # terraform = pkgs.opentofu.withPlugins (p:
+    #   pkgs.lib.lists.map tofuProvider [
+    #     p.hcloud
+    #     p.ssh
+    #     p.tls
+    #   ]);
+
   in {
     inherit inputs pkgs;
 
@@ -69,12 +88,7 @@
           arion.packages.${system}.default
           pkgs.rage
           pkgs.colmena
-          (pkgs.opentofu.withPlugins (p:
-            pkgs.lib.lists.map tofuProvider [
-              p.hcloud
-              p.ssh
-              p.tls
-            ]))
+          terraform
           teraflops.packages.${system}.default
           pkgs.jaq
         ];
@@ -152,7 +166,7 @@
             teraflops tf workspace select -or-create $WORKSPACE;
 
             # updates ./.terraform.lock.hcl
-            tofu providers lock -platform=linux_amd64 && \
+            ${lib.getExe terraform} providers lock -platform=linux_amd64 && \
             # execute command
             teraflops -f $PWD ${cmd} $@;
           '';
