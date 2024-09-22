@@ -5,7 +5,7 @@ provider "registry.terraform.io/hashicorp/tls" {
   version     = "4.0.5"
   constraints = ">= 4.0.4"
   hashes = [
-    "h1:xksHai1+9MpJbG7Iz2bpV7ukJGnj0ocuzeLq5qPEAek=",
+    "h1:+9PTEd0rhoV0AgvX5S7s9X3WjRYnCCGagNeHGCSyixc=",
   ]
 }
 
@@ -21,6 +21,6 @@ provider "registry.terraform.io/loafoe/ssh" {
   version     = "2.7.0"
   constraints = ">= 2.7.0"
   hashes = [
-    "h1:DrdvF0sHpqT6ZwcQePsT+ihI16k21eykw0u98myh5ng=",
+    "h1:MnNoPBOY0tfC5ztgp+da0P2LHuSGk9c5eez8/T0r55E=",
   ]
 }
