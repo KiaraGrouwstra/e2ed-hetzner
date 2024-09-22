@@ -133,7 +133,6 @@
     inherit (hcloud)
       server_type
       image
-      location
       datacenter
       ssh_keys
       public_net
