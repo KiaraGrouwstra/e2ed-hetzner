@@ -52,7 +52,7 @@
     # https://docs.hetzner.com/general/others/data-centers-and-connection
     network_zone = "eu-central"; 
     location = "nbg1";
-    datacenter = "nbg1-dc6";
+    datacenter = "nbg1-dc3";
 
     ip = {
       # free for primary IPs
