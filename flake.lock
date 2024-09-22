@@ -287,15 +287,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1721057224,
-        "narHash": "sha256-yjrMwrWxXW4ipxKqDBWSHFzxzzpDSYuYv7veDG809LY=",
-        "owner": "aanderse",
+        "lastModified": 1727015706,
+        "narHash": "sha256-r32SJTXdbA0lyPDYtcgK0M4rNkdZ3Z3ZYoXYbpr7HdU=",
+        "owner": "KiaraGrouwstra",
         "repo": "teraflops",
-        "rev": "0d5bc10987226f9c47f81e2cac6abd19d5d6f0f6",
+        "rev": "1b3648805952f21286922f85addfef09a8b0a68e",
         "type": "github"
       },
       "original": {
-        "owner": "aanderse",
+        "owner": "KiaraGrouwstra",
+        "ref": "local",
         "repo": "teraflops",
         "type": "github"
       }

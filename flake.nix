@@ -16,7 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
     teraflops = {
-      url = "github:aanderse/teraflops";
+      url = "github:KiaraGrouwstra/teraflops/local";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -179,6 +179,7 @@
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
+          build = "teraflops -f $PWD tf version";
           clean = "rm -rf .terraform/ && rm -rf terraform.tfstate.d/";
           tf = tfCommand "tf";
           apply = tfCommand "apply";
