@@ -315,15 +315,15 @@ in {
             # server = "tryton";
           };
           rule = [
-            # {
-            #   direction = "in";
-            #   protocol  = "tcp";
-            #   port      = "80-85";
-            #   source_ips = [
-            #     "0.0.0.0/0"
-            #     "::/0"
-            #   ];
-            # }
+            {
+              direction = "in";
+              protocol  = "tcp";
+              port      = "22";
+              source_ips = [
+                "0.0.0.0/0"
+                "::/0"
+              ];
+            }
           ];
         };
       });
