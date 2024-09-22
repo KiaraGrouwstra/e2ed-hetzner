@@ -22,10 +22,6 @@ default: local
 @clean *args='':
     nix run .#clean -- $@
 
-# validate logic
-@validate *args='':
-    nix run .#validate -- $@
-
 # apply changes
 @apply *args='':
     nix run .#apply -- $@
