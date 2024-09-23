@@ -3,22 +3,23 @@
   pkgs,
   inputs,
   tf,
+  resources,
   ...
 }: let
-  inherit
-    (import ./lib/default.nix {inherit lib pkgs;})
-      pipes
-      compose
-      evolve
-      dirContents
-      mapVals
-      default
-      defaults
-      inNamespace
-      setNames
-      setFromKey
-      transforms
-    ;
+  my-lib = import ./lib/default.nix {inherit lib pkgs;};
+  inherit (my-lib)
+    pipes
+    compose
+    evolve
+    dirContents
+    mapVals
+    default
+    defaults
+    inNamespace
+    setNames
+    setFromKey
+    transforms
+  ;
 
   # if not specified otherwise both primary IPs get generated
   private.public_net = {
@@ -148,9 +149,9 @@
     ;
   };
   common =
-    import ./servers/common {inherit lib inputs;}
+    import ./servers/common {inherit inputs resources; lib = my-lib;}
     // defaults (
-      import ./servers/common/imports.nix {inherit inputs;}
+      import ./servers/common/imports.nix {inherit inputs resources;}
     )
   ;
 in {
@@ -166,10 +167,10 @@ in {
     system.stateVersion = "24.05";
   };
   # servers
-  combined = {pkgs, ...}: common // import ./servers/manual {inherit lib pkgs;};
+  combined = {pkgs, ...}: common // import ./servers/manual {inherit pkgs resources; lib = my-lib;};
   # tryton = {pkgs, ...}: {
   #   # backups = true;
-  # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs;};
+  # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs resources;};
 
   # terraform = {
   #   cloud = {

@@ -109,6 +109,7 @@ in
       extraOptions = ["--cgroups=disabled"];  
     };
   };
+  lib //
   {
     inherit
       pipes

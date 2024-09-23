@@ -20,14 +20,21 @@
     #     ;
     # }
     ;
-  # TODO: fill
-  users.users.root.openssh.authorizedKeys.keys = ["ssh-dss AAAAB3Nza... alice@foobar"];
+  users = {
+    mutableUsers = false;
+    users.root.openssh.authorizedKeys.keys = lib.attrValues (lib.dirContents ".pub" ../../ssh-keys);
+  };
   system.stateVersion = "24.05";
   boot.tmp.useTmpfs = true;
   # networking.useDHCP = false;  # breaks port forwarding on VM
 
   # lacking srvos server:
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes";
+    };
+  };
 
   # # Let's Encrypt ACME
   # security.acme = {
