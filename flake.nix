@@ -59,20 +59,6 @@
       });
     # arion containers use the package set for the guest on the host system
     pkgs = nixpkgs-guest.legacyPackages."${host.system}";
-    terraform = inputs.unfree.legacyPackages.${host_arch}.terraform.withPlugins (p: [
-        p.hcloud
-        p.ssh
-        p.tls
-      ]);
-    # error: does not support state version 4
-    # https://github.com/aanderse/teraflops/issues/16
-    # terraform = pkgs.opentofu.withPlugins (p:
-    #   pkgs.lib.lists.map tofuProvider [
-    #     p.hcloud
-    #     p.ssh
-    #     p.tls
-    #   ]);
-
   in {
     inherit inputs pkgs;
 
@@ -88,7 +74,13 @@
           arion.packages.${system}.default
           pkgs.rage
           pkgs.colmena
-          terraform
+          (pkgs.opentofu.withPlugins (p:
+            pkgs.lib.lists.map tofuProvider [
+              p.hcloud
+              p.ssh
+              p.tls
+            ]
+          ))
           teraflops.packages.${system}.default
           pkgs.jaq
         ];
@@ -166,7 +158,7 @@
             teraflops tf workspace select -or-create $WORKSPACE;
 
             # updates ./.terraform.lock.hcl
-            ${lib.getExe terraform} providers lock -platform=linux_amd64 && \
+            tofu providers lock -platform=linux_amd64 && \
             # execute command
             teraflops -f $PWD ${cmd} $@;
           '';
