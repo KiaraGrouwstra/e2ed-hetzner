@@ -25,10 +25,40 @@ nix develop -c $SHELL
 ### Commands
 
 ```sh
+# list commands
 just -l
+# build servers by colmena
+teraflops nix build
+# debug server nix by colmena
+teraflops repl
+# try servers locally by arion
+just local
+# clear local files
 just clean
+# authenticate with remote TF backend
 just login
-just plan
+# initialize TF
+teraflops init
+# convert nix to TF by teraflops
+just build
+# see terraform plan
+tofu plan
+# apply terraform plan
+tofu apply
+# list terraform state
+tofu state list
+# show terraform resources
+tofu show
+# inspect terraform state
+tofu output -json | jaq
+# save ssh key
+tofu output -json | jaq -r '.teraflops.value.privateKey' > ~/.ssh/teraflops && chmod 0600 ~/.ssh/teraflops
+# get server IP
+export MY_SERVER=$(terraform output -json | jaq -r '.teraflops.value.nodes.combined.targetHost')
+# ssh to server
+ssh root@$MY_SERVER
+# apply nix changes
+teraflops deploy --reboot
 ```
 
 #### [nixos host](https://github.com/hercules-ci/arion/issues/122)
