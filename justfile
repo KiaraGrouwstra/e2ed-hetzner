@@ -26,25 +26,9 @@ default: local
 @clean *args='':
     nix run .#clean -- $@
 
-# apply changes
-@apply *args='':
-    nix run .#apply -- $@
-
-# show generated plan
-@plan *args='':
-    nix run .#plan -- $@
-
-# wrap arbitrary TF commands using `teraflops tf`
-@tf *args='':
-    nix run .#tf -- $@
-
 # run CI test locally
 ci:
     woodpecker-cli exec --env "SOPS_AGE_KEY=$SOPS_AGE_KEY"
-
-# apply changes, approving automatically
-@cd *args='':
-    nix run .#cd -- $@
 
 # try machines in containers locally
 @local *args='':

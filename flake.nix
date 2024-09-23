@@ -173,10 +173,6 @@
           '';
           build = "teraflops -f $PWD tf version";
           clean = "rm -rf .terraform/ && rm -rf terraform.tfstate.d/";
-          tf = tfCommand "tf";
-          apply = tfCommand "apply";
-          plan = tfCommand "plan";
-          cd = tfCommand "apply -auto-approve";
           destroy = ''
             ${tfCommand "destroy"}
             for f in "config.tf.json *.tfstate* *.tfvars.json ci.tfrc .terraform terraform.tfstate.d"; do
