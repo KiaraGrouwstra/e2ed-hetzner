@@ -25,6 +25,11 @@ nix develop -c $SHELL
 ### Commands
 
 ```sh
+# if using direnv
+direnv allow
+# otherwise:
+source .envrc
+# then:
 # list commands
 just -l
 # build servers by colmena
