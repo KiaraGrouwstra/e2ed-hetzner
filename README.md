@@ -151,15 +151,15 @@ just clean
 ## roadmap
 
 - [ ] managing `my-lib`
-  - [ ] `import`ed everywhere
+  - `import`ed everywhere
     - [✅] arion
     - [✅] teraflops
-  - [ ] smuggled in thru `lib`
-    - [ ] arion
+  - smuggled in thru `lib`
+    - [❌] arion - can at best smuggle thru `pkgs`
     - [✅] teraflops
-  - [ ] passed as a module input
-    - [❌] arion
-    - [ ] teraflops
+  - passed as a module input
+    - [❌] arion - works not even if passing a default value e.g. `my-lib ? lib`
+    - [✅] teraflops
 
 - [ ] deploy to hetzner
   - [ ] update server in-place by colmena
