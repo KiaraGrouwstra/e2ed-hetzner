@@ -6,8 +6,8 @@
   resources,
   ...
 }: let
-  my-lib = import ./lib/default.nix {inherit lib pkgs;};
-  inherit (my-lib)
+  util = import ./lib/default.nix {inherit lib pkgs;};
+  inherit (util)
     pipes
     compose
     evolve
@@ -149,7 +149,7 @@
     ;
   };
   common =
-    import ./servers/common {inherit inputs resources pkgs lib;}
+    import ./servers/common {inherit inputs resources pkgs lib util;}
     // defaults (
       import ./servers/common/imports.nix {inherit inputs resources;}
     )

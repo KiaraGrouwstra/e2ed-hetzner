@@ -2,11 +2,9 @@
   lib,
   pkgs,
   inputs,
+  util,
   ...
 }:
-let
-  my-lib = import ../../lib/default.nix {inherit lib pkgs;};
-in
 {
   imports =
     [
@@ -27,7 +25,7 @@ in
     ;
   users = {
     mutableUsers = false;
-    users.root.openssh.authorizedKeys.keys = lib.attrValues (my-lib.dirContents ".pub" ../../ssh-keys);
+    users.root.openssh.authorizedKeys.keys = lib.attrValues (util.dirContents ".pub" ../../ssh-keys);
   };
   system.stateVersion = "24.05";
   boot.tmp.useTmpfs = true;

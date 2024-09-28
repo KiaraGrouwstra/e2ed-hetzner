@@ -1,9 +1,10 @@
 {
-  # smuggling in `inputs` thru `pkgs`: https://github.com/hercules-ci/arion/issues/247
   pkgs,
   ...
 }: let
-  inherit (pkgs) lib inputs;
+  inherit (pkgs) lib;
+  inherit (builtins.getFlake (toString ./.)) inputs;
+  util = import ./lib/default.nix {inherit lib pkgs;};
   inherit
     (import ./lib/default.nix {inherit lib pkgs;})
       mapVals
@@ -41,10 +42,12 @@ in {
     combined = {
       nixos = {
         configuration = {
-          imports = [
+          imports = let
+            args = { inherit pkgs inputs util; };
+          in [
             # inputs.disko.nixosModules.disko
             inputs.sops-nix.nixosModules.default
-            ./servers/common
+            (import ./servers/common args)
             # ./servers/manual
             ./servers/nextcloud
           ];
