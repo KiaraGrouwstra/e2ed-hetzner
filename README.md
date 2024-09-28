@@ -150,6 +150,17 @@ just clean
 
 ## roadmap
 
+- [ ] managing `my-lib`
+  - [ ] `import`ed everywhere
+    - [✅] arion
+    - [✅] teraflops
+  - [ ] smuggled in thru `lib`
+    - [ ] arion
+    - [✅] teraflops
+  - [ ] passed as a module input
+    - [❌] arion
+    - [ ] teraflops
+
 - [ ] deploy to hetzner
   - [ ] update server in-place by colmena
 - [ ] srvos
