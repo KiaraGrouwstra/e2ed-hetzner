@@ -27,7 +27,7 @@
   };
   container-common = {
     networking.useDHCP = false;
-    networking.firewall.enable = false;
+    networking.firewall.enable = lib.mkForce false;
     systemd.network.enable = lib.mkForce false;
   };
 in {
