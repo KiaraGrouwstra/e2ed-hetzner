@@ -1,5 +1,9 @@
 { ... }: {
   networking = {
+    networking.hostName = "my-host";
+    # FIXME: Hetzner Cloud doesn't provide us with that configuration
+    # systemd.network.networks."10-uplink".networkConfig.Address = "2a01:4f9:c010:52fd::1/128";
+
     # hostName = "vps";  # contradicted by arion
     # useDHCP = true;  # contradicted by one of my settings
     nameservers = [
