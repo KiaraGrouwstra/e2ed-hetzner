@@ -150,6 +150,16 @@ just clean
 
 ## roadmap
 
+- [ ] deploy to hetzner
+  - [ ] update server in-place by colmena
+- [ ] srvos
+- [ ] [volumes](https://codeberg.org/kiara/teraflops-poc/issues/5)
+- [ ] disko
+- [ ] [impermanence](https://codeberg.org/kiara/teraflops-poc/issues/2)
+- [ ] [packer](https://codeberg.org/kiara/teraflops-poc/issues/4)
+- [ ] disk encryption
+- [ ] cache
+
 - [ ] [state backend](https://codeberg.org/kiara/teraflops-poc/issues/13)
 - [ ] ensure i can use:
   - [ ] VM: `nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-v`
@@ -182,13 +192,9 @@ just clean
   - [ ] consul
   - [ ] vault
   - [ ] nomad
-- [ ] deploy to hetzner
 - [ ] [network access](https://codeberg.org/kiara/teraflops-poc/issues/9)
 - [ ] [network securing](https://codeberg.org/kiara/teraflops-poc/issues/10)
-- [ ] [volumes](https://codeberg.org/kiara/teraflops-poc/issues/5)
-- [ ] [impermanence](https://codeberg.org/kiara/teraflops-poc/issues/2)
 - [ ] [CI pipeline](https://codeberg.org/kiara/teraflops-poc/issues/12)
-- [ ] [packer](https://codeberg.org/kiara/teraflops-poc/issues/4)
 - [ ] [share nix store](https://codeberg.org/kiara/teraflops-poc/issues/8)
 - [ ] [scale out applications](./servers/)
 - [ ] SSO
