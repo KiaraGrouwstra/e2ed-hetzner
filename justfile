@@ -30,10 +30,6 @@ default: local
 ci:
     woodpecker-cli exec --env "SOPS_AGE_KEY=$SOPS_AGE_KEY"
 
-# try machines in containers locally
-@local *args='':
-    nix run .#local -- $@
-
 # test thru a VM locally
 @vm *args='':
     nix run .#vm -- $@

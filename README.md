@@ -32,7 +32,7 @@ teraflops nix build
 # debug server nix by colmena
 teraflops repl
 # try servers locally by arion
-just local
+arion up
 # clear local files
 just clean
 # authenticate with remote TF backend

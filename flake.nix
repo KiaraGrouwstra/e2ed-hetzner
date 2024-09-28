@@ -167,7 +167,6 @@
           type = "app";
           program = toString (pkgs.writers.writeBash name script);
         }) {
-          local = "${lib.getExe arion.packages.${system}.default} up";
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
