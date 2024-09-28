@@ -149,7 +149,7 @@
     ;
   };
   common =
-    import ./servers/common {inherit inputs resources; lib = my-lib;}
+    import ./servers/common {inherit inputs resources pkgs lib;}
     // defaults (
       import ./servers/common/imports.nix {inherit inputs resources;}
     )
@@ -167,7 +167,7 @@ in {
     system.stateVersion = "24.05";
   };
   # servers
-  combined = {pkgs, ...}: common // import ./servers/manual {inherit pkgs resources; lib = my-lib;};
+  combined = {pkgs, ...}: common // import ./servers/manual {inherit inputs resources pkgs lib;};
   # tryton = {pkgs, ...}: {
   #   # backups = true;
   # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs resources;};
