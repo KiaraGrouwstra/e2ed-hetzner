@@ -43,7 +43,7 @@ in {
       nixos = {
         configuration = {
           imports = let
-            args = { inherit pkgs inputs util; };
+            args = { inherit pkgs lib inputs util; };
           in [
             # inputs.disko.nixosModules.disko
             inputs.sops-nix.nixosModules.default
