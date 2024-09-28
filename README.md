@@ -150,17 +150,6 @@ just clean
 
 ## roadmap
 
-- [ ] managing `my-lib`
-  - `import`ed everywhere
-    - [✅] arion
-    - [✅] teraflops
-  - smuggled in thru `lib`
-    - [❌] arion - can at best smuggle thru `pkgs`
-    - [✅] teraflops
-  - passed as a module input
-    - [❌] arion - works not even if passing a default value e.g. `my-lib ? lib`
-    - [✅] teraflops
-
 - [ ] deploy to hetzner
   - [ ] update server in-place by colmena
 - [ ] srvos
@@ -174,19 +163,8 @@ just clean
 - [ ] [state backend](https://codeberg.org/kiara/teraflops-poc/issues/13)
 - [ ] ensure i can use:
   - [ ] VM: `nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-v`
-    - [x] build
-    - [x] log in
-    - [x] connect to HTTP services
-    - [x] use imports
-    - [x] containers on server
-    - [x] exposing http ports from containers on the server
     - [ ] services can inter-connect
   - [ ] arion: `arion up`
-    - [x] build
-    - [x] connect to HTTP services
-    - [x] use imports
-    - [x] containers on server
-    - [x] exposing http ports from containers on the server
     - [ ] services can inter-connect
     - [ ] flake-based container LCM
 - [ ] [secrets](https://codeberg.org/kiara/teraflops-poc/issues/6)
@@ -197,7 +175,6 @@ just clean
 - [ ] tls/ssl
 - [ ] restrict sensitive services to access over ssh port forwarding over exposing to 0.0.0.0
 - [ ] [add paul's api layer](https://code.bij1.org/bij1/bij1.erp/src/branch/main/src/bij1/api/main.py)
-- [x] https://github.com/aanderse/teraflops/issues/11#issuecomment-2192802060
 - hashicorp
   - [ ] terraform
   - [ ] consul
