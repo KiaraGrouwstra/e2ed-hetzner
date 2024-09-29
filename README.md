@@ -59,7 +59,7 @@ tofu output -json | jaq
 # save ssh key
 tofu output -json | jaq -r '.teraflops.value.privateKey' > ~/.ssh/teraflops && chmod 0600 ~/.ssh/teraflops
 # get server IP
-export MY_SERVER=$(terraform output -json | jaq -r '.teraflops.value.nodes.combined.targetHost')
+export MY_SERVER=$(tofu output -json | jaq -r '.teraflops.value.nodes.combined.targetHost')
 # ssh to server
 ssh root@$MY_SERVER
 # apply nix changes
