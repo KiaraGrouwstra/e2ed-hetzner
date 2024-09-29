@@ -77,6 +77,12 @@
     extraOptions = ["--cgroups=disabled"];  
   });
 
+  # use TF info that we have, or look it up dynamically if we don't yet
+  dynamicRef = tf: resources: attrPath:
+    if resources != null
+    then lib.foldl' (attr: prop: attr."${prop}")
+    else tf.ref lib.concatStringsSep "." attrPath;
+
 in
   assert pipes [(s: "(${s})") (s: s + s)] "foo" == "(foo)(foo)";
   assert compose [(s: s + s) (s: "(${s})")] "foo" == "(foo)(foo)";
@@ -109,6 +115,8 @@ in
       extraOptions = ["--cgroups=disabled"];  
     };
   };
+  assert dynamicRef {ref=tfRef;} null ["hcloud_server" "my_server" "ipv6_network"] == tfRef "hcloud_server.my_server.ipv6_network";
+  assert dynamicRef {ref=tfRef;} {hcloud_server.my_server.ipv6_network="foo";} ["hcloud_server" "my_server" "ipv6_network"] == "foo";
   {
     inherit
       pipes
@@ -125,5 +133,6 @@ in
       transforms
       patchContainers
       moveSecrets
+      dynamicRef
     ;
   }
