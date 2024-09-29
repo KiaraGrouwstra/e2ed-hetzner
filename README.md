@@ -63,7 +63,7 @@ export MY_SERVER=$(tofu output -json | jaq -r '.teraflops.value.nodes.combined.t
 # ssh to server
 ssh root@$MY_SERVER
 # apply nix changes
-teraflops deploy --reboot
+teraflops deploy
 ```
 
 #### [nixos host](https://github.com/hercules-ci/arion/issues/122)
