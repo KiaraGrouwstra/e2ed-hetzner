@@ -1,7 +1,8 @@
 set positional-arguments
 
-# try locally
-default: local
+# default action: list actions
+default:
+  @just --list
 
 # encode secrets
 @encode *args='':
