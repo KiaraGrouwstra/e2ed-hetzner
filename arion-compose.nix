@@ -13,10 +13,7 @@
       moveSecrets
     ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
-  arion-common =
-  # (defaults (import ./servers/common/imports.nix {inherit inputs;}))
-  # //
-  {
+  arion-common = {
     nixos.useSystemd = true;
     service = {
       useHostStore = true;
@@ -45,7 +42,6 @@ in {
           imports = let
             args = { inherit pkgs lib inputs util; };
           in [
-            # inputs.disko.nixosModules.disko
             inputs.sops-nix.nixosModules.default
             (import ./servers/common args)
             # ./servers/manual

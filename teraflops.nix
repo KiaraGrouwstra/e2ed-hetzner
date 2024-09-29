@@ -148,12 +148,7 @@
       shutdown_before_deletion
     ;
   };
-  common =
-    import ./servers/common {inherit inputs resources pkgs lib util;}
-    // defaults (
-      import ./servers/common/imports.nix {inherit inputs resources;}
-    )
-  ;
+  common = import ./servers/common {inherit inputs resources pkgs lib util;};
 in {
   meta = {
     nixpkgs = pkgs;
