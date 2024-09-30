@@ -72,6 +72,7 @@
         pname = "teraflops-hcloud";
         packages = [
           arion.packages.${system}.default
+          pkgs.direnv
           pkgs.rage
           pkgs.colmena
           (pkgs.opentofu.withPlugins (p:
