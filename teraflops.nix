@@ -4,6 +4,7 @@
   inputs,
   tf,
   resources,
+  outputs,
   ...
 }: let
   util = import ./lib/default.nix {inherit lib pkgs;};
@@ -148,7 +149,7 @@
       shutdown_before_deletion
     ;
   };
-  common = import ./servers/common {inherit inputs resources pkgs lib util;};
+  common = import ./servers/common {inherit inputs resources pkgs lib util outputs tf;};
 in {
   meta = {
     nixpkgs = pkgs;
