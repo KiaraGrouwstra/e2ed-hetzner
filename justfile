@@ -45,4 +45,4 @@ keygen:
 
 # update dependencies
 update:
-    nix flake update && rm -f .terraform.lock.hcl && teraflops init
+    nix flake update && rm -f .terraform.lock.hcl && teraflops init && tofu providers lock
