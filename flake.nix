@@ -158,7 +158,7 @@
             teraflops tf workspace select -or-create $WORKSPACE;
 
             # updates ./.terraform.lock.hcl
-            tofu providers lock -platform=linux_amd64 && \
+            tofu providers lock && \
             # execute command
             teraflops -f $PWD ${cmd} $@;
           '';
