@@ -156,8 +156,6 @@ just clean
 
 ## roadmap
 
-- [ ] deploy to hetzner
-  - [ ] update server in-place by colmena
 - [ ] srvos
 - [ ] [volumes](https://codeberg.org/kiara/teraflops-poc/issues/5)
 - [ ] disko
