@@ -182,6 +182,7 @@
                 fi;
             done
           '';
+          import = ''eval $(tofu show -json | jaq -r '.values.root_module.resources | map(select(.mode == "data") | .type as $type | .values[.type[7:]] | map("tofu import " + $type[0:-1] + "." + .name + " " + (.id | tostring) + ";"))[][]')'';
         };
 
       # nix run

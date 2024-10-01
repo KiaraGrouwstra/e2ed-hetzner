@@ -46,3 +46,7 @@ keygen:
 # update dependencies
 update:
     nix flake update && rm -f .terraform.lock.hcl && teraflops init && tofu providers lock
+
+# import lost state
+import:
+    nix run .#import
