@@ -9,7 +9,7 @@
   imports =
     [
       ./fresh.nix
-      # ./net.nix
+      ./net.nix
       # ./paranoid.nix
       # inputs.disko.nixosModules.disko  # infinite recursion encountered
       # ../../hcloud/disk-config.nix  # arion: cannot have this without disko

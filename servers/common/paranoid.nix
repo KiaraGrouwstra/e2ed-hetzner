@@ -7,7 +7,11 @@
   
   nix.settings.allowed-users = [ "root" ];
 
-  networking.firewall.enable = true;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 ];
+    # allowedUDPPorts = [ ... ];
+  };
 
   services.tailscale.enable = true;
   networking.firewall.trustedInterfaces = [ "tailscale0" ];

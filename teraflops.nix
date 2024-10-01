@@ -149,7 +149,11 @@
       shutdown_before_deletion
     ;
   };
-  common = import ./servers/common {inherit inputs resources pkgs lib util outputs tf;};
+  common = name:
+    import ./servers/common {inherit inputs pkgs lib util;}
+    //
+    import ./hcloud/network.nix {inherit resources pkgs lib name;}
+  ;
 in {
   meta = {
     nixpkgs = pkgs;
@@ -162,12 +166,6 @@ in {
     };
     system.stateVersion = "24.05";
   };
-  # servers
-  combined = {pkgs, ...}: common // import ./servers/manual {inherit inputs resources pkgs lib;};
-  # tryton = {pkgs, ...}: {
-  #   # backups = true;
-  # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs resources;};
-
   # terraform = {
   #   cloud = {
   #     hostname = "app.terraform.io";
@@ -386,3 +384,15 @@ in {
 
     };
 }
+//
+(
+  lib.mapAttrs
+  (name: fn: fn name)
+  {
+    # servers
+    combined = name: {pkgs, ...}: common name // import ./servers/manual {inherit inputs resources pkgs lib name;};
+    # tryton = {pkgs, ...}: {
+    #   # backups = true;
+    # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs resources;};
+  }
+)
