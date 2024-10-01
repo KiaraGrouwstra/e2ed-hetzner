@@ -109,8 +109,8 @@
           inputs.sops-nix.nixosModules.default
           ./servers/common/vm.nix
           ./servers/common
-          # ./servers/manual
-          ./servers/nextcloud
+          ./servers/manual
+          # ./servers/nextcloud
           (let ips = [
             8000
             9980

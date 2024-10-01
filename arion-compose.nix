@@ -44,8 +44,8 @@ in {
           in [
             inputs.sops-nix.nixosModules.default
             (import ./servers/common args)
-            # ./servers/manual
-            ./servers/nextcloud
+            ./servers/manual
+            # ./servers/nextcloud
           ];
         }
         // container-common
