@@ -61,7 +61,7 @@
       type = "ipv6";
     };
 
-    ssh_keys = tf.ref "data.hcloud_ssh_keys.all_keys.ssh_keys.*.name";
+    ssh_keys = tf.ref "data.hcloud_ssh_keys.all.ssh_keys.*.name";
 
     # billed +20%
     backups = false;
@@ -201,11 +201,29 @@ in {
 
   data =
     inNamespace "hcloud"
-    {
-      ssh_keys = {
-        "all_keys" = {};
-      };
-    };
+    (
+      lib.genAttrs
+      [
+        # read:
+        # "datacenters"
+        # "locations"
+        # "images"
+        # "server_types"
+
+        # read/write:
+        "ssh_keys"
+        "certificates"
+        "firewalls"
+        "floating_ips"
+        "load_balancers"
+        "networks"
+        "placement_groups"
+        "primary_ips"
+        "servers"
+        "volumes"
+      ]
+      (_type: {"all" = {};})
+    );
 
   # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
   resource =
