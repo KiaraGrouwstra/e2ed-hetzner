@@ -171,7 +171,7 @@
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
-          build = "teraflops -f $PWD tf version";
+          convert = "teraflops -f $PWD tf version";
           clean = "rm -rf .terraform/ && rm -rf terraform.tfstate.d/";
           destroy = ''
             ${tfCommand "destroy"}

@@ -45,7 +45,7 @@ just login
 # initialize TF
 teraflops init
 # convert nix to TF by teraflops
-just build
+just convert
 # see terraform plan
 tofu plan
 # apply terraform plan

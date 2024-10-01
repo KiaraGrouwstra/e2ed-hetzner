@@ -19,8 +19,8 @@ default:
     tofu login app.terraform.io -- $@
 
 # build a main.tf.json using teraflops
-@build:
-    nix run .#build
+@convert:
+    nix run .#convert
 
 # clean the local working state,
 # fixes error: backend initialization required: please run "tofu init"
