@@ -65,7 +65,7 @@ tofu output -json | jaq -r '.teraflops.value.privateKey' > ~/.ssh/teraflops && c
 # get server IP
 export MY_SERVER=$(tofu output -json | jaq -r '.teraflops.value.nodes.combined.targetHost')
 # clear host entries for prior instances
-sed -iE "s/$MY_SERVER.*\\n//g" ~/.ssh/known_hosts
+sed -iE "s/$MY_SERVER.*//g" ~/.ssh/known_hosts
 # ssh to server
 ssh root@$MY_SERVER
 # apply nix changes
