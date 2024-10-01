@@ -8,6 +8,7 @@
 {
   imports =
     [
+      ./headless
       ./fresh.nix
       ./net.nix
       # ./paranoid.nix
