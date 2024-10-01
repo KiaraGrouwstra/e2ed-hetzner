@@ -150,9 +150,11 @@
     ;
   };
   common = name:
-    import ./servers/common {inherit inputs pkgs lib util;}
+    import ./servers/common {inherit pkgs lib inputs util;}
     //
-    import ./hcloud/network.nix {inherit resources pkgs lib name;}
+    import ./hcloud {inherit lib inputs ;}
+    //
+    import ./hcloud/network.nix {inherit pkgs lib resources name;}
   ;
 in {
   meta = {

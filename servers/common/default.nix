@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   inputs,
   util,
   ...
@@ -12,18 +11,10 @@
       ./fresh.nix
       ./net.nix
       # ./paranoid.nix
-      # inputs.disko.nixosModules.disko  # infinite recursion encountered
-      # ../../hcloud/disk-config.nix  # arion: cannot have this without disko
-      # ../../hcloud/network.nix  # arion: cannot have this without disko
-    ]
-    # ++ lib.attrValues {
-    #   inherit
-    #     (inputs.srvos.nixosModules)
-    #     # server  # TODO reenable once versions aligned, see https://github.com/hercules-ci/arion/issues/249
-    #     hardware-hetzner-cloud-arm
-    #     ;
-    # }
-    ;
+      inputs.srvos.nixosModules.server
+      inputs.srvos.nixosModules.hardware-hetzner-cloud-arm
+      # inputs.disko.nixosModules.disko
+    ];
   users = {
     mutableUsers = false;
     users.root.openssh.authorizedKeys.keys = lib.attrValues (util.dirContents ".pub" ../../ssh-keys);

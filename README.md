@@ -156,7 +156,6 @@ just clean
 
 ## roadmap
 
-- [ ] srvos
 - [ ] [volumes](https://codeberg.org/kiara/teraflops-poc/issues/5)
 - [ ] disko
 - [ ] [impermanence](https://codeberg.org/kiara/teraflops-poc/issues/2)
