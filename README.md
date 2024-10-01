@@ -31,7 +31,11 @@ direnv allow
 source .envrc
 # then:
 # list commands
-just -l
+just
+# update nix/TF deps
+just update
+# import lost state
+just import
 # build servers by colmena
 teraflops nix build
 # debug server nix by colmena
