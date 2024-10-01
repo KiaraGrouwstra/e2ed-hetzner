@@ -172,7 +172,7 @@
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
           convert = "teraflops -f $PWD tf version";
-          clean = "rm -rf .terraform/ && rm terraform.tfstate* && rm -rf terraform.tfstate.d/";
+          clean = "rm -rf .terraform/ && rm -f terraform.tfstate* && rm -rf terraform.tfstate.d/";
           destroy = ''
             ${tfCommand "destroy"}
             for f in "config.tf.json *.tfstate* *.tfvars.json ci.tfrc .terraform terraform.tfstate.d"; do
