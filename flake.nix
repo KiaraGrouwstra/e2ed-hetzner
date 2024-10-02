@@ -148,7 +148,7 @@
             # if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
             # export TF_TOKEN_app_terraform_io="$(cat ~/.config/opentofu/credentials.tfrc.json | jaq -r '.credentials."app.terraform.io".token')";
             # # using local state, stash cloud state to prevent error `workspaces not supported`
-            # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(teraflops tf workspace show)/terraform.tfstate; fi;
+            # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(tofu workspace show)/terraform.tfstate; fi;
             # # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
             # if [[ -e terraform.tfstate.d/$WORKSPACE/terraform.tfstate ]]; then mv terraform.tfstate.d/$WORKSPACE/terraform.tfstate .terraform/terraform.tfstate; fi;
 
@@ -156,7 +156,7 @@
             teraflops init --upgrade
 
             # creates ./.terraform/environment, ./terraform.tfstate.d/$WORKSPACE
-            teraflops tf workspace select -or-create $WORKSPACE;
+            tofu workspace select -or-create $WORKSPACE;
 
             # updates ./.terraform.lock.hcl
             tofu providers lock && \
