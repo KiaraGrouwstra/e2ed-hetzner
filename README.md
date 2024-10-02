@@ -34,7 +34,7 @@ source .envrc
 just
 # update nix/TF deps
 just update
-# import lost state
+# import lost state - works only once local state has been created
 just import
 # build servers by colmena
 teraflops nix build

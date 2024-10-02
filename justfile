@@ -47,6 +47,6 @@ keygen:
 update:
     nix flake update && rm -f .terraform.lock.hcl && teraflops init && tofu init && tofu providers lock
 
-# import lost state
+# import lost state - works only once local state has been created
 import:
     nix run .#import
