@@ -156,9 +156,10 @@ just clean
 
 ## roadmap
 
-- [ ] [volumes](https://codeberg.org/kiara/teraflops-poc/issues/5)
-- [ ] disko
+- [ ] [disko](https://codeberg.org/kiara/teraflops-poc/issues/5)
 - [ ] [impermanence](https://codeberg.org/kiara/teraflops-poc/issues/2)
+- [ ] [shared storage](https://codeberg.org/kiara/teraflops-poc/issues/14)
+- [ ] [network access](https://codeberg.org/kiara/teraflops-poc/issues/9)
 - [ ] [packer](https://codeberg.org/kiara/teraflops-poc/issues/4)
 - [ ] disk encryption
 - [ ] cache
@@ -183,7 +184,6 @@ just clean
   - [ ] consul
   - [ ] vault
   - [ ] nomad
-- [ ] [network access](https://codeberg.org/kiara/teraflops-poc/issues/9)
 - [ ] [network securing](https://codeberg.org/kiara/teraflops-poc/issues/10)
 - [ ] [CI pipeline](https://codeberg.org/kiara/teraflops-poc/issues/12)
 - [ ] [share nix store](https://codeberg.org/kiara/teraflops-poc/issues/8)
