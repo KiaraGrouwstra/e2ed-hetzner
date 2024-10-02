@@ -34,8 +34,6 @@ source .envrc
 just
 # update nix/TF deps
 just update
-# import lost state - works only once local state has been created
-just import
 # build servers by colmena
 teraflops nix build
 # debug server nix by colmena
@@ -54,6 +52,8 @@ just convert
 tofu plan
 # apply terraform plan
 tofu apply
+# import lost state
+just import
 # list terraform state
 tofu state list
 # show terraform resources
