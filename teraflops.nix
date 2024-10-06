@@ -20,6 +20,7 @@
     setNames
     setFromKey
     transforms
+    tfRef
   ;
 
   # if not specified otherwise both primary IPs get generated
@@ -61,7 +62,7 @@
       type = "ipv6";
     };
 
-    ssh_keys = tf.ref "data.hcloud_ssh_keys.all.ssh_keys.*.name";
+    ssh_keys = tfRef "data.hcloud_ssh_keys.all.ssh_keys.*.name";
 
     # billed +20%
     backups = false;
@@ -126,7 +127,7 @@
     # provisioners = [{"file":{"destination":"/root/.zshrc","source":"~/.zshrc"}},{"remote-exec":{"inline":["shutdown -r +1"]}}];
     # # container-specific config
     image = "ubuntu-22.04";
-    # placement_group_id = tf.ref "hcloud_placement_group.production-dbs.id";
+    # placement_group_id = tfRef "hcloud_placement_group.production-dbs.id";
     labels = {
       environment = "production";
     };
