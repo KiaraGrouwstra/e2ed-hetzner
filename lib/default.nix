@@ -47,6 +47,8 @@
 
   tfRef = ref: "\${${ref}}";
 
+  var = path: tfRef "var.${path}";
+
   transforms = rec {
     id = resource: name: tfRef "hcloud_${resource}.${name}.id";
     placement_group_id = id "placement_group";
@@ -103,6 +105,7 @@ in
     };
   };
   assert tfRef "foo" == "\${foo}";
+  assert var "foo" == "\${var.foo}";
   assert transforms.server_id "foo" == "\${hcloud_server.foo.id}";
   assert transforms.label_selector {a="1";b="2";} == "a=1,b=2";
   assert moveSecrets "/run/container-secrets" { foo = {}; } == { foo.target = "/run/container-secrets/foo"; };
@@ -136,5 +139,6 @@ in
       moveSecrets
       dynamicRef
       tfRef
+      var
     ;
   }

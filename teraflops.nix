@@ -21,6 +21,7 @@
     setFromKey
     transforms
     tfRef
+    var
   ;
 
   # if not specified otherwise both primary IPs get generated
@@ -196,7 +197,7 @@ in {
 
   provider = {
     hcloud = {
-      token = tf.ref "var.hcloud_api_token";
+      token = var "hcloud_api_token";
     };
   };
 
