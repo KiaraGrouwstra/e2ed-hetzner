@@ -114,6 +114,8 @@
     nixosConfigurations =
     let
       util = (import ./lib {inherit pkgs lib;});
+      dump_path = ./terraform.json;
+      resources = lib.optionalAttrs (lib.pathExists dump_path) (lib.strings.fromJSON (lib.readFile dump_path));
     in
     lib.mapAttrs (name: fn: let
       server =
