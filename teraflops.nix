@@ -153,13 +153,6 @@
       shutdown_before_deletion
     ;
   };
-  common = name:
-    import ./servers/common {inherit pkgs lib inputs util;}
-    //
-    import ./hcloud {inherit lib inputs ;}
-    //
-    import ./hcloud/network.nix {inherit pkgs lib resources name;}
-  ;
 in {
   meta = {
     nixpkgs = pkgs;
@@ -429,15 +422,3 @@ in {
 
     };
 }
-//
-(
-  lib.mapAttrs
-  (name: fn: fn name)
-  {
-    # servers
-    combined = name: {pkgs, ...}: common name // import ./servers/manual {inherit inputs resources pkgs lib name;};
-    # tryton = {pkgs, ...}: {
-    #   # backups = true;
-    # } // import ./servers/tryton/configuration.nix {inherit lib pkgs inputs resources;};
-  }
-)
