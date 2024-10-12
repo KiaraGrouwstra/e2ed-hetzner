@@ -1,10 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
-  tf,
-  resources,
-  outputs,
   ...
 }: let
   util = import ./lib/default.nix {inherit lib pkgs;};
