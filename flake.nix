@@ -111,37 +111,34 @@
     in sanitized;
 
     # local VMs
-    nixosConfigurations = let
-      inherit (host) system;
-      # specialArgs = {inherit inputs;};
-    in {
-      manual = nixpkgs-guest.lib.nixosSystem {
-        inherit system pkgs lib;
+    nixosConfigurations =
+    let
+      util = (import ./lib {inherit pkgs lib;});
+    in
+    lib.mapAttrs (name: fn: let
+      server =
+        resources.managed.hcloud_server.${name};
+    in fn {
+      inherit name;
+      specialArgs = {
+        inherit
+          inputs
+          util
+          name
+          resources
+          server
+        ;
+      };
+      system = if server != {} then util.hcloud_architecture server.values.server_type else host_arch;
+    })
+    {
+      combined = { name, specialArgs, system }: nixpkgs-guest.lib.nixosSystem {
+        inherit specialArgs;
+        inherit system;
         modules = [
-          inputs.disko.nixosModules.disko
-          inputs.sops-nix.nixosModules.default
-          ./servers/common/vm.nix
           ./servers/common
-          ./servers/manual
-          # ./servers/nextcloud
-          (let ips = [
-            8000
-            9980
-            1465
-          ]; in {
-            virtualisation.vmVariant = {
-              virtualisation.diskSize = 2048;
-              virtualisation.forwardPorts = lib.lists.map (ip: {
-                from = "host";
-                host.port = ip;
-                guest.port = ip;
-              }) ips;
-            };
-            networking.firewall = {
-              # enable = false;
-              allowedTCPPorts = ips;
-            };
-          })
+          inputs.disko.nixosModules.disko
+          ./${name}.nix
         ];
       };
     };
