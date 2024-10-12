@@ -19,7 +19,7 @@
     transforms
     tfRef
     var
-  ;
+    ;
 
   # default if not specified
   private.public_net = {
@@ -51,7 +51,7 @@
     # server_type = "cx31";
 
     # https://docs.hetzner.com/general/others/data-centers-and-connection
-    network_zone = "eu-central"; 
+    network_zone = "eu-central";
     location = "nbg1";
     datacenter = "nbg1-dc3";
 
@@ -155,7 +155,7 @@
         ipv4 = tfRef "hcloud_primary_ip.combined_ipv4.id";
         ipv6 = tfRef "hcloud_primary_ip.combined_ipv6.id";
       };
-  };
+    };
   });
 in {
   terraform = {
@@ -182,13 +182,13 @@ in {
       };
     };
 
-  #   cloud = {
-  #     hostname = "app.terraform.io";
-  #     organization = "cinerealkiara";
-  #     workspaces = {
-  #       name = "tf-api";
-  #     };
-  #   };
+    #   cloud = {
+    #     hostname = "app.terraform.io";
+    #     organization = "cinerealkiara";
+    #     workspaces = {
+    #       name = "tf-api";
+    #     };
+    #   };
   };
 
   # Set the variable value in *.tfvars file
@@ -257,43 +257,43 @@ in {
 
       # https://docs.hetzner.com/cloud/placement-groups/overview
       placement_group = setNames (mapVals (default {
-        # this is the only option so far
-        type = "spread";
-      }) {
-        "production-dbs" = {
-          inherit (hcloud) labels;
-        };
-      });
+          # this is the only option so far
+          type = "spread";
+        }) {
+          "production-dbs" = {
+            inherit (hcloud) labels;
+          };
+        });
 
       # https://docs.hetzner.com/cloud/networks/overview
       network = setNames (mapVals (default {
-        inherit (hcloud) delete_protection labels;
-        # https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch/
-        expose_routes_to_vswitch = false;
-        # https://datatracker.ietf.org/doc/html/rfc1918
-        ip_range = "10.0.0.0/8";
-      }) {
-        "production" = {};
-      });
+          inherit (hcloud) delete_protection labels;
+          # https://docs.hetzner.com/cloud/networks/connect-dedi-vswitch/
+          expose_routes_to_vswitch = false;
+          # https://datatracker.ietf.org/doc/html/rfc1918
+          ip_range = "10.0.0.0/8";
+        }) {
+          "production" = {};
+        });
 
       # https://docs.hetzner.com/cloud/networks/faq/#what-are-subnets
       network_subnet =
         mapVals (default {
-        inherit (hcloud) network_zone;
+          inherit (hcloud) network_zone;
           type = "cloud"; # server, cloud or vswitch
-        ip_range = "10.0.0.0/24";
-        # vswitch_id = 0;
-      }) {
-        "production" = {
-          inherit (hcloud) network_id;
+          ip_range = "10.0.0.0/24";
+          # vswitch_id = 0;
+        }) {
+          "production" = {
+            inherit (hcloud) network_id;
+          };
         };
-      };
 
       # https://docs.hetzner.com/cloud/networks/faq/#what-are-routes
       # ensure packets for a given destination IP prefix
       # will be sent to the address specified in its gateway
       network_route = mapVals (default {
-      }) {
+        }) {
         "production" = {
           inherit (hcloud) network_id;
           # Destination network or host of this route.
@@ -315,12 +315,12 @@ in {
           assignee_type = "server";
         })
         (lib.mergeAttrsList (lib.attrValues (lib.mapAttrs (name: _cfg: {
-          "${name}_ipv4" = {
-            type = "ipv4";
-          };
-          "${name}_ipv6" = {
-            type = "ipv6";
-          };
+            "${name}_ipv4" = {
+              type = "ipv4";
+            };
+            "${name}_ipv6" = {
+              type = "ipv6";
+            };
           })
           servers)))
       );
@@ -342,54 +342,54 @@ in {
 
       # https://docs.hetzner.com/cloud/firewalls/overview
       firewall = setNames (mapVals (compose [
-        (evolve transforms)
+          (evolve transforms)
           (default {inherit (hcloud) labels;})
-      ])
-      {
-        "deny_all" = {};
-        "production" = {
-          # The `firewall_ids` property of the `hcloud_server` resource ensures
-          # that a server is attached to the specified Firewalls before its first boot.
-          # This is not the case when using the `hcloud_firewall_attachment`
-          # resource to attach servers to a Firewall.
-          apply_to = {
-            label_selector = hcloud.labels;
-            # server = "tryton";
-          };
-          rule = [
-            {
-              direction = "in";
+        ])
+        {
+          "deny_all" = {};
+          "production" = {
+            # The `firewall_ids` property of the `hcloud_server` resource ensures
+            # that a server is attached to the specified Firewalls before its first boot.
+            # This is not the case when using the `hcloud_firewall_attachment`
+            # resource to attach servers to a Firewall.
+            apply_to = {
+              label_selector = hcloud.labels;
+              # server = "tryton";
+            };
+            rule = [
+              {
+                direction = "in";
                 protocol = "tcp";
                 port = "22";
-              source_ips = [
-                "0.0.0.0/0"
-                "::/0"
-              ];
+                source_ips = [
+                  "0.0.0.0/0"
+                  "::/0"
+                ];
                 # destination_ips = [
                 #     format("%s/32", hcloud_server.test_server.ipv4_address)
                 # ]
-            }
-          ];
-        };
-      });
+              }
+            ];
+          };
+        });
 
       # Attaches resource to a Hetzner Cloud Firewall; one per firewall
       # not attached before boot without more workarounds
       firewall_attachment =
         pipes [
-        # attach to firewall of the same name
-        (setFromKey "firewall_id")
-        (mapVals (evolve transforms))
-      ] {
-        "deny_all" = {
-          label_selectors = [hcloud.labels];
+          # attach to firewall of the same name
+          (setFromKey "firewall_id")
+          (mapVals (evolve transforms))
+        ] {
+          "deny_all" = {
+            label_selectors = [hcloud.labels];
+          };
+          "production" = {
+            label_selectors = [hcloud.labels];
+            # or:
+            # server_ids = ["tryton"];
+          };
         };
-        "production" = {
-          label_selectors = [hcloud.labels];
-          # or:
-          # server_ids = ["tryton"];
-        };
-      };
 
       # # https://docs.hetzner.com/cloud/volumes/overview/#pricing
       # volume = setNames (mapVals (compose [
