@@ -91,7 +91,7 @@
             ]
           ))
           nixos-anywhere.packages.${system}.default
-          pkgs.jq  
+          pkgs.jq
         ];
       };
     };
