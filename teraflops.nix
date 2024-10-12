@@ -88,7 +88,7 @@
     # as the Provider will lift the lock in that case.
     # If you also want to protect your resources from deletion by OpenTofu,
     # you can use the [`prevent_destroy` lifecycle attribute](https://opentofu.org/docs/language/meta-arguments/lifecycle#syntax-and-arguments).
-    delete_protection = true;
+    delete_protection = false;
 
     # Needs to be the same as `delete_protection`
     rebuild_protection = delete_protection;
