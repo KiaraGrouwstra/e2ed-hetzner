@@ -154,18 +154,6 @@
     ;
   };
 in {
-  meta = {
-    nixpkgs = pkgs;
-  };
-  defaults = _: {
-    deployment = {
-      targetEnv = "hcloud";
-      # https://docs.hetzner.com/cloud/servers/overview
-      hcloud = server // { inherit (nixos) public_net; };
-    };
-    system.stateVersion = "24.05";
-  };
-
   terraform = {
     required_providers = {
       hcloud = {
