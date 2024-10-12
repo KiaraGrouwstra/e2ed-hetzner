@@ -151,8 +151,16 @@
       delete_protection
       rebuild_protection
       shutdown_before_deletion
-    ;
+      ;
   };
+  servers = setNames (mapVals (default server_common) {
+    combined = {
+      public_net = {
+        ipv4 = tfRef "hcloud_primary_ip.combined_ipv4.id";
+        ipv6 = tfRef "hcloud_primary_ip.combined_ipv6.id";
+      };
+  };
+  });
 in {
   terraform = {
     required_providers = {
@@ -401,12 +409,6 @@ in {
       # });
 
       # ssh root@$( tofu output nixserver-server1_ipv4_address ) -i ./sshkey
-      server = setNames (mapVals (default server) {
-        # tryton = {
-        #   backups = true;
-        #   image = "registry.bij1.org/bij1.erp:latest";
-        # };
-      });
-
+      server = servers;
     };
 }
