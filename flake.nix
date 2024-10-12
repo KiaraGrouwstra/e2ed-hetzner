@@ -80,6 +80,8 @@
               p.hcloud
               p.ssh
               p.tls
+              p.null
+              p.external
             ]
           ))
           teraflops.packages.${system}.default
