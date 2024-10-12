@@ -170,7 +170,31 @@ in {
     };
     system.stateVersion = "24.05";
   };
-  # terraform = {
+
+  terraform = {
+    required_providers = {
+      hcloud = {
+        source = "hetznercloud/hcloud";
+        version = "= 1.48.1";
+      };
+      tls = {
+        source = "hashicorp/tls";
+        version = "= 4.0.5";
+      };
+      ssh = {
+        source = "loafoe/ssh";
+        version = "= 2.7.0";
+      };
+      external = {
+        source = "hashicorp/external";
+        version = "= 2.3.3";
+      };
+      null = {
+        source = "hashicorp/null";
+        version = "= 3.2.2";
+      };
+    };
+
   #   cloud = {
   #     hostname = "app.terraform.io";
   #     organization = "cinerealkiara";
@@ -178,7 +202,7 @@ in {
   #       name = "tf-api";
   #     };
   #   };
-  # };
+  };
 
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
