@@ -85,6 +85,9 @@
     then lib.foldl' (attr: prop: attr."${prop}") resources attrPath
     else tfRef (lib.concatStringsSep "." attrPath);
 
+  # https://docs.hetzner.com/cloud/servers/overview#pricing
+  hcloud_architecture = server_type: if lib.substring 0 3 server_type == "cax" then "aarch64-linux" else "x86_64-linux";
+
 in
   assert pipes [(s: "(${s})") (s: s + s)] "foo" == "(foo)(foo)";
   assert compose [(s: s + s) (s: "(${s})")] "foo" == "(foo)(foo)";
@@ -140,5 +143,6 @@ in
       dynamicRef
       tfRef
       var
+      hcloud_architecture
     ;
   }
