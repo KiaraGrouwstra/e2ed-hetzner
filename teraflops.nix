@@ -147,6 +147,7 @@
       delete_protection
       rebuild_protection
       shutdown_before_deletion
+      depends_on
       ;
   };
   servers = setNames (mapVals (default server_common) {
