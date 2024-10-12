@@ -331,19 +331,20 @@ in {
         # "tryton" = "tryton";
       });
 
-      # https://docs.hetzner.com/cloud/floating-ips/faq
-      floating_ip = setNames (mapVals (compose [
-        (evolve transforms)
-        (lib.nameValuePair "server_id")
-        (default {
-          inherit (hcloud) delete_protection labels;
-          inherit (hcloud.ip) type;
-          home_location = hcloud.location;
-        })
-      ])
-      {
-        # "tryton" = "tryton";
-      });
+      # # https://docs.hetzner.com/cloud/floating-ips/faq
+      # floating_ip = setNames (mapVals (compose [
+      #   (evolve transforms)
+      #   (name: {server_id=tfRef "hcloud_server.${name}.id";})
+      #   (default {
+      #     inherit (hcloud) delete_protection labels;
+      #     inherit (hcloud.ip) type;
+      #     home_location = hcloud.location;
+      #   })
+      # ])
+      # {
+      #   # "tryton" = "tryton";
+      #   # "combined" = "combined";
+      # });
 
       # https://docs.hetzner.com/cloud/firewalls/overview
       firewall = setNames (mapVals (compose [
