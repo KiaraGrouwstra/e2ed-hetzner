@@ -50,8 +50,8 @@ teraflops init
 just convert
 # see terraform plan
 tofu plan
-# apply terraform plan
-tofu apply
+# apply terraform plan, either passing the ssh key or setting it in e.g. secret.auto.tfvars.json
+tofu apply -var="ssh_key=$(cat ~/.ssh/MY_KEY)"
 # import lost state
 just import
 # list terraform state

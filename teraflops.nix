@@ -193,6 +193,11 @@ in {
       description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
       sensitive = true;
     };
+    ssh_key = {
+      type = "string";
+      description = "SSH private key used by `nixos-anywhere` for server set-up.";
+      # sensitive = true;  # hides the key but prevents seeing feedback during apply
+    };
   };
 
   provider = {
