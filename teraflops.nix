@@ -24,7 +24,7 @@
     var
   ;
 
-  # if not specified otherwise both primary IPs get generated
+  # default if not specified
   private.public_net = {
     ipv6_enabled = false;
     ipv4_enabled = false;
@@ -46,7 +46,7 @@
 
   # common options
   hcloud = evolve transforms rec {
-    inherit (private) public_net;
+    inherit (nixos) public_net;
 
     # https://docs.hetzner.com/cloud/servers/overview/#pricing
     # cheapest shared-vcpu arm type
