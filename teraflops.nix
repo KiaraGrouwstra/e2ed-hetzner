@@ -366,6 +366,9 @@ in {
                 "0.0.0.0/0"
                 "::/0"
               ];
+                # destination_ips = [
+                #     format("%s/32", hcloud_server.test_server.ipv4_address)
+                # ]
             }
           ];
         };
