@@ -3,10 +3,14 @@
   ...
 }: let
   inherit (pkgs) lib;
-  inherit (builtins.getFlake (toString ./.)) inputs;
+  flake = builtins.getFlake (toString ./.);
+  inherit (flake)
+    inputs
+    outputs
+  ;
   util = import ./lib/default.nix {inherit lib pkgs;};
   inherit
-    (import ./lib/default.nix {inherit lib pkgs;})
+    (util)
       mapVals
       default
       defaults
