@@ -1,5 +1,6 @@
 {
   lib,
+  modulesPath,
   inputs,
   util,
   ...
@@ -8,6 +9,8 @@
   imports =
     [
       ./headless
+      (modulesPath + "/installer/scan/not-detected.nix")
+      (modulesPath + "/profiles/qemu-guest.nix")
       ./fresh.nix
       ./net.nix
       # ./paranoid.nix
