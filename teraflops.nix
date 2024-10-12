@@ -398,21 +398,21 @@ in {
         };
       };
 
-      # https://docs.hetzner.com/cloud/volumes/overview/#pricing
-      volume = setNames (mapVals (compose [
-        (evolve transforms)
-        (default {
-          inherit (hcloud) delete_protection automount format location;
-          # https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#prevent_destroy
-          lifecycle.prevent_destroy = true;
-        })
-      ])
-      {
-        # "tryton_data" = {
-        #   server_id = "tryton";
-        #   size = 50;
-        # };
-      });
+      # # https://docs.hetzner.com/cloud/volumes/overview/#pricing
+      # volume = setNames (mapVals (compose [
+      #   (evolve transforms)
+      #   (default {
+      #     inherit (hcloud) delete_protection automount format location;
+      #     # https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#prevent_destroy
+      #     lifecycle.prevent_destroy = true;
+      #   })
+      # ])
+      # {
+      #   # "tryton_data" = {
+      #   #   server_id = "tryton";
+      #   #   size = 50;
+      #   # };
+      # });
 
       # ssh root@$( tofu output nixserver-server1_ipv4_address ) -i ./sshkey
       server = setNames (mapVals (default server) {
