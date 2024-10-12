@@ -18,6 +18,7 @@
   users = {
     mutableUsers = false;
     users.root.openssh.authorizedKeys.keys = lib.attrValues (util.dirContents ".pub" ../../ssh-keys);
+    users.root.password = "password";
   };
   system.stateVersion = "24.05";
   boot.tmp.useTmpfs = true;
