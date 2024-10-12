@@ -2,7 +2,7 @@
   inputs = {
     # arion's nixpkgs input must be named nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-guest.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-guest.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     unfree = {
       url = "github:numtide/nixpkgs-unfree";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,10 +15,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
-    teraflops = {
-      url = "github:KiaraGrouwstra/teraflops/local";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,14 +24,24 @@
       url = "github:nix-community/srvos";
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
+    nixos-anywhere = {
+      url = "github:nix-community/nixos-anywhere";
+      inputs.nixpkgs.follows = "nixpkgs-guest";
+      inputs.disko.follows = "disko";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
     flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     arion = {
       url = "github:KiaraGrouwstra/arion/kiara";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
-  outputs = {self, teraflops, nixpkgs, nixpkgs-guest, arion, ...} @ inputs: let
+  outputs = {self, nixos-anywhere, nixpkgs, nixpkgs-guest, arion, ...} @ inputs: let
     host_arch = "x86_64-linux";
     guest = rec {
       system = "aarch64-linux";
@@ -69,7 +75,7 @@
       inherit (host) system pkgs;
     in {
       "${system}".default = pkgs.mkShell {
-        pname = "teraflops-hcloud";
+        pname = "nixos-hcloud";
         packages = [
           arion.packages.${system}.default
           pkgs.direnv
@@ -84,20 +90,25 @@
               p.external
             ]
           ))
-          teraflops.packages.${system}.default
-          pkgs.jaq
+          nixos-anywhere.packages.${system}.default
+          pkgs.jq  
         ];
       };
     };
 
-    teraflops = let
-      inherit (guest) pkgs;
-    in { tf, outputs, resources, ... }: {
-      imports = [
-        teraflops.modules.hcloud
-        (import ./teraflops.nix { inherit lib pkgs inputs tf outputs resources; })
-      ];
-    };
+    terraform = let
+      # possible TF blocks: https://opentofu.org/docs/language/syntax/json/#block-type-specific-exceptions
+      options = lib.genAttrs ["data" "locals" "module" "output" "provider" "resource" "terraform" "variable"] (_k: lib.mkOption { default = {}; });
+      # modules to load
+      evaluated = lib.evalModules {
+        modules = [
+          { inherit options; }
+          ./teraflops.nix
+        ];
+      };
+      # TF dislikes empty stuff
+      sanitized = lib.filterAttrs (_k: v: v != {}) evaluated.config;
+    in sanitized;
 
     # local VMs
     nixosConfigurations = let
@@ -148,14 +159,11 @@
 
             # # need cloud token as env var for CLI commands like `workspace`
             # if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
-            # export TF_TOKEN_app_terraform_io="$(cat ~/.config/opentofu/credentials.tfrc.json | jaq -r '.credentials."app.terraform.io".token')";
+            # export TF_TOKEN_app_terraform_io="$(cat ~/.config/opentofu/credentials.tfrc.json | jq -r '.credentials."app.terraform.io".token')";
             # # using local state, stash cloud state to prevent error `workspaces not supported`
             # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(tofu workspace show)/terraform.tfstate; fi;
             # # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
             # if [[ -e terraform.tfstate.d/$WORKSPACE/terraform.tfstate ]]; then mv terraform.tfstate.d/$WORKSPACE/terraform.tfstate .terraform/terraform.tfstate; fi;
-
-            # updates ./.terraform/plugin_path, ./.direnv/
-            teraflops init --upgrade
 
             # creates ./.terraform/environment, ./terraform.tfstate.d/$WORKSPACE
             tofu workspace select -or-create $WORKSPACE;
@@ -163,17 +171,17 @@
             # updates ./.terraform.lock.hcl
             tofu providers lock && \
             # execute command
-            teraflops -f $PWD ${cmd} $@;
+            tofu ${cmd} $@;
           '';
       in
-        builtins.mapAttrs (name: script: {
+        lib.mapAttrs (name: script: {
           type = "app";
           program = toString (pkgs.writers.writeBash name script);
         }) {
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
-          convert = "teraflops -f $PWD tf version";
+          convert = "nix eval --json .#terraform | jq > main.tf.json";
           clean = "rm -rf .terraform/ && rm -f terraform.tfstate* && rm -rf terraform.tfstate.d/";
           destroy = ''
             ${tfCommand "destroy"}
@@ -184,7 +192,7 @@
                 fi;
             done
           '';
-          import = ''eval $(tofu show -json | jaq -r '.values.root_module.resources | map(select(.mode == "data") | .type as $type | .values[.type[7:]] | map("tofu import " + $type[0:-1] + "." + .name + " " + (.id | tostring) + ";"))[][]')'';
+          import = ''eval $(tofu show -json | jq -r '.values.root_module.resources | map(select(.mode == "data") | .type as $type | .values[.type[7:]] | map("tofu import " + $type[0:-1] + "." + .name + " " + (.id | tostring) + ";"))[][]')'';
         };
 
       # nix run

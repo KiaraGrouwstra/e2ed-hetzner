@@ -57,11 +57,9 @@ tofu state list
 # show terraform resources
 tofu show
 # inspect terraform state
-tofu output -json | jaq
-# save ssh key
-tofu output -json | jaq -r '.teraflops.value.privateKey' > ~/.ssh/teraflops && chmod 0600 ~/.ssh/teraflops
+tofu output -json | jq
 # get server IP
-export MY_SERVER=$(tofu output -json | jaq -r '.teraflops.value.nodes.combined.targetHost')
+export MY_SERVER=$(tofu show -json | jq -r '.values.root_module.resources[] | select(.address == "hcloud_server.combined") | .values.ipv4_address')
 # clear host entries for prior instances
 sed -iE "s/$MY_SERVER.*//g" ~/.ssh/known_hosts
 # ssh to server
