@@ -8,7 +8,8 @@
   ...
 }: let
   util = import ./lib/default.nix {inherit lib pkgs;};
-  inherit (util)
+  inherit
+    (util)
     pipes
     compose
     evolve
@@ -133,8 +134,9 @@
       environment = "production";
     };
   };
-  server = {
-    inherit (hcloud)
+  server_common = {
+    inherit
+      (hcloud)
       server_type
       image
       datacenter
@@ -320,7 +322,8 @@ in {
         };
       };
 
-      primary_ip = setNames (mapVals
+      primary_ip = setNames (
+        mapVals
         (default {
           inherit (hcloud) delete_protection auto_delete datacenter labels;
           inherit (hcloud.ip) type;
@@ -333,7 +336,8 @@ in {
           "${name}_ipv6" = {
             type = "ipv6";
           };
-        }) servers)))
+          })
+          servers)))
       );
 
       # # https://docs.hetzner.com/cloud/floating-ips/faq
@@ -354,7 +358,7 @@ in {
       # https://docs.hetzner.com/cloud/firewalls/overview
       firewall = setNames (mapVals (compose [
         (evolve transforms)
-        (default { inherit (hcloud) labels; })
+          (default {inherit (hcloud) labels;})
       ])
       {
         "deny_all" = {};
@@ -370,8 +374,8 @@ in {
           rule = [
             {
               direction = "in";
-              protocol  = "tcp";
-              port      = "22";
+                protocol = "tcp";
+                port = "22";
               source_ips = [
                 "0.0.0.0/0"
                 "::/0"
@@ -383,7 +387,8 @@ in {
 
       # Attaches resource to a Hetzner Cloud Firewall; one per firewall
       # not attached before boot without more workarounds
-      firewall_attachment = pipes [
+      firewall_attachment =
+        pipes [
         # attach to firewall of the same name
         (setFromKey "firewall_id")
         (mapVals (evolve transforms))
