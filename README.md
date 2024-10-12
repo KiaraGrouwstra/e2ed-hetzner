@@ -44,8 +44,6 @@ arion up
 just clean
 # authenticate with remote TF backend
 just login
-# initialize TF
-teraflops init
 # convert nix to TF by teraflops
 just convert
 # see terraform plan
@@ -68,8 +66,6 @@ export MY_SERVER=$(tofu output -json | jaq -r '.teraflops.value.nodes.combined.t
 sed -iE "s/$MY_SERVER.*//g" ~/.ssh/known_hosts
 # ssh to server
 ssh root@$MY_SERVER
-# apply nix changes
-teraflops deploy
 ```
 
 #### [nixos host](https://github.com/hercules-ci/arion/issues/122)
