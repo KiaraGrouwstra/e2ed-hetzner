@@ -1,5 +1,5 @@
-# https://github.com/LGUG2Z/nixos-hetzner-cloud-starter/blob/ee2cc1bb754df533f125048e7118bc07898f52e3/disk-config.nix
-{lib, ...}: {
+{ lib, ... }:
+{
   disko.devices = {
     disk.disk1 = {
       device = lib.mkDefault "/dev/sda";
