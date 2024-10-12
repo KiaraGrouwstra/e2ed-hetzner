@@ -24,9 +24,9 @@
     users.root.openssh.authorizedKeys.keys = lib.attrValues (util.dirContents ".pub" ../../ssh-keys);
     users.root.password = "password";
   };
-  system.stateVersion = "24.05";
   boot.tmp.useTmpfs = true;
   # networking.useDHCP = false;  # breaks port forwarding on VM
+  system.stateVersion = "24.11";
 
   # lacking srvos server:
   services.openssh = {
