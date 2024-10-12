@@ -149,3 +149,17 @@ hcloud_location = "nbg1"
 ```sh
 just clean
 ```
+
+### too deeply-nested shells
+
+Errors as follows may be addressed by simply retrying your TF command from a new shell:
+
+> Error: Failed to load plugin schemas
+>
+> Error while loading schemas for plugin components: 5 problems:
+>
+> - Failed to obtain provider schema: Could not load the schema for provider registry.opentofu.org/hashicorp/external: failed to instantiate provider
+> "registry.opentofu.org/hashicorp/external" to obtain schema: Unrecognized remote plugin message:
+>
+> This usually means that the plugin is either invalid or simply
+> needs to be recompiled to support the latest protocol..
