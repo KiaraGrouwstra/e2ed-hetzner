@@ -320,16 +320,21 @@ in {
         };
       };
 
-      primary_ip = setNames (mapVals (compose [
-        (lib.nameValuePair "assignee_id")
+      primary_ip = setNames (mapVals
         (default {
           inherit (hcloud) delete_protection auto_delete datacenter labels;
           inherit (hcloud.ip) type;
           assignee_type = "server";
         })
-      ]) {
-        # "tryton" = "tryton";
-      });
+        (lib.mergeAttrsList (lib.attrValues (lib.mapAttrs (name: _cfg: {
+          "${name}_ipv4" = {
+            type = "ipv4";
+          };
+          "${name}_ipv6" = {
+            type = "ipv6";
+          };
+        }) servers)))
+      );
 
       # # https://docs.hetzner.com/cloud/floating-ips/faq
       # floating_ip = setNames (mapVals (compose [
