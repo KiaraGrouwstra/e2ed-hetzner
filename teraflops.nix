@@ -217,6 +217,25 @@ in {
     };
   };
 
+  # https://github.com/nix-community/nixos-anywhere/blob/main/terraform/all-in-one.md
+  module =
+    lib.mapAttrs (server_name: server_cfg: {
+      depends_on = ["hcloud_server.${server_name}"];
+      source = "../nixos-anywhere/terraform/all-in-one";
+      nixos_system_attr = ".#nixosConfigurations.${server_name}.config.system.build.toplevel";
+      nixos_partitioner_attr = ".#nixosConfigurations.${server_name}.config.system.build.diskoScriptNoDeps";
+      target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
+      instance_id = tfRef "hcloud_server.${server_name}.id";
+      install_user = "root";
+      install_port = "22";
+      install_ssh_key = var "ssh_key";
+      extra_environment = {
+        inherit server_name;
+      };
+      debug_logging = true;
+    })
+    servers;
+
   data =
     inNamespace "hcloud"
     (
