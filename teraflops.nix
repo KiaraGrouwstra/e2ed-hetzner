@@ -137,7 +137,6 @@
       image
       datacenter
       ssh_keys
-      public_net
       keep_disk
       labels
       backups
