@@ -1,11 +1,10 @@
 {
   lib,
-  resources,
   name,
+  server,
   ...
 }:
 let
-  server = resources.hcloud_server."${name}";
   network = lib.head server.network;
 in
 # https://nixos.wiki/wiki/Install_NixOS_on_Hetzner_Cloud#Network_configuration
