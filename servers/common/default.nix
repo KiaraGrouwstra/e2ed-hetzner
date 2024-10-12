@@ -15,6 +15,10 @@
       inputs.srvos.nixosModules.hardware-hetzner-cloud-arm
       # inputs.disko.nixosModules.disko
     ];
+  boot.loader.grub = {
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+  };
   users = {
     mutableUsers = false;
     users.root.openssh.authorizedKeys.keys = lib.attrValues (util.dirContents ".pub" ../../ssh-keys);
