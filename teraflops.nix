@@ -290,9 +290,10 @@ in {
       });
 
       # https://docs.hetzner.com/cloud/networks/faq/#what-are-subnets
-      network_subnet = mapVals (default {
+      network_subnet =
+        mapVals (default {
         inherit (hcloud) network_zone;
-        type = "cloud";  # server, cloud or vswitch
+          type = "cloud"; # server, cloud or vswitch
         ip_range = "10.0.0.0/24";
         # vswitch_id = 0;
       }) {
