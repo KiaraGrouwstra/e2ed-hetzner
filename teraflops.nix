@@ -235,9 +235,6 @@ in {
       install_ssh_key = var "ssh_key";
       debug_logging = true;
       nixos_generate_config_path = "./hardware/hcloud-aarch64.nix";
-      nix_options = {
-        show-trace = true;
-      };
     })
     servers;
 
