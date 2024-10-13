@@ -114,6 +114,7 @@
     nixosConfigurations =
     let
       util = (import ./lib {inherit pkgs lib;});
+      hardware_path = ./hardware/hcloud-aarch64.nix;
     in
     # assumption: server name = config name
     lib.mapAttrs (name: fn: fn {
@@ -135,6 +136,7 @@
           ./hcloud/disk-config.nix
           inputs.disko.nixosModules.disko
           { networking.hostName = name; }
+          (lib.optionalAttrs (lib.pathExists hardware_path) hardware_path)
         ];
       };
     };
