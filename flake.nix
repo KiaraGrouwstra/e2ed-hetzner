@@ -114,25 +114,16 @@
     nixosConfigurations =
     let
       util = (import ./lib {inherit pkgs lib;});
-      # TODO: add to version control for detection by flake
-      dump_path = ./terraform.json;
-      resources = lib.optionalAttrs (lib.pathExists dump_path) (lib.strings.fromJSON (lib.readFile dump_path));
     in
-    lib.mapAttrs (name: fn: let
-      server =
-        resources.managed.hcloud_server.${name};
-    in fn {
+    lib.mapAttrs (name: fn: fn {
       inherit name;
+      inherit (guest) system;
       specialArgs = {
         inherit
           inputs
           util
-          name
-          resources
-          server
         ;
       };
-      system = if server != {} then util.hcloud_architecture server.values.server_type else host_arch;
     })
     {
       combined = { name, specialArgs, system }: nixpkgs-guest.lib.nixosSystem {
@@ -142,6 +133,7 @@
           ./servers/common
           ./hcloud/disk-config.nix
           inputs.disko.nixosModules.disko
+          { networking.hostName = name; }
         ];
       };
     };
