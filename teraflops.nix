@@ -149,13 +149,17 @@
       depends_on
       ;
   };
-  servers = setNames (mapVals (default server_common) {
-    combined = {
+  servers = setNames ((lib.mapAttrs (name: cfg: defaults [
+    server_common
+    {
       public_net = {
-        ipv4 = tfRef "hcloud_primary_ip.combined_ipv4.id";
-        ipv6 = tfRef "hcloud_primary_ip.combined_ipv6.id";
+        ipv4 = tfRef "hcloud_primary_ip.${name}_ipv4.id";
+        ipv6 = tfRef "hcloud_primary_ip.${name}_ipv6.id";
       };
-    };
+    }
+    cfg
+  ])) {
+    combined = {};
   });
 in {
   terraform = {
