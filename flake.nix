@@ -41,43 +41,31 @@
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
-  outputs = {self, nixos-anywhere, nixpkgs, nixpkgs-guest, arion, ...} @ inputs: let
-    host_arch = "x86_64-linux";
-    guest = rec {
-      system = "aarch64-linux";
-      pkgs = nixpkgs-guest.legacyPackages."${system}";
-      # inherit (nixpkgs-guest) lib;
-    };
-    host = rec {
-      system = host_arch;
-      pkgs = nixpkgs.legacyPackages."${system}";
-      # inherit (nixpkgs) lib;
-    };
-    inherit (host.pkgs) lib;
-    # https://github.com/NixOS/nixpkgs/issues/283015
-    tofuProvider = provider:
-      provider.override (oldArgs: {
-        provider-source-address =
-          lib.replaceStrings
-          ["https://registry.terraform.io/providers"]
-          ["registry.opentofu.org"]
-          oldArgs.homepage;
-      });
-    # arion containers use the package set for the guest on the host system
-    pkgs = nixpkgs-guest.legacyPackages."${host.system}";
-  in {
-    inherit inputs pkgs;
+  outputs = {self, ...} @ inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
+    let
+      pkgs = inputs.nixpkgs.legacyPackages."${system}";
+      inherit (pkgs) lib;
+    in
+    {
+      inherit pkgs lib;
 
-    # for `nix fmt`
-    formatter = {"${host.system}" = (inputs.treefmt-nix.lib.evalModule host.pkgs ./treefmt.nix).config.build.wrapper;};
+      # for `nix fmt`
+      formatter = (inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper;
 
-    devShells = let
-      inherit (host) system pkgs;
-    in {
-      "${system}".default = pkgs.mkShell {
+      devShells.default = let
+        # https://github.com/NixOS/nixpkgs/issues/283015
+        tofuProvider = provider:
+          provider.override (oldArgs: {
+            provider-source-address =
+              lib.replaceStrings
+              ["https://registry.terraform.io/providers"]
+              ["registry.opentofu.org"]
+              oldArgs.homepage;
+          });
+      in pkgs.mkShell {
         pname = "nixos-hcloud";
         packages = [
-          arion.packages.${system}.default
+          inputs.arion.packages.${system}.default
           pkgs.direnv
           pkgs.rage
           pkgs.colmena
@@ -90,65 +78,58 @@
               p.external
             ]
           ))
-          nixos-anywhere.packages.${system}.default
+          inputs.nixos-anywhere.packages.${system}.default
           pkgs.jq
         ];
       };
-    };
 
-    terraform = let
-      # possible TF blocks: https://opentofu.org/docs/language/syntax/json/#block-type-specific-exceptions
-      options = lib.genAttrs ["data" "locals" "module" "output" "provider" "resource" "terraform" "variable"] (_k: lib.mkOption { default = {}; });
-      # modules to load
-      evaluated = lib.evalModules {
-        modules = [
-          { inherit options; }
-          ./terraform.nix
-        ];
-      };
-      # TF dislikes empty stuff
-      sanitized = lib.filterAttrs (_k: v: v != {}) evaluated.config;
-    in sanitized;
+      terraform = let
+        # possible TF blocks: https://opentofu.org/docs/language/syntax/json/#block-type-specific-exceptions
+        options = lib.genAttrs ["data" "locals" "module" "output" "provider" "resource" "terraform" "variable"] (_k: lib.mkOption { default = {}; });
+        # modules to load
+        evaluated = lib.evalModules {
+          modules = [
+            { inherit options; }
+            ./terraform.nix
+          ];
+        };
+        # TF dislikes empty stuff
+        sanitized = lib.filterAttrs (_k: v: v != {}) evaluated.config;
+      in sanitized;
 
-    # nixos configs to deploy by nixos-anywhere
-    nixosConfigurations =
-    let
-      util = (import ./lib {inherit pkgs lib;});
-    in
-    # assumption: server name = config name
-    lib.mapAttrs (name: fn: fn {
-      inherit name;
-      inherit (guest) system;
-      specialArgs = {
-        inherit
-          inputs
-          util
-        ;
+      # nixos configs to deploy by nixos-anywhere
+      nixosConfigurations = let
+        inherit (inputs.nixpkgs-guest) lib legacyPackages;
+        inherit (legacyPackages."${system}") pkgs;
+        util = (import ./lib {inherit pkgs lib;});
+      in
+      # assumption: server name = config name
+      lib.mapAttrs (name: fn: fn {
+        inherit name system;
+        specialArgs = {
+          inherit
+            inputs
+            util
+          ;
+        };
+      })
+      {
+        combined = { name, specialArgs, system }: lib.nixosSystem {
+          inherit specialArgs;
+          inherit system;
+          modules = let
+            reportPath = ./nixos-facter/${name}.json;
+          in [
+            ./servers/common
+            ./hcloud/disk-config.nix
+            inputs.disko.nixosModules.disko
+            { networking.hostName = name; }
+            inputs.nixos-facter-modules.nixosModules.facter
+            (lib.optionalAttrs (lib.pathExists reportPath) { config.facter = { inherit reportPath; }; })
+          ];
+        };
       };
-    })
-    {
-      combined = { name, specialArgs, system }: nixpkgs-guest.lib.nixosSystem {
-        inherit specialArgs;
-        inherit system;
-        modules = let
-          reportPath = ./nixos-facter/${name}.json;
-        in [
-          ./servers/common
-          ./hcloud/disk-config.nix
-          inputs.disko.nixosModules.disko
-          { networking.hostName = name; }
-          inputs.nixos-facter-modules.nixosModules.facter
-          (lib.optionalAttrs (lib.pathExists reportPath) { config.facter = { inherit reportPath; }; })
-        ];
-      };
-    };
-    
-  }
-  // inputs.flake-utils.lib.eachDefaultSystem (system:
-    let
-      inherit (host) pkgs;
-    in
-    {
+
       apps = let
         tfCommand = cmd:
           ''
@@ -178,7 +159,7 @@
           vm = ''
             nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
           '';
-          convert = "nix eval --json .#terraform | jq > main.tf.json";
+          convert = "nix eval --json .#terraform.${system} | jq > main.tf.json";
           clean = "rm -rf .terraform/ && rm -f terraform.tfstate* && rm -rf terraform.tfstate.d/";
           destroy = ''
             ${tfCommand "destroy"}

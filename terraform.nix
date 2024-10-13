@@ -221,11 +221,13 @@ in {
 
   # https://github.com/nix-community/nixos-anywhere/blob/main/terraform/all-in-one.md
   module =
-    lib.mapAttrs (server_name: server_cfg: {
+    lib.mapAttrs (server_name: server_cfg: let
+      system = util.hcloud_architecture server_cfg.server_type;
+    in {
       depends_on = ["hcloud_server.${server_name}"];
       source = "github.com/KiaraGrouwstra/nixos-anywhere//terraform/all-in-one?ref=tf-nixos-facter";
-      nixos_system_attr = ".#nixosConfigurations.${server_name}.config.system.build.toplevel";
-      nixos_partitioner_attr = ".#nixosConfigurations.${server_name}.config.system.build.diskoScriptNoDeps";
+      nixos_system_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.toplevel";
+      nixos_partitioner_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.diskoScriptNoDeps";
       target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
       instance_id = tfRef "hcloud_server.${server_name}.id";
       install_user = "root";
