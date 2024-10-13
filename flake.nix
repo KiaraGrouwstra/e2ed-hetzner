@@ -193,6 +193,6 @@
         };
 
       # nix run
-      defaultApp = self.apps.${system}.apply;
+      defaultApp = self.apps.${system}.convert;
     });
 }
