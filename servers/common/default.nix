@@ -14,8 +14,8 @@
       ./fresh.nix
       ./net.nix
       # ./paranoid.nix
-      inputs.srvos.nixosModules.server
-      inputs.srvos.nixosModules.hardware-hetzner-cloud-arm
+      # inputs.srvos.nixosModules.server  # nixos-rebuild build-vm: infinite recursion encountered
+      # inputs.srvos.nixosModules.hardware-hetzner-cloud-arm  # nixos-rebuild build-vm: infinite recursion encountered
       # inputs.disko.nixosModules.disko
     ];
   boot.loader.grub = {
@@ -27,7 +27,7 @@
     users.root.openssh.authorizedKeys.keys = lib.attrValues (util.dirContents ".pub" ../../ssh-keys);
     users.root.password = "password";
   };
-  boot.tmp.useTmpfs = true;
+  # boot.tmp.useTmpfs = true;
   # networking.useDHCP = false;  # breaks port forwarding on VM
   system.stateVersion = "24.11";
 

@@ -114,6 +114,7 @@
     nixosConfigurations =
     let
       util = (import ./lib {inherit pkgs lib;});
+      # TODO: add to version control for detection by flake
       dump_path = ./terraform.json;
       resources = lib.optionalAttrs (lib.pathExists dump_path) (lib.strings.fromJSON (lib.readFile dump_path));
     in
@@ -139,8 +140,8 @@
         inherit system;
         modules = [
           ./servers/common
+          ./hcloud/disk-config.nix
           inputs.disko.nixosModules.disko
-          ./${name}.nix
         ];
       };
     };
