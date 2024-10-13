@@ -225,7 +225,7 @@ in {
   module =
     lib.mapAttrs (server_name: server_cfg: {
       depends_on = ["hcloud_server.${server_name}"];
-      source = "github.com/KiaraGrouwstra/nixos-anywhere//terraform/all-in-one?ref=tf-generate-hardware";
+      source = "github.com/KiaraGrouwstra/nixos-anywhere//terraform/all-in-one?ref=tf-nixos-facter";
       nixos_system_attr = ".#nixosConfigurations.${server_name}.config.system.build.toplevel";
       nixos_partitioner_attr = ".#nixosConfigurations.${server_name}.config.system.build.diskoScriptNoDeps";
       target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
@@ -234,7 +234,7 @@ in {
       install_port = "22";
       install_ssh_key = var "ssh_key";
       debug_logging = true;
-      nixos_generate_config_path = "./hardware/hcloud-aarch64.nix";
+      nixos_facter_path = "./nixos-facter/${server_name}.json";
     })
     servers;
 
