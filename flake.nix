@@ -110,11 +110,12 @@
       sanitized = lib.filterAttrs (_k: v: v != {}) evaluated.config;
     in sanitized;
 
-    # local VMs
+    # nixos configs to deploy by nixos-anywhere
     nixosConfigurations =
     let
       util = (import ./lib {inherit pkgs lib;});
     in
+    # assumption: server name = config name
     lib.mapAttrs (name: fn: fn {
       inherit name;
       inherit (guest) system;
