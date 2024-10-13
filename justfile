@@ -18,7 +18,7 @@ default:
 @login *args='':
     tofu login app.terraform.io -- $@
 
-# build a main.tf.json using teraflops
+# build a main.tf.json
 @convert:
     nix run .#convert
 
@@ -45,7 +45,7 @@ keygen:
 
 # update dependencies
 update:
-    nix flake update && rm -f .terraform.lock.hcl && teraflops init && tofu init && tofu providers lock
+    nix flake update && rm -f .terraform.lock.hcl && tofu init && tofu providers lock
 
 # import lost state - works only once local state has been created
 import:

@@ -1,6 +1,6 @@
 # TF config
 
-Contains [OpenTofu](https://opentofu.org/) code used to manage our infrastructure, Nix'ified for [Teraflops](https://github.com/aanderse/teraflops).
+Contains (Nix'ified) [OpenTofu](https://opentofu.org/) code used to manage our infrastructure.
 
 ## Prerequisites
 
@@ -34,17 +34,13 @@ source .envrc
 just
 # update nix/TF deps
 just update
-# build servers by colmena
-teraflops nix build
-# debug server nix by colmena
-teraflops repl
 # try servers locally by arion
 arion up
 # clear local files
 just clean
 # authenticate with remote TF backend
 just login
-# convert nix to TF by teraflops
+# convert nix to TF
 just convert
 # see terraform plan
 tofu plan

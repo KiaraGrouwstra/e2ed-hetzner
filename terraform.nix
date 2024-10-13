@@ -36,8 +36,6 @@
 
   nixos.public_net = {
     ipv6_enabled = true;
-    # this is currently how teraflops machines get deployed:
-    # https://github.com/aanderse/teraflops/blob/7ece617fe31000d4b1e3645cb5eb83b8c18b5c71/nix/hcloud/default.nix#L39-L41
     ipv4_enabled = true;
   };
 

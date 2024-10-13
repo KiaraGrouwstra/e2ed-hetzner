@@ -103,7 +103,7 @@
       evaluated = lib.evalModules {
         modules = [
           { inherit options; }
-          ./teraflops.nix
+          ./terraform.nix
         ];
       };
       # TF dislikes empty stuff
