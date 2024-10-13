@@ -19,7 +19,7 @@ Contains (Nix'ified) [OpenTofu](https://opentofu.org/) code used to manage our i
 Before issuing any other commands, enter the development environment (if not using [`direnv`](https://zero-to-flakes.com/direnv)):
 
 ```sh
-nix develop -c $SHELL
+nix develop -c (basename $SHELL)
 ```
 
 ### Commands
