@@ -225,7 +225,7 @@ in {
       system = util.hcloud_architecture server_cfg.server_type;
     in {
       depends_on = ["hcloud_server.${server_name}"];
-      source = "github.com/KiaraGrouwstra/nixos-anywhere//terraform/all-in-one?ref=tf-nixos-facter";
+      source = "github.com/numtide/nixos-anywhere//terraform/all-in-one";
       nixos_system_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.toplevel";
       nixos_partitioner_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.diskoScriptNoDeps";
       target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
@@ -234,7 +234,7 @@ in {
       install_port = "22";
       install_ssh_key = var "ssh_key";
       debug_logging = true;
-      nixos_facter_path = "./nixos-facter/${server_name}.json";
+      # nixos_generate_config_path = "./hardware/hcloud-aarch64.nix";
     })
     servers;
 

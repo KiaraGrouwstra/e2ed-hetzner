@@ -102,7 +102,8 @@
         inherit (inputs.nixpkgs-guest) lib legacyPackages;
         inherit (legacyPackages."${system}") pkgs;
         util = (import ./lib {inherit pkgs lib;});
-      in
+        hardware_path = ./hardware/hcloud-aarch64.nix;
+     in
       # assumption: server name = config name
       lib.mapAttrs (name: fn: fn {
         inherit name system;
@@ -117,15 +118,15 @@
         combined = { name, specialArgs, system }: lib.nixosSystem {
           inherit specialArgs;
           inherit system;
-          modules = let
-            reportPath = ./nixos-facter/${name}.json;
-          in [
+          modules = [
             ./servers/common
             ./hcloud/disk-config.nix
             inputs.disko.nixosModules.disko
-            { networking.hostName = name; }
-            inputs.nixos-facter-modules.nixosModules.facter
-            (lib.optionalAttrs (lib.pathExists reportPath) { config.facter = { inherit reportPath; }; })
+            (lib.optionalAttrs (lib.pathExists hardware_path) hardware_path)
+            {
+              nixpkgs.hostPlatform = system;
+              networking.hostName = name;
+            }
           ];
         };
       };
