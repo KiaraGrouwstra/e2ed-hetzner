@@ -147,16 +147,17 @@
       depends_on
       ;
   };
-  servers = setNames ((lib.mapAttrs (name: cfg: defaults [
-    server_common
-    {
-      public_net = {
-        ipv4 = tfRef "hcloud_primary_ip.${name}_ipv4.id";
-        ipv6 = tfRef "hcloud_primary_ip.${name}_ipv6.id";
-      };
-    }
-    cfg
-  ])) {
+  servers = setNames ((lib.mapAttrs (name: cfg:
+    defaults [
+      server_common
+      {
+        public_net = {
+          ipv4 = tfRef "hcloud_primary_ip.${name}_ipv4.id";
+          ipv6 = tfRef "hcloud_primary_ip.${name}_ipv6.id";
+        };
+      }
+      cfg
+    ])) {
     combined = {};
   });
 in {

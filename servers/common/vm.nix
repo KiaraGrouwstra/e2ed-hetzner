@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   # customize nixos-rebuild build-vm to be a bit more convenient
   virtualisation.vmVariant = {
     # let us log in
@@ -35,7 +35,7 @@
     # no graphics. see nixos-shell
     virtualisation = {
       graphics = false;
-      qemu.consoles = [ "tty0" "hvc0" ];
+      qemu.consoles = ["tty0" "hvc0"];
       qemu.options = [
         "-serial null"
         "-device virtio-serial"

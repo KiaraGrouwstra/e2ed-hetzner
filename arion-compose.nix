@@ -1,22 +1,18 @@
-{
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
   inherit (pkgs) lib;
   flake = builtins.getFlake (toString ./.);
-  inherit (flake)
+  inherit
+    (flake)
     inputs
-    outputs
-  ;
+    ;
   nixosPath = "${<nixpkgs>}/nixos/";
   modulesPath = "${nixosPath}/modules";
   util = import ./lib/default.nix {inherit lib pkgs;};
   inherit
     (util)
-      mapVals
-      default
-      defaults
-      moveSecrets
+    mapVals
+    default
+    moveSecrets
     ;
   # fixes: Using host resolv.conf is not supported with systemd-resolved
   arion-common = {
@@ -41,21 +37,20 @@ in {
   # ports: host:container, host must be >=1024, same for container to test by vm
   # arion exec NAME bash
   services = mapVals (default arion-common) {
-
     combined = {
       nixos = {
-        configuration = {
-          imports = let
-            args = { inherit pkgs lib inputs modulesPath util; };
-          in [
-            inputs.sops-nix.nixosModules.default
-            (import ./servers/common args)
-            ./servers/manual
-            # ./servers/nextcloud
-          ];
-        }
-        // container-common
-        ;
+        configuration =
+          {
+            imports = let
+              args = {inherit pkgs lib inputs modulesPath util;};
+            in [
+              inputs.sops-nix.nixosModules.default
+              (import ./servers/common args)
+              ./servers/manual
+              # ./servers/nextcloud
+            ];
+          }
+          // container-common;
       };
       service = {
         # solves fuse error when running containers,
@@ -71,6 +66,5 @@ in {
         ];
       };
     };
-
   };
 }

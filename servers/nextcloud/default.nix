@@ -11,7 +11,6 @@
   DB_PORT = 5432;
   host_address = "192.168.100.10";
 in {
-
   environment.systemPackages = [
     pkgs.sops
   ];
@@ -23,7 +22,7 @@ in {
     secrets = {
       postgres-password-nextcloud = {
         owner = DB_USER;
-        restartUnits = [ "postgresql.service" ];
+        restartUnits = ["postgresql.service"];
       };
     };
   };
@@ -52,7 +51,7 @@ in {
       dbname = DB_NAME;
     };
     settings = {
-      trusted_proxies = [ host_address ];
+      trusted_proxies = [host_address];
       maintenance_window_start = 1;
       log_type = "file";
       mail_smtpmode = "smtp";
@@ -76,40 +75,57 @@ in {
     extraAppsEnable = true;
     # https://apps.nextcloud.com/
     # https://github.com/NixOS/nixpkgs/blob/master/pkgs/servers/nextcloud/packages/29.json
-    extraApps = { inherit (config.services.nextcloud.package.packages.apps)
-      bookmarks
-      calendar
-      contacts
-      # cookbook
-      # cospend
-      # deck # duplicate key value violates unique constraint
-      end_to_end_encryption
-      forms
-      gpoddersync
-      groupfolders
-      impersonate
-      integration_openai
-      mail
-      maps
-      # memories
-      # music # duplicate key value violates unique constraint
-      notes
-      notify_push
-      # onlyoffice # duplicate key value violates unique constraint
-      # phonetrack
-      # polls # duplicate key value violates unique constraint
-      # previewgenerator
-      # qownnotesapi
-      # registration
-      richdocuments
-      spreed
-      tasks
-      # twofactor_nextcloud_notification
-      # twofactor_webauthn
-      unroundedcorners
-      # user_oidc # duplicate key value violates unique constraint
-      # user_saml
-      ;
+    extraApps = {
+      inherit
+        (config.services.nextcloud.package.packages.apps)
+        bookmarks
+        calendar
+        contacts
+        # cookbook
+        
+        # cospend
+        
+        # deck # duplicate key value violates unique constraint
+        
+        end_to_end_encryption
+        forms
+        gpoddersync
+        groupfolders
+        impersonate
+        integration_openai
+        mail
+        maps
+        # memories
+        
+        # music # duplicate key value violates unique constraint
+        
+        notes
+        notify_push
+        # onlyoffice # duplicate key value violates unique constraint
+        
+        # phonetrack
+        
+        # polls # duplicate key value violates unique constraint
+        
+        # previewgenerator
+        
+        # qownnotesapi
+        
+        # registration
+        
+        richdocuments
+        spreed
+        tasks
+        # twofactor_nextcloud_notification
+        
+        # twofactor_webauthn
+        
+        unroundedcorners
+        # user_oidc # duplicate key value violates unique constraint
+        
+        # user_saml
+        
+        ;
     };
     # # Could not resolve host: nextcloud
     # notify_push = {
@@ -119,11 +135,16 @@ in {
     # };
   };
 
-  services.nginx.virtualHosts."localhost".listen = [ { addr = "127.0.0.1"; port = 8000; } ];
+  services.nginx.virtualHosts."localhost".listen = [
+    {
+      addr = "127.0.0.1";
+      port = 8000;
+    }
+  ];
 
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ DB_NAME ];
+    ensureDatabases = [DB_NAME];
     ensureUsers = [
       {
         name = "nextcloud";
@@ -161,5 +182,4 @@ in {
     "d /var/lib/postgresql 700 nextcloud nextcloud -"
     "d /var/lib/nextcloud/data 700 nextcloud nextcloud -"
   ];
-
 }

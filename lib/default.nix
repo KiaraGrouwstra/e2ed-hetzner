@@ -6,7 +6,16 @@
   compose = pipes [lib.reverseList pipes];
 
   # apply transforms from an attrset
-  evolve = funs: vals: lib.mapAttrs (k: v: if lib.hasAttr k funs then let mapper = funs."${k}"; in (if lib.isAttrs mapper then evolve mapper v else mapper v) else v) vals;
+  evolve = funs: vals:
+    lib.mapAttrs (k: v:
+      if lib.hasAttr k funs
+      then let
+        mapper = funs."${k}";
+      in if lib.isAttrs mapper
+        then evolve mapper v
+        else mapper v
+      else v)
+    vals;
 
   # ".ext" -> ./subdir -> { "foo" = "<CONTENTS OF a/b/foo.ext>"; "bar" = "<CONTENTS OF a/b/bar.ext>"; }
   dirContents = let
@@ -62,8 +71,8 @@
     server_ids = lib.lists.map server_id;
     label_selector = attr: lib.concatStringsSep "," (lib.attrsets.mapAttrsToList (name: value: "${name}=${value}") attr);
     label_selectors = lib.lists.map label_selector;
-    apply_to = evolve { inherit server label_selector; };
-    network = evolve { inherit network_id; };
+    apply_to = evolve {inherit server label_selector;};
+    network = evolve {inherit network_id;};
   };
 
   # move container secrets to prevent clash with sops-nix ones,
@@ -75,9 +84,11 @@
   # `/sys/fs/cgroup/hugetlb/libpod_parent/libpod-...`: No such file or directory:
   # OCI runtime attempted to invoke a command that was not found.
   # to be used to wrap `configuration.virtualisation.oci-containers.containers`.
-  patchContainers = mapVals (o: o // {
-    extraOptions = ["--cgroups=disabled"];  
-  });
+  patchContainers = mapVals (o:
+    o
+    // {
+      extraOptions = ["--cgroups=disabled"];
+    });
 
   # use TF info that we have, or look it up dynamically if we don't yet
   dynamicRef = resources: attrPath:
@@ -86,12 +97,26 @@
     else tfRef (lib.concatStringsSep "." attrPath);
 
   # https://docs.hetzner.com/cloud/servers/overview#pricing
-  hcloud_architecture = server_type: if lib.substring 0 3 server_type == "cax" then "aarch64-linux" else "x86_64-linux";
-
+  hcloud_architecture = server_type:
+    if lib.substring 0 3 server_type == "cax"
+    then "aarch64-linux"
+    else "x86_64-linux";
 in
   assert pipes [(s: "(${s})") (s: s + s)] "foo" == "(foo)(foo)";
   assert compose [(s: s + s) (s: "(${s})")] "foo" == "(foo)(foo)";
-  assert evolve {a=v: v+1;b.c=v: v+v;} { a=1; b.c="c"; d=true; } == { a=2; b.c="cc"; d=true; };
+  assert evolve {
+    a = v: v + 1;
+    b.c = v: v + v;
+  } {
+    a = 1;
+    b.c = "c";
+    d = true;
+  }
+  == {
+    a = 2;
+    b.c = "cc";
+    d = true;
+  };
   assert mapKeys (k: k + k) {a = 1;} == {aa = 1;};
   assert mapVals (v: 2 * v) {a = 1;} == {a = 2;};
   assert default {b = 0;} {a = 1;}
@@ -110,21 +135,25 @@ in
   assert tfRef "foo" == "\${foo}";
   assert var "foo" == "\${var.foo}";
   assert transforms.server_id "foo" == "\${hcloud_server.foo.id}";
-  assert transforms.label_selector {a="1";b="2";} == "a=1,b=2";
-  assert moveSecrets "/run/container-secrets" { foo = {}; } == { foo.target = "/run/container-secrets/foo"; };
+  assert transforms.label_selector {
+    a = "1";
+    b = "2";
+  }
+  == "a=1,b=2";
+  assert moveSecrets "/run/container-secrets" {foo = {};} == {foo.target = "/run/container-secrets/foo";};
   assert patchContainers {
     hello = {
       image = "nginx";
     };
-  } == {
+  }
+  == {
     hello = {
       image = "nginx";
-      extraOptions = ["--cgroups=disabled"];  
+      extraOptions = ["--cgroups=disabled"];
     };
   };
   assert dynamicRef null ["hcloud_server" "my_server" "ipv6_network"] == tfRef "hcloud_server.my_server.ipv6_network";
-  assert dynamicRef {hcloud_server.my_server.ipv6_network="foo";} ["hcloud_server" "my_server" "ipv6_network"] == "foo";
-  {
+  assert dynamicRef {hcloud_server.my_server.ipv6_network = "foo";} ["hcloud_server" "my_server" "ipv6_network"] == "foo"; {
     inherit
       pipes
       compose
@@ -144,5 +173,5 @@ in
       tfRef
       var
       hcloud_architecture
-    ;
+      ;
   }

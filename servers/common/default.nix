@@ -1,19 +1,16 @@
 {
   lib,
   modulesPath,
-  inputs,
   util,
   ...
-}:
-{
-  imports =
-    [
-      ./headless
-      (modulesPath + "/installer/scan/not-detected.nix")
-      ./fresh.nix
-      ./net.nix
-      # ./paranoid.nix
-    ];
+}: {
+  imports = [
+    ./headless
+    (modulesPath + "/installer/scan/not-detected.nix")
+    ./fresh.nix
+    ./net.nix
+    # ./paranoid.nix
+  ];
   boot.loader.grub = {
     efiSupport = true;
     efiInstallAsRemovable = true;

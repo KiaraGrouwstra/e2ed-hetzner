@@ -2,8 +2,7 @@
   lib,
   inputs,
   ...
-}:
-{
+}: {
   # nixos-rebuild build-vm: infinite recursion encountered
   imports = [
     inputs.srvos.nixosModules.hardware-hetzner-cloud-arm

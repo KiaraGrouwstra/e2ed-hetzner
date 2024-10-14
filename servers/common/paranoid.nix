@@ -4,17 +4,16 @@
   pkgs,
   ...
 }: {
-  
-  nix.settings.allowed-users = [ "root" ];
+  nix.settings.allowed-users = ["root"];
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 80 443 ];
+    allowedTCPPorts = [80 443];
     # allowedUDPPorts = [ ... ];
   };
 
   services.tailscale.enable = true;
-  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+  networking.firewall.trustedInterfaces = ["tailscale0"];
 
   # block fastly IP range 151.101.0.0/16 one level above to block NixOS cache CDN
 
@@ -55,7 +54,7 @@
   # fileSystems."/".options = [ "noexec" ];
 
   # PCI compliance
-  environment.systemPackages = [ pkgs.clamav ];
+  environment.systemPackages = [pkgs.clamav];
 
   # systemd options:
 
@@ -71,5 +70,4 @@
   # ProtectKernelLogs: If set to true, the service cannot access the kernel message buffer that you get by running dmesg or reading from /proc/kmsg.
   # ProtectKernelModules: If set to true, the service cannot load or unload kernel modules.
   # ProtectKernelTunables: If set to true, various twiddly bits in /proc and /sys that let you control tunable values in the kernel will be made read-only. Most of the time these values are set early in the system boot process and never twiddled with again, so it's reasonable to deny a service (and its child processes) access to these
-
 }
