@@ -5,7 +5,7 @@
 }:
 {
   imports = [
-    # inputs.srvos.nixosModules.hardware-hetzner-cloud-arm
+    inputs.srvos.nixosModules.hardware-hetzner-cloud-arm
   ];
   # bits to override from srvos.nixosModules.hardware-hetzner-cloud-arm:
   boot.loader.systemd-boot.enable = lib.mkForce false;

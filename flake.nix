@@ -102,7 +102,6 @@
         inherit (inputs.nixpkgs-guest) lib legacyPackages;
         inherit (legacyPackages."${system}") pkgs;
         util = (import ./lib {inherit pkgs lib;});
-        hardware_path = ./hardware/hcloud-aarch64.nix;
      in
       # assumption: server name = config name
       lib.mapAttrs (name: fn: fn {
@@ -120,9 +119,9 @@
           inherit system;
           modules = [
             ./servers/common
+            ./hcloud
             ./hcloud/disk-config.nix
             inputs.disko.nixosModules.disko
-            (lib.optionalAttrs (lib.pathExists hardware_path) hardware_path)
             {
               nixpkgs.hostPlatform = system;
               networking.hostName = name;
