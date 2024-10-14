@@ -41,8 +41,53 @@
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
-  outputs = {self, ...} @ inputs: inputs.flake-utils.lib.eachDefaultSystem (system: let
-    pkgs = inputs.nixpkgs.legacyPackages."${system}";
+  outputs = {self, nixpkgs, ...} @ inputs: let
+    system = "x86_64-linux";
+    inherit (nixpkgs) lib;
+
+    # nixos configs to deploy by nixos-anywhere
+    nixosConfigurations = system: let
+      inherit (inputs.nixpkgs-guest) lib legacyPackages;
+      inherit (legacyPackages."${system}") pkgs;
+      util = import ./lib {inherit pkgs lib;};
+    in
+      # assumption: server name = config name
+      lib.mapAttrs (name: fn:
+        fn {
+          inherit name system;
+          specialArgs = {
+            inherit
+              inputs
+              util
+              ;
+          };
+        })
+      {
+        combined = {
+          name,
+          specialArgs,
+          system,
+        }:
+          lib.nixosSystem {
+            inherit specialArgs;
+            inherit system;
+            modules = [
+              ./servers/common/vm.nix
+              ./servers/common
+              ./hcloud
+              ./hcloud/disk-config.nix
+              inputs.disko.nixosModules.disko
+              {
+                nixpkgs.hostPlatform = system;
+                networking.hostName = name;
+              }
+            ];
+          };
+      };
+  in lib.attrsets.recursiveUpdate {
+    nixosConfigurations = nixosConfigurations system;
+  } (inputs.flake-utils.lib.eachDefaultSystem (system: let
+    pkgs = nixpkgs.legacyPackages."${system}";
     inherit (pkgs) lib;
   in {
     inherit pkgs lib;
@@ -98,44 +143,7 @@
     in
       sanitized;
 
-    # nixos configs to deploy by nixos-anywhere
-    nixosConfigurations = let
-      inherit (inputs.nixpkgs-guest) lib legacyPackages;
-      inherit (legacyPackages."${system}") pkgs;
-      util = import ./lib {inherit pkgs lib;};
-    in
-      # assumption: server name = config name
-      lib.mapAttrs (name: fn:
-        fn {
-          inherit name system;
-          specialArgs = {
-            inherit
-              inputs
-              util
-              ;
-          };
-        })
-      {
-        combined = {
-          name,
-          specialArgs,
-          system,
-        }:
-          lib.nixosSystem {
-            inherit specialArgs;
-            inherit system;
-            modules = [
-              ./servers/common
-              ./hcloud
-              ./hcloud/disk-config.nix
-              inputs.disko.nixosModules.disko
-              {
-                nixpkgs.hostPlatform = system;
-                networking.hostName = name;
-              }
-            ];
-          };
-      };
+    nixosConfigurations = nixosConfigurations system;
 
     apps = let
       tfCommand = cmd: ''
@@ -181,5 +189,5 @@
 
     # nix run
     defaultApp = self.apps.${system}.convert;
-  });
+  }));
 }
