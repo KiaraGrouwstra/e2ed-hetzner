@@ -163,7 +163,7 @@
         program = toString (pkgs.writers.writeBash name script);
       }) {
         vm = ''
-          nixos-rebuild build-vm --flake .#manual && ./result/bin/run-nixos-vm
+          nixos-rebuild build-vm --flake .#combined && ./result/bin/run-combined-vm
         '';
         convert = "nix eval --json .#terraform.${system} | jq > main.tf.json";
         clean = "rm -rf .terraform/ && rm -f terraform.tfstate* && rm -rf terraform.tfstate.d/";
