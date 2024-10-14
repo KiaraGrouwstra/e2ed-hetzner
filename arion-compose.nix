@@ -8,6 +8,8 @@
     inputs
     outputs
   ;
+  nixosPath = "${<nixpkgs>}/nixos/";
+  modulesPath = "${nixosPath}/modules";
   util = import ./lib/default.nix {inherit lib pkgs;};
   inherit
     (util)
@@ -44,7 +46,7 @@ in {
       nixos = {
         configuration = {
           imports = let
-            args = { inherit pkgs lib inputs util; };
+            args = { inherit pkgs lib inputs modulesPath util; };
           in [
             inputs.sops-nix.nixosModules.default
             (import ./servers/common args)
