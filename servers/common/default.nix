@@ -13,8 +13,6 @@
       ./fresh.nix
       ./net.nix
       # ./paranoid.nix
-      # inputs.srvos.nixosModules.server  # nixos-rebuild build-vm: infinite recursion encountered
-      # inputs.srvos.nixosModules.hardware-hetzner-cloud-arm  # nixos-rebuild build-vm: infinite recursion encountered
     ];
   boot.loader.grub = {
     efiSupport = true;
