@@ -38,7 +38,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
     };
-    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
   outputs = {self, nixpkgs, ...} @ inputs: let
