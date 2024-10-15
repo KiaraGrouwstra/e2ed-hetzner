@@ -38,6 +38,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
     };
+    impermanence.url = "github:nix-community/impermanence"; 
   };
 
   outputs = {

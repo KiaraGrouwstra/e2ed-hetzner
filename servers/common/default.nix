@@ -9,6 +9,7 @@
     ./headless
     "${modulesPath}/installer/scan/not-detected.nix"
     inputs.disko.nixosModules.disko
+    inputs.impermanence.nixosModules.impermanence
     ./fresh.nix
     ./net.nix
     # ./paranoid.nix
