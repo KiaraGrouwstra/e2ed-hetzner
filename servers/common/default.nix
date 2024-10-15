@@ -1,12 +1,14 @@
 {
   lib,
   modulesPath,
+  inputs,
   util,
   ...
 }: {
   imports = [
     ./headless
     "${modulesPath}/installer/scan/not-detected.nix"
+    inputs.disko.nixosModules.disko
     ./fresh.nix
     ./net.nix
     # ./paranoid.nix

@@ -79,7 +79,6 @@
               ./servers/common
               ./hcloud
               ./hcloud/disk-config.nix
-              inputs.disko.nixosModules.disko
               {
                 nixpkgs.hostPlatform = system;
                 networking.hostName = name;
