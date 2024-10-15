@@ -11,7 +11,8 @@
       if lib.hasAttr k funs
       then let
         mapper = funs."${k}";
-      in if lib.isAttrs mapper
+      in
+        if lib.isAttrs mapper
         then evolve mapper v
         else mapper v
       else v)
