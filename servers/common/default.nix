@@ -12,6 +12,7 @@
     inputs.impermanence.nixosModules.impermanence
     ./fresh.nix
     ./net.nix
+    ./ephemeral.nix
     ./persistence.nix
     # ./paranoid.nix
   ];
