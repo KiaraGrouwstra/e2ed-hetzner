@@ -3,6 +3,9 @@
   boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "thunderbolt" "usb_storage" "usbhid" "sd_mod"];
   boot.supportedFilesystems = ["btrfs" "ext2" "ext3" "ext4" "exfat" "f2fs" "fat8" "fat16" "fat32" "ntfs" "xfs"];
 
+  # faster swap than on disk
+  zramSwap.enable = true;
+
   # needed for ZFS, get using say `head -c 8 /etc/machine-id`
   networking.hostId = "deadbeef";
   # networking.hostId = lib.substring 0 8 (lib.readFile "/etc/machine-id");
