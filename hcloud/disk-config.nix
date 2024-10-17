@@ -1,7 +1,9 @@
-{lib, ...}: {
+{lib, config, ...}: {
   # https://github.com/nix-community/nixos-anywhere/issues/179
   boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "thunderbolt" "usb_storage" "usbhid" "sd_mod"];
   boot.supportedFilesystems = ["btrfs" "ext2" "ext3" "ext4" "exfat" "f2fs" "fat8" "fat16" "fat32" "ntfs" "xfs"];
+  # https://carlosvaz.com/posts/installing-nixos-with-root-on-tmpfs-and-encrypted-zfs-on-a-netcup-vps/
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
   # faster swap than on disk
   zramSwap.enable = true;
