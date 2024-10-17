@@ -65,22 +65,28 @@
           "local" = {
             type = "zfs_fs";
             options.mountpoint = "none";
+            options."com.sun:auto-snapshot" = "false";
           };
           "local/root" = {
             type = "zfs_fs";
             mountpoint = "/";
+            options."com.sun:auto-snapshot" = "false";
+            postCreateHook = "zfs snapshot zroot/local/root@blank";
           };
           "local/nix" = {
             type = "zfs_fs";
             mountpoint = "/nix";
+            options."com.sun:auto-snapshot" = "false";
           };
           "local/persist" = {
             type = "zfs_fs";
             mountpoint = "/persist";
+            options."com.sun:auto-snapshot" = "false";
           };
           "local/log" = {
             type = "zfs_fs";
             mountpoint = "/var/log";
+            options."com.sun:auto-snapshot" = "false";
           };
         };
       };
