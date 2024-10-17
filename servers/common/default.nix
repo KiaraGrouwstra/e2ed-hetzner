@@ -12,6 +12,7 @@
     inputs.impermanence.nixosModules.impermanence
     ./fresh.nix
     ./net.nix
+    ./persistence.nix
     # ./paranoid.nix
   ];
   boot.loader.grub = {
