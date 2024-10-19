@@ -112,21 +112,21 @@
       in
         pkgs.mkShell {
           pname = "nixos-hcloud";
-          packages = [
+          packages = let
+            tfPlugins = p: [
+              p.hcloud
+              p.ssh
+              p.tls
+              p.null
+              p.external
+              p.cloudflare
+            ];
+          in [
             inputs.arion.packages.${system}.default
             pkgs.direnv
             pkgs.rage
             pkgs.colmena
-            (pkgs.opentofu.withPlugins (
-              p:
-                pkgs.lib.lists.map tofuProvider [
-                  p.hcloud
-                  p.ssh
-                  p.tls
-                  p.null
-                  p.external
-                ]
-            ))
+            (pkgs.opentofu.withPlugins (p: pkgs.lib.lists.map tofuProvider (tfPlugins p)))
             inputs.nixos-anywhere.packages.${system}.default
             pkgs.jq
           ];
