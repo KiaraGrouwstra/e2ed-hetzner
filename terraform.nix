@@ -163,9 +163,11 @@
   });
 in {
   terraform = {
-    required_providers = lib.mapAttrs (k: v: v // {
-      version = "= ${pkgs.terraform-providers.${k}.version}";
-    }) {
+    required_providers = lib.mapAttrs (k: v:
+      v
+      // {
+        version = "= ${pkgs.terraform-providers.${k}.version}";
+      }) {
       hcloud.source = "hetznercloud/hcloud";
       tls.source = "hashicorp/tls";
       ssh.source = "loafoe/ssh";
@@ -185,7 +187,8 @@ in {
 
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
-  variable = mapVals (default {
+  variable =
+    mapVals (default {
     type = "string";
   }) ((
   mapVals (default {
@@ -198,7 +201,9 @@ in {
       description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
     };
     cloudflare_secret_access_key = {};
-  }) // (
+        }
+      )
+      // (
   mapVals (default {
     sensitive = false;
   }) {
@@ -209,7 +214,8 @@ in {
     };
     cloudflare_account_id = {};
     cloudflare_access_key_id = {};
-  }));
+        }
+      ));
 
   provider = {
     hcloud = {
@@ -270,10 +276,11 @@ in {
     # https://developers.cloudflare.com/r2/examples/terraform/
     "cloudflare_r2_bucket"."foo" = {
       account_id = var "cloudflare_account_id";
-      name       = "foo";
-      location   = "WEUR";
+        name = "foo";
+        location = "WEUR";
     };
-  } //
+    }
+    //
     # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
     inNamespace "hcloud"
     {
