@@ -149,28 +149,7 @@
 
       nixosConfigurations = nixosConfigurations system;
 
-      apps = let
-        tfCommand = cmd: ''
-          export WORKSPACE="tf-api"
-
-          # # need cloud token as env var for CLI commands like `workspace`
-          # if [[ -e config.tf.json ]]; then rm -f config.tf.json; fi;
-          # export TF_TOKEN_app_terraform_io="$(cat ~/.config/opentofu/credentials.tfrc.json | jq -r '.credentials."app.terraform.io".token')";
-          # # using local state, stash cloud state to prevent error `workspaces not supported`
-          # if [[ -e .terraform/terraform.tfstate ]]; then mv .terraform/terraform.tfstate terraform.tfstate.d/$(tofu workspace show)/terraform.tfstate; fi;
-          # # load cloud state to prevent error `Cloud backend initialization required: please run "tofu init"`
-          # if [[ -e terraform.tfstate.d/$WORKSPACE/terraform.tfstate ]]; then mv terraform.tfstate.d/$WORKSPACE/terraform.tfstate .terraform/terraform.tfstate; fi;
-
-          # creates ./.terraform/environment, ./terraform.tfstate.d/$WORKSPACE
-          tofu workspace select -or-create $WORKSPACE;
-
-          # updates ./.terraform.lock.hcl
-          tofu providers lock && \
-          # execute command
-          tofu ${cmd} $@;
-        '';
-      in
-        lib.mapAttrs (name: script: {
+      apps = lib.mapAttrs (name: script: {
           type = "app";
           program = toString (pkgs.writers.writeBash name script);
         }) {
@@ -180,7 +159,7 @@
           convert = "nix eval --json .#terraform.${system} | jq > main.tf.json";
           clean = "rm -rf .terraform/ && rm -f terraform.tfstate* && rm -rf terraform.tfstate.d/";
           destroy = ''
-            ${tfCommand "destroy"}
+            tofu destroy
             for f in "config.tf.json *.tfstate* *.tfvars.json ci.tfrc .terraform terraform.tfstate.d"; do
                 echo $f
                 if [[ -e "${toString ./.}/$f" ]]; then
