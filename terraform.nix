@@ -176,42 +176,35 @@ in {
       cloudflare.source = "cloudflare/cloudflare";
     };
 
-    #   cloud = {
-    #     hostname = "app.terraform.io";
-    #     organization = "cinerealkiara";
-    #     workspaces = {
-    #       name = "tf-api";
-    #     };
-    #   };
   };
 
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
   variable =
     mapVals (default {
-    type = "string";
-  }) ((
-  mapVals (default {
-    sensitive = true;
-  }) {
-    # tf_cloud_token = {
-    #   description = "[Terraform Cloud](https://app.terraform.io/) token";
-    # };
-    hcloud_api_token = {
-      description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
-    };
+      type = "string";
+    }) ((
+        mapVals (default {
+          sensitive = true;
+        }) {
+          # tf_cloud_token = {
+          #   description = "[Terraform Cloud](https://app.terraform.io/) token";
+          # };
+          hcloud_api_token = {
+            description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
+          };
         }
       )
       // (
-  mapVals (default {
-    sensitive = false;
-  }) {
-    ssh_key = {
-      type = "string";
-      description = "SSH private key used by `nixos-anywhere` for server set-up.";
-      # sensitive = true;  # hides the key but prevents seeing feedback during apply
-    };
-    cloudflare_account_id = {};
+        mapVals (default {
+          sensitive = false;
+        }) {
+          ssh_key = {
+            type = "string";
+            description = "SSH private key used by `nixos-anywhere` for server set-up.";
+            # sensitive = true;  # hides the key but prevents seeing feedback during apply
+          };
+          cloudflare_account_id = {};
         }
       ));
 
@@ -269,14 +262,15 @@ in {
     );
 
   # https://registry.terraform.io/providers
-   resource =
-  {
-    # https://developers.cloudflare.com/r2/examples/terraform/
-    "cloudflare_r2_bucket"."foo" = {
-      account_id = var "cloudflare_account_id";
+  resource =
+    {
+      # https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/r2_bucket
+      # https://developers.cloudflare.com/r2/examples/terraform/
+      "cloudflare_r2_bucket"."foo" = {
+        account_id = var "cloudflare_account_id";
         name = "foo";
         location = "WEUR";
-    };
+      };
     }
     //
     # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
