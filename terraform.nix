@@ -122,6 +122,7 @@
     # provisioners = [];
     # provisioners = [{"file":{"destination":"/root/.zshrc","source":"~/.zshrc"}},{"remote-exec":{"inline":["shutdown -r +1"]}}];
     # # container-specific config
+    # `hcloud image list`
     image = "ubuntu-24.04";
     # placement_group_id = tfRef "hcloud_placement_group.production-dbs.id";
     labels = {
