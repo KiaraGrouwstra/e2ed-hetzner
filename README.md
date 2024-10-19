@@ -44,7 +44,7 @@ just login
 just convert
 # see terraform plan
 tofu plan
-# apply terraform plan, either passing the ssh key or setting it in e.g. secret.auto.tfvars.json
+# apply terraform plan, either passing the ssh key or setting it in e.g. secrets.auto.tfvars.json
 tofu apply -var="ssh_key=$(cat ~/.ssh/MY_KEY)"
 # import lost state
 just import
