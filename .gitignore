@@ -1,6 +1,7 @@
 # secrets
 secrets.yaml
 secrets.auto.tfvars.json
+secrets.envrc
 
 # generated from nix for TF
 main.tf.json

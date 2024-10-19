@@ -171,6 +171,7 @@ in {
       ssh.source = "loafoe/ssh";
       external.source = "hashicorp/external";
       null.source = "hashicorp/null";
+      cloudflare.source = "cloudflare/cloudflare";
     };
 
     #   cloud = {
@@ -196,6 +197,7 @@ in {
     hcloud_api_token = {
       description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
     };
+    cloudflare_secret_access_key = {};
   }) // (
   mapVals (default {
     sensitive = false;
@@ -205,11 +207,16 @@ in {
       description = "SSH private key used by `nixos-anywhere` for server set-up.";
       # sensitive = true;  # hides the key but prevents seeing feedback during apply
     };
+    cloudflare_account_id = {};
+    cloudflare_access_key_id = {};
   }));
 
   provider = {
     hcloud = {
       token = var "hcloud_api_token";
+    };
+    cloudflare = {
+      # token pulled from $CLOUDFLARE_API_TOKEN
     };
   };
 
@@ -257,8 +264,17 @@ in {
       (_type: {"all" = {};})
     );
 
-  # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
-  resource =
+  # https://registry.terraform.io/providers
+   resource =
+  {
+    # https://developers.cloudflare.com/r2/examples/terraform/
+    "cloudflare_r2_bucket"."foo" = {
+      account_id = var "cloudflare_account_id";
+      name       = "foo";
+      location   = "WEUR";
+    };
+  } //
+    # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
     inNamespace "hcloud"
     {
       ssh_key =

@@ -1,6 +1,14 @@
 # This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
+provider "registry.opentofu.org/cloudflare/cloudflare" {
+  version     = "4.41.0"
+  constraints = "4.41.0"
+  hashes = [
+    "h1:Flvl3Hv0gAc5d4bRPaR8J2VwXIu8JS5PUtBDl3TE3UI=",
+  ]
+}
+
 provider "registry.opentofu.org/hashicorp/external" {
   version = "2.3.3"
   hashes = [
