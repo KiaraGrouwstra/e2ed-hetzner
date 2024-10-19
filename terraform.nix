@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  util = import ./lib/default.nix {inherit lib pkgs;};
+  util = import ./lib/default.nix {inherit lib;};
   inherit
     (util)
     pipes
@@ -163,27 +163,14 @@
   });
 in {
   terraform = {
-    required_providers = {
-      hcloud = {
-        source = "hetznercloud/hcloud";
-        version = "= 1.48.1";
-      };
-      tls = {
-        source = "hashicorp/tls";
-        version = "= 4.0.5";
-      };
-      ssh = {
-        source = "loafoe/ssh";
-        version = "= 2.7.0";
-      };
-      external = {
-        source = "hashicorp/external";
-        version = "= 2.3.3";
-      };
-      null = {
-        source = "hashicorp/null";
-        version = "= 3.2.2";
-      };
+    required_providers = lib.mapAttrs (k: v: v // {
+      version = "= ${pkgs.terraform-providers.${k}.version}";
+    }) {
+      hcloud.source = "hetznercloud/hcloud";
+      tls.source = "hashicorp/tls";
+      ssh.source = "loafoe/ssh";
+      external.source = "hashicorp/external";
+      null.source = "hashicorp/null";
     };
 
     #   cloud = {

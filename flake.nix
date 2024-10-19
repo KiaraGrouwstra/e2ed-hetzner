@@ -133,13 +133,14 @@
         };
 
       terraform = let
+        pkgs = nixpkgs.legacyPackages."${system}";
         # possible TF blocks: https://opentofu.org/docs/language/syntax/json/#block-type-specific-exceptions
         options = lib.genAttrs ["data" "locals" "module" "output" "provider" "resource" "terraform" "variable"] (_k: lib.mkOption {default = {};});
         # modules to load
         evaluated = lib.evalModules {
           modules = [
             {inherit options;}
-            ./terraform.nix
+            (import ./terraform.nix { inherit lib pkgs; })
           ];
         };
         # TF dislikes empty stuff
