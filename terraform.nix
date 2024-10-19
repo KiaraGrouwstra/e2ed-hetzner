@@ -197,23 +197,28 @@ in {
 
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
-  variable = {
+  variable = mapVals (default {
+    type = "string";
+  }) ((
+  mapVals (default {
+    sensitive = true;
+  }) {
     # tf_cloud_token = {
-    #   type = "string";
     #   description = "[Terraform Cloud](https://app.terraform.io/) token";
-    #   sensitive = true;
     # };
     hcloud_api_token = {
-      type = "string";
       description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
-      sensitive = true;
     };
+  }) // (
+  mapVals (default {
+    sensitive = false;
+  }) {
     ssh_key = {
       type = "string";
       description = "SSH private key used by `nixos-anywhere` for server set-up.";
       # sensitive = true;  # hides the key but prevents seeing feedback during apply
     };
-  };
+  }));
 
   provider = {
     hcloud = {
