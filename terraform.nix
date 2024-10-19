@@ -200,7 +200,6 @@ in {
     hcloud_api_token = {
       description = "[Hetzner Cloud API Token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)";
     };
-    cloudflare_secret_access_key = {};
         }
       )
       // (
@@ -213,7 +212,6 @@ in {
       # sensitive = true;  # hides the key but prevents seeing feedback during apply
     };
     cloudflare_account_id = {};
-    cloudflare_access_key_id = {};
         }
       ));
 
