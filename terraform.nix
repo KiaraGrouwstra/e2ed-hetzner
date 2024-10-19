@@ -349,10 +349,9 @@ in {
       #     home_location = hcloud.location;
       #   })
       # ])
-      # {
-      #   # "tryton" = "tryton";
-      #   # "combined" = "combined";
-      # });
+      # (lib.mapAttrs (name: _cfg: {
+      #   "${name}" = name;
+      # })));
 
       # https://docs.hetzner.com/cloud/firewalls/overview
       firewall = setNames (mapVals (compose [
