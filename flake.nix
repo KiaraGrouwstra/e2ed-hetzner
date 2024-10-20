@@ -140,7 +140,7 @@
         evaluated = lib.evalModules {
           modules = [
             {inherit options;}
-            (import ./terraform.nix { inherit lib pkgs; })
+            (import ./terraform.nix { inherit lib pkgs inputs; })
           ];
         };
         # TF dislikes empty stuff

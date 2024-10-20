@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }: let
   util = import ./lib/default.nix {inherit lib;};
@@ -166,6 +167,7 @@ in {
     required_providers = lib.mapAttrs (k: v:
       v
       // {
+        # pin provider versions by nix flake inputs
         version = "= ${pkgs.terraform-providers.${k}.version}";
       }) {
       hcloud.source = "hetznercloud/hcloud";
@@ -221,9 +223,11 @@ in {
   module =
     lib.mapAttrs (server_name: server_cfg: let
       system = util.hcloud_architecture server_cfg.server_type;
+      # pin module version by nix flake inputs
+      src = inputs.nixos-anywhere.sourceInfo;
     in {
       depends_on = ["hcloud_server.${server_name}"];
-      source = "github.com/numtide/nixos-anywhere//terraform/all-in-one";
+      source = "github.com/numtide/nixos-anywhere?ref=${src.rev}/terraform/all-in-one";
       nixos_system_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.toplevel";
       nixos_partitioner_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.diskoScriptNoDeps";
       target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
