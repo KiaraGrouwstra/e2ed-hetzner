@@ -144,7 +144,7 @@
           ];
         };
         # TF dislikes empty stuff
-        sanitized = lib.filterAttrs (_k: v: v != {}) evaluated.config;
+        sanitized = lib.mapAttrs (_k: lib.filterAttrs (_k: v: v != {})) (lib.filterAttrs (_k: v: v != {}) evaluated.config);
       in
         sanitized;
 
