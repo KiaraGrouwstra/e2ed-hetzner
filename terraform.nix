@@ -433,6 +433,7 @@ in {
       #     })
       #   ])
       #   {
+      #     # tfRef "hcloud_volume.combined.linux_device"
       #     "combined" = {
       #       size = 10;
       #     };
