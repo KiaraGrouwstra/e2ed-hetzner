@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    ./headless
+    # ./headless
     "${modulesPath}/installer/scan/not-detected.nix"
     inputs.disko.nixosModules.disko
     inputs.impermanence.nixosModules.impermanence
