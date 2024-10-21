@@ -38,7 +38,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
     };
-    impermanence.url = "github:nix-community/impermanence"; 
+    impermanence.url = "github:nix-community/impermanence";
   };
 
   outputs = {
@@ -140,7 +140,7 @@
         evaluated = lib.evalModules {
           modules = [
             {inherit options;}
-            (import ./terraform.nix { inherit lib pkgs inputs; })
+            (import ./terraform.nix {inherit lib pkgs inputs;})
           ];
         };
         # TF dislikes empty stuff
@@ -150,7 +150,8 @@
 
       nixosConfigurations = nixosConfigurations system;
 
-      apps = lib.mapAttrs (name: script: {
+      apps =
+        lib.mapAttrs (name: script: {
           type = "app";
           program = toString (pkgs.writers.writeBash name script);
         }) {

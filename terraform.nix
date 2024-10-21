@@ -177,7 +177,6 @@ in {
       null.source = "hashicorp/null";
       cloudflare.source = "cloudflare/cloudflare";
     };
-
   };
 
   # Set the variable value in *.tfvars file
@@ -271,11 +270,11 @@ in {
       # https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/r2_bucket
       # https://developers.cloudflare.com/r2/examples/terraform/
       "cloudflare_r2_bucket" = setNames (mapVals (default {
-        account_id = var "cloudflare_account_id";
-        location = "WEUR";
-      }) {
-        "atticd" = {};
-      });
+          account_id = var "cloudflare_account_id";
+          location = "WEUR";
+        }) {
+          "atticd" = {};
+        });
     }
     //
     # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
