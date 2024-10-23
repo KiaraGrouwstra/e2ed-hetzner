@@ -162,22 +162,6 @@
     ])) {
     combined = {};
   });
-in {
-  terraform = {
-    required_providers = lib.mapAttrs (k: v:
-      v
-      // {
-        # pin provider versions by nix flake inputs
-        version = "= ${pkgs.terraform-providers.${k}.version}";
-      }) {
-      hcloud.source = "hetznercloud/hcloud";
-      tls.source = "hashicorp/tls";
-      ssh.source = "loafoe/ssh";
-      external.source = "hashicorp/external";
-      null.source = "hashicorp/null";
-      cloudflare.source = "cloudflare/cloudflare";
-    };
-  };
 
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
@@ -208,35 +192,6 @@ in {
           cloudflare_account_id = {};
         }
       ));
-
-  provider = {
-    hcloud = {
-      token = var "hcloud_api_token";
-    };
-    cloudflare = {
-      # token pulled from $CLOUDFLARE_API_TOKEN
-    };
-  };
-
-  # https://github.com/nix-community/nixos-anywhere/blob/main/terraform/all-in-one.md
-  module =
-    lib.mapAttrs (server_name: server_cfg: let
-      system = util.hcloud_architecture server_cfg.server_type;
-      # pin module version by nix flake inputs
-      src = inputs.nixos-anywhere.sourceInfo;
-    in {
-      depends_on = ["hcloud_server.${server_name}"];
-      source = "github.com/numtide/nixos-anywhere?ref=${src.rev}/terraform/all-in-one";
-      nixos_system_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.toplevel";
-      nixos_partitioner_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.diskoScriptNoDeps";
-      target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
-      instance_id = tfRef "hcloud_server.${server_name}.id";
-      install_user = "root";
-      install_port = "22";
-      install_ssh_key = var "ssh_key";
-      debug_logging = true;
-    })
-    servers;
 
   data =
     inNamespace "hcloud"
@@ -442,4 +397,63 @@ in {
       # ssh root@$( tofu output nixserver-server1_ipv4_address ) -i ./sshkey
       server = servers;
     };
+
+in {
+  inherit variable data resource;
+
+  terraform = {
+    required_providers = lib.mapAttrs (k: v:
+      v
+      // {
+        # pin provider versions by nix flake inputs
+        version = "= ${pkgs.terraform-providers.${k}.version}";
+      }) {
+      hcloud.source = "hetznercloud/hcloud";
+      tls.source = "hashicorp/tls";
+      ssh.source = "loafoe/ssh";
+      external.source = "hashicorp/external";
+      null.source = "hashicorp/null";
+      cloudflare.source = "cloudflare/cloudflare";
+    };
+  };
+
+  provider = {
+    hcloud = {
+      token = var "hcloud_api_token";
+    };
+    cloudflare = {
+      # token pulled from $CLOUDFLARE_API_TOKEN
+    };
+  };
+
+  # https://github.com/nix-community/nixos-anywhere/blob/main/terraform/all-in-one.md
+  module =
+    lib.mapAttrs (server_name: server_cfg: let
+      system = util.hcloud_architecture server_cfg.server_type;
+      # pin module version by nix flake inputs
+      src = inputs.nixos-anywhere.sourceInfo;
+    in {
+      depends_on = ["hcloud_server.${server_name}"];
+      # source = "github.com/numtide/nixos-anywhere?ref=${src.rev}/terraform/all-in-one";
+      source = "../nixos-anywhere/terraform/all-in-one";
+      nixos_system_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.toplevel";
+      nixos_partitioner_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.diskoScriptNoDeps";
+      target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
+      instance_id = tfRef "hcloud_server.${server_name}.id";
+      install_user = "root";
+      install_port = "22";
+      install_ssh_key = var "ssh_key";
+      debug_logging = true;
+      extra_build_env_vars = {
+        # all variables
+        # TF_VARS = lib.strings.toJSON (lib.mapAttrs (k: _: tfRef "jsonencode(var.${k})") variable);
+        # non-sensitive variables
+        TF_VARS = tfRef "jsonencode(${lib.strings.toJSON (lib.mapAttrs (k: _: var k) (lib.filterAttrs (_k: v: !(v ? sensitive && v.sensitive)) variable))})";
+        TF_DATA = tfRef "jsonencode(${lib.strings.toJSON (lib.mapAttrs (type: instances: lib.mapAttrs (k: _: tfRef "data.${type}.${k}") instances) data)})";
+        TF_RESOURCES = tfRef "jsonencode(${lib.strings.toJSON (lib.mapAttrs (type: instances: lib.mapAttrs (k: _: tfRef "resource.${type}.${k}") instances) resource)})";
+        TF_SERVER = tfRef "jsonencode(resource.hcloud_server.${server_name})";
+        SERVER_NAME = server_name;
+      };
+    })
+    servers;
 }
