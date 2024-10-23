@@ -174,15 +174,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1728401283,
-        "narHash": "sha256-4AIZVXZtz54GJLu0/7vM0tUVGCz5KWU6Y8k8S/UHXaU=",
-        "owner": "nix-community",
+        "lastModified": 1729712625,
+        "narHash": "sha256-/mnWKrS0w0Sv6PlgnArL/ZeY/iZS0jdzG3wV2ew2fO4=",
+        "owner": "KiaraGrouwstra",
         "repo": "nixos-anywhere",
-        "rev": "3fb834da466b75300a9141f9a68869c56fbd28f3",
+        "rev": "66dda841ce4e2da6444a543a9e031bf51d07903b",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "KiaraGrouwstra",
+        "ref": "extra-build-env-vars",
         "repo": "nixos-anywhere",
         "type": "github"
       }
