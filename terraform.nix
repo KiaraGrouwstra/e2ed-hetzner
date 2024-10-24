@@ -222,6 +222,10 @@
   # https://registry.terraform.io/providers
   resource =
     {
+      "hetznerdns_zone"."zone1" = {
+        name = "thatsru.de";
+        ttl  = 3600;
+      };
       # https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/r2_bucket
       # https://developers.cloudflare.com/r2/examples/terraform/
       "cloudflare_r2_bucket" = setNames (mapVals (default {
@@ -414,6 +418,7 @@ in {
       external.source = "hashicorp/external";
       null.source = "hashicorp/null";
       cloudflare.source = "cloudflare/cloudflare";
+      hetznerdns.source = "timohirt/hetznerdns";
     };
   };
 
@@ -423,6 +428,9 @@ in {
     };
     cloudflare = {
       # token pulled from $CLOUDFLARE_API_TOKEN
+    };
+    hetznerdns = {
+      # token: HETZNER_DNS_API_TOKEN
     };
   };
 

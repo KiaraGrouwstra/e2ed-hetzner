@@ -84,3 +84,11 @@ provider "registry.opentofu.org/loafoe/ssh" {
     "zh:a965929f10651c7139009aa509a6929f2205f90e85ce91a8354416d17624ed04",
   ]
 }
+
+provider "registry.opentofu.org/timohirt/hetznerdns" {
+  version     = "2.2.0"
+  constraints = "2.2.0"
+  hashes = [
+    "h1:1FM452gOMS8q0zOMqjtkEk0iwTIP6QQLD144qEJ1Yck=",
+  ]
+}

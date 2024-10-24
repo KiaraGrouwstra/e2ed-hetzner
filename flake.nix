@@ -121,6 +121,7 @@
               p.null
               p.external
               p.cloudflare
+              p.hetznerdns
             ];
           in [
             inputs.arion.packages.${system}.default
