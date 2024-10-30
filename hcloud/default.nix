@@ -5,6 +5,7 @@
 }: {
   # nixos-rebuild build-vm: infinite recursion encountered
   imports = [
+    ./network.nix
     inputs.srvos.nixosModules.hardware-hetzner-cloud-arm
     # inputs.srvos.nixosModules.server  # error: failed to start SSH
   ];
