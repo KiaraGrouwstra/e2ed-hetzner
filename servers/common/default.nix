@@ -14,7 +14,7 @@
     ./net.nix
     ./ephemeral.nix
     ./persistence.nix
-    # ./paranoid.nix
+    ./paranoid.nix
   ];
   boot.loader.grub = {
     efiSupport = true;
