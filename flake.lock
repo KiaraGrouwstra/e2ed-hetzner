@@ -174,16 +174,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1729712625,
-        "narHash": "sha256-/mnWKrS0w0Sv6PlgnArL/ZeY/iZS0jdzG3wV2ew2fO4=",
+        "lastModified": 1730403456,
+        "narHash": "sha256-Cdut+p4s1p04Mwe8lEkM2zKGc+aq3IEQPUAgV00jtRs=",
         "owner": "KiaraGrouwstra",
         "repo": "nixos-anywhere",
-        "rev": "66dda841ce4e2da6444a543a9e031bf51d07903b",
+        "rev": "05c2e4f5ca8279ac9bb0fd27432f0d429468d9bc",
         "type": "github"
       },
       "original": {
         "owner": "KiaraGrouwstra",
-        "ref": "extra-build-env-vars",
+        "ref": "tf-special-args",
         "repo": "nixos-anywhere",
         "type": "github"
       }

@@ -442,8 +442,7 @@ in {
       src = inputs.nixos-anywhere.sourceInfo;
     in {
       depends_on = ["hcloud_server.${server_name}"];
-      # source = "github.com/numtide/nixos-anywhere?ref=${src.rev}/terraform/all-in-one";
-      source = "../nixos-anywhere/terraform/all-in-one";
+      source = "github.com/KiaraGrouwstra/nixos-anywhere?ref=${src.rev}/terraform/all-in-one";
       nixos_system_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.toplevel";
       nixos_partitioner_attr = ".#nixosConfigurations.${system}.${server_name}.config.system.build.diskoScriptNoDeps";
       target_host = tfRef "hcloud_server.${server_name}.ipv4_address";
@@ -452,16 +451,18 @@ in {
       install_port = "22";
       install_ssh_key = var "ssh_key";
       debug_logging = true;
-      extra_build_env_vars = {
-        # all variables
-        # TF_VARS = lib.strings.toJSON (lib.mapAttrs (k: _: tfRef "jsonencode(var.${k})") variable);
-        # non-sensitive variables
-        TF_VARS = tfRef "jsonencode(${lib.strings.toJSON (lib.mapAttrs (k: _: var k) (lib.filterAttrs (_k: v: !(v ? sensitive && v.sensitive)) variable))})";
-        TF_DATA = tfRef "jsonencode(${lib.strings.toJSON (lib.mapAttrs (type: instances: lib.mapAttrs (k: _: tfRef "data.${type}.${k}") instances) data)})";
-        TF_RESOURCES = tfRef "jsonencode(${lib.strings.toJSON (lib.mapAttrs (type: instances: lib.mapAttrs (k: _: tfRef "resource.${type}.${k}") instances) resource)})";
-        TF_SERVER = tfRef "jsonencode(resource.hcloud_server.${server_name})";
-        SERVER_NAME = server_name;
-      };
+      special_args = tfRef "jsonencode(${lib.strings.toJSON {
+        tf = {
+          inherit server_name;
+          # all variables
+          # var = lib.mapAttrs (k: _: tfRef "jsonencode(var.${k})") variable;
+          # non-sensitive variables
+          var = lib.mapAttrs (k: _: var k) (lib.filterAttrs (_k: v: !(v ? sensitive && v.sensitive)) variable);
+          data = lib.mapAttrs (type: instances: lib.mapAttrs (k: _: tfRef "data.${type}.${k}") instances) data;
+          resource = lib.mapAttrs (type: instances: lib.mapAttrs (k: _: tfRef "resource.${type}.${k}") instances) resource;
+          server = tfRef "resource.hcloud_server.${server_name}";
+        };
+      }})";
     })
     servers;
 }

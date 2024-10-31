@@ -25,8 +25,7 @@
       inputs.nixpkgs.follows = "nixpkgs-guest";
     };
     nixos-anywhere = {
-      # url = "github:nix-community/nixos-anywhere";
-      url = "github:KiaraGrouwstra/nixos-anywhere/extra-build-env-vars";
+      url = "github:KiaraGrouwstra/nixos-anywhere/tf-special-args";
       inputs.nixpkgs.follows = "nixpkgs-guest";
       inputs.disko.follows = "disko";
       inputs.flake-parts.follows = "flake-parts";
