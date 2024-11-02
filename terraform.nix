@@ -163,6 +163,8 @@
     combined = {};
   });
 
+  server_names = lib.attrNames servers;
+
   # Set the variable value in *.tfvars file
   # or using -var="hcloud_api_token=..." CLI option
   variable =
@@ -184,8 +186,10 @@
         mapVals (default {
           sensitive = false;
         }) {
+          domain = {
+            description = "Domain name you own to attach to your web resources.";
+          };
           ssh_key = {
-            type = "string";
             description = "SSH private key used by `nixos-anywhere` for server set-up.";
             # sensitive = true;  # hides the key but prevents seeing feedback during apply
           };
@@ -219,13 +223,27 @@
       (_type: {"all" = {};})
     );
 
+  primary_ip = setNames (
+    mapVals
+    (default {
+      inherit (hcloud) delete_protection auto_delete datacenter labels;
+      inherit (hcloud.ip) type;
+      assignee_type = "server";
+    })
+    (lib.mergeAttrsList (lib.attrValues (lib.mapAttrs (name: _cfg: {
+        "${name}_ipv4" = {
+          type = "ipv4";
+        };
+        "${name}_ipv6" = {
+          type = "ipv6";
+        };
+      })
+      servers)))
+  );
+
   # https://registry.terraform.io/providers
   resource =
     {
-      "hetznerdns_zone"."zone1" = {
-        name = "thatsru.de";
-        ttl  = 3600;
-      };
       # https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/r2_bucket
       # https://developers.cloudflare.com/r2/examples/terraform/
       "cloudflare_r2_bucket" = setNames (mapVals (default {
@@ -236,9 +254,32 @@
         });
     }
     //
+    inNamespace "hetznerdns"
+    {
+      zone."main" = {
+        name = var "domain";
+        ttl  = 3600;
+      };
+      record = setNames (mapVals (default {
+        zone_id = tfRef "hetznerdns_zone.main.id";
+        ttl = 60;
+      }) (
+        mapVals (default {
+          type = "A";
+        })
+        (lib.genAttrs server_names (k: {
+          value = tfRef "hcloud_server.${k}.ipv4_address";
+        }))
+      ));
+    }
+    //
     # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
     inNamespace "hcloud"
     {
+      inherit
+        primary_ip
+      ;
+
       ssh_key =
         setNames
         (
@@ -298,38 +339,6 @@
           gateway = "10.0.1.1";
         };
       };
-
-      primary_ip = setNames (
-        mapVals
-        (default {
-          inherit (hcloud) delete_protection auto_delete datacenter labels;
-          inherit (hcloud.ip) type;
-          assignee_type = "server";
-        })
-        (lib.mergeAttrsList (lib.attrValues (lib.mapAttrs (name: _cfg: {
-            "${name}_ipv4" = {
-              type = "ipv4";
-            };
-            "${name}_ipv6" = {
-              type = "ipv6";
-            };
-          })
-          servers)))
-      );
-
-      # # https://docs.hetzner.com/cloud/floating-ips/faq
-      # floating_ip = setNames (mapVals (compose [
-      #   (evolve transforms)
-      #   (name: {server_id=tfRef "hcloud_server.${name}.id";})
-      #   (default {
-      #     inherit (hcloud) delete_protection labels;
-      #     inherit (hcloud.ip) type;
-      #     home_location = hcloud.location;
-      #   })
-      # ])
-      # (lib.mapAttrs (name: _cfg: {
-      #   "${name}" = name;
-      # })));
 
       # https://docs.hetzner.com/cloud/firewalls/overview
       firewall = setNames (mapVals (compose [
@@ -400,6 +409,16 @@
 
       # ssh root@$( tofu output nixserver-server1_ipv4_address ) -i ./sshkey
       server = servers;
+
+      # for now point all resources back to the main domain
+      rdns = mapVals (default {
+        dns_ptr = var "domain";
+      }) (
+        (lib.genAttrs server_names (k: {
+          server_id  = tfRef "hcloud_server.${k}.id";
+          ip_address = tfRef "hcloud_server.${k}.ipv4_address";
+        }))
+      );
     };
 
 in {

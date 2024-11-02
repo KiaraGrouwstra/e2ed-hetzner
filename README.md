@@ -12,6 +12,7 @@ Contains (Nix'ified) [OpenTofu](https://opentofu.org/) code used to manage our i
   - `tf_cloud_token`: [Terraform Cloud](https://app.terraform.io/) token to use shared state
   - `hcloud_api_token`: [Hetzner Cloud API token](https://docs.hetzner.com/cloud/api/getting-started/generating-api-token)
   - any listed in `secrets.envrc.sample` (to be copied to `secrets.envrc` and filled)
+- A domain name managed on [Hetzner Robot](https://robot.hetzner.com/)
 
 ## Usage
 
