@@ -260,17 +260,6 @@
         name = var "domain";
         ttl  = 3600;
       };
-      record = setNames (mapVals (default {
-        zone_id = tfRef "hetznerdns_zone.main.id";
-        ttl = 60;
-      }) (
-        mapVals (default {
-          type = "A";
-        })
-        (lib.genAttrs server_names (k: {
-          value = tfRef "hcloud_server.${k}.ipv4_address";
-        }))
-      ));
     }
     //
     # https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs
