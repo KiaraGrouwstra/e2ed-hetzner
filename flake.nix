@@ -56,25 +56,15 @@
       util = import ./lib {inherit pkgs lib;};
     in
       # assumption: server name = config name
-      lib.mapAttrs (name: fn:
-        fn {
-          inherit name system;
-          specialArgs = {
-            inherit
-              inputs
-              util
-              ;
-          };
-        })
       {
-        combined = {
-          name,
-          specialArgs,
-          system,
-        }:
-          lib.nixosSystem {
-            inherit specialArgs;
+        combined = lib.nixosSystem {
             inherit system;
+            specialArgs = {
+              inherit
+                inputs
+                util
+                ;
+            };
             modules = [
               ./servers/common/vm.nix
               ./servers/common
@@ -82,7 +72,6 @@
               ./hcloud/disk-config.nix
               {
                 nixpkgs.hostPlatform = system;
-                networking.hostName = name;
               }
             ];
           };

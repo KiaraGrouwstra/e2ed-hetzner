@@ -1,5 +1,6 @@
-{lib, ...}: {
+{lib, tf, ...}: {
   networking = {
+    hostName = tf.server_name;
     nameservers = [
       "8.8.8.8"
       "2a01:4ff:ff00::add:2"
