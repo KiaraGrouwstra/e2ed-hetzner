@@ -1,4 +1,4 @@
-# TF config
+# end-to-end declarative Hetzner Cloud w/ NixOS + Terraform
 
 Contains (Nix'ified) [OpenTofu](https://opentofu.org/) code used to manage our infrastructure.
 
